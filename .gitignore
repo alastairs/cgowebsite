@@ -11,3 +11,6 @@ _ReSharper.*/
 
 # NuGet packages
 packages/
+
+# Cache files
+*.cache
