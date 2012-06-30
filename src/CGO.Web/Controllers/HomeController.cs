@@ -10,6 +10,7 @@ namespace CGO.Web.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.Title = "Cambridge Graduate Orchestra";
             return View();
         }
     }
