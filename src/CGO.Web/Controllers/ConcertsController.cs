@@ -9,17 +9,18 @@ namespace CGO.Web.Controllers
 {
     public class ConcertsController : Controller
     {
+        private readonly Concert[] concerts = new[]
+            {
+                new Concert(1, "CGO Plays Music from Germany and Austria", new DateTime(2012, 04, 14, 20, 0, 0), "West Road Concert Hall"),
+                new Concert(2, "CGO around the World", new DateTime(2012, 06, 29, 20, 0, 0), "West Road Concert Hall"),
+                new Concert(3, "Russian Heritage", new DateTime(2012, 12, 01, 20, 0, 0), "West Road Concert Hall")
+            };
         //
         // GET: /Concerts/
 
         public ActionResult Index()
         {
-                return View(new[]
-                    {
-                        new Concert(1, "CGO Plays Music from Germany and Austria", new DateTime(2012, 04, 14, 20, 0, 0), "West Road Concert Hall"),
-                        new Concert(2, "CGO around the World", new DateTime(2012, 06, 29, 20, 0, 0), "West Road Concert Hall"),
-                        new Concert(3, "Russian Heritage", new DateTime(2012, 12, 01, 20, 0, 0), "West Road Concert Hall")
-                    }.OrderByDescending(c => c.DateAndStartTime));
+            return View(concerts.OrderByDescending(c => c.DateAndStartTime));
         }
 
         //
@@ -27,7 +28,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            return View();
+            return View(concerts.Single(c => c.Id == id));
         }
 
         //
