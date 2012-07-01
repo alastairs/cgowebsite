@@ -1,0 +1,8 @@
+﻿@model IEnumerable<CGO.Web.Models.Rehearsal>
+
+@foreach(var rehearsal in Model)
+{
+    <h2>@rehearsal.DateAndStartTime.ToString("d MMMM yyyy")</h2>
+    <p>@rehearsal.DateAndStartTime.ToString("HH.mm") - @rehearsal.FinishTime.ToString("HH.mm")</p>
+    @Html.ActionLink("View Schedule", "Details", new { rehearsal.Id })
+}
