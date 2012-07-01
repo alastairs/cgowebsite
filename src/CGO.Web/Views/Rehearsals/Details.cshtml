@@ -9,4 +9,5 @@
 </header>
 <section>
     <time datetime="@Model.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@Model.DateAndStartTime.ToString("HH.mm")</time> - <time datetime="@Model.FinishTime.ToString("yyyy-MM-ddTHH:mmzzz")">@Model.FinishTime.ToString("HH.mm")</time>
+    <p>@Html.Markdown(Model.Notes)</p>
 </section>

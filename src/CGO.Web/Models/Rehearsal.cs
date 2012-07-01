@@ -19,5 +19,6 @@ namespace CGO.Web.Models
         public DateTime DateAndStartTime { get; private set; }
         public DateTime FinishTime { get; private set; }
         public string Location { get; private set; }
+        public string Notes { get { return "Some extra **information** about the rehearsal"; } }
     }
 }
