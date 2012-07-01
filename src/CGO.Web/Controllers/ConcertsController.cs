@@ -20,7 +20,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Index()
         {
-            return View(concerts.OrderByDescending(c => c.DateAndStartTime));
+            return View("Index", concerts.OrderByDescending(c => c.DateAndStartTime));
         }
 
         //
@@ -28,7 +28,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            return View(concerts.Single(c => c.Id == id));
+            return View("Details", concerts.Single(c => c.Id == id));
         }
 
         //
