@@ -126,6 +126,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ConcertsController.cs" />
+    <Compile Include="Controllers\GoogleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RehearsalsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -133,6 +134,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\MarkdownHelper.cs" />
+    <Compile Include="Infrastructure\IFormsAuthenticationService.cs" />
     <Compile Include="Models\Concert.cs" />
     <Compile Include="Models\Rehearsal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
