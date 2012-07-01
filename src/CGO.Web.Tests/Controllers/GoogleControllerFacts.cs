@@ -16,7 +16,9 @@ namespace CGO.Web.Tests
             [Test]
             public void RedirectToHomepageWhenNoRedirectUrlIsSet()
             {
-                var controller = new GoogleController(Substitute.For<IFormsAuthenticationService>());
+                var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
+                oAuthConfiguration.OauthTokenUrl.Returns("http://localhost/");
+                var controller = new GoogleController(Substitute.For<IFormsAuthenticationService>(), oAuthConfiguration);
 
                 var result = controller.OAuthCallback("code", "state");
 
@@ -26,7 +28,9 @@ namespace CGO.Web.Tests
             [Test]
             public void RedirectToGivenUrlWhenARedirectUrlIsSet()
             {
-                var controller = new GoogleController(Substitute.For<IFormsAuthenticationService>());
+                var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
+                oAuthConfiguration.OauthTokenUrl.Returns("http://localhost/");
+                var controller = new GoogleController(Substitute.For<IFormsAuthenticationService>(), oAuthConfiguration);
 
                 const string redirectUrl = "/Concerts";
                 var result = controller.OAuthCallback("code", "state", redirectUrl);
@@ -37,14 +41,22 @@ namespace CGO.Web.Tests
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheProvidedFormsAuthenticationServiceIsNull()
             {
-                Assert.That(() => new GoogleController(null), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new GoogleController(null, Substitute.For<IOAuthConfiguration>()), Throws.InstanceOf<ArgumentNullException>());
             }
 
             [Test]
-            public void SetTheFormsAuthenticationCookieOnSuccessfulLogin()
+            public void ThrowAnArgumentNullExceptionWhenTheProvidedOAuthConfigurationIsNull()
+            {
+                Assert.That(() => new GoogleController(Substitute.For<IFormsAuthenticationService>(), null), Throws.InstanceOf<ArgumentNullException>());
+            }
+
+            [Test]
+            public void SetANonPersistentFormsAuthenticationCookieOnSuccessfulLogin()
             {
                 var formsAuthenticationService = Substitute.For<IFormsAuthenticationService>();
-                var controller = new GoogleController(formsAuthenticationService);
+                var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
+                oAuthConfiguration.OauthTokenUrl.Returns("http://localhost/");
+                var controller = new GoogleController(formsAuthenticationService, oAuthConfiguration);
 
                 controller.OAuthCallback("code", "state");
                 
