@@ -4,6 +4,10 @@
     ViewBag.Title = Model.Title;
 }
 
-<h2>@Model.Title</h2>
-<p>@Model.DateAndStartTime.ToString("d MMMM yyyy HH.mm"), @Model.Location</p>
-<p>@Html.Markdown(Model.Description)</p>
+<header>
+    <h1>@Model.Title</h1>
+</header>
+<section>
+    <time datetime="@Model.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@Model.DateAndStartTime.ToString("d MMMM yyyy HH.mm")</time>, @Model.Location
+    <p>@Html.Markdown(Model.Description)</p>
+</section>

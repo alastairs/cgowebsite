@@ -4,10 +4,19 @@
     ViewBag.Title = "Upcoming Concerts";
 }
 
-<h2>Upcoming Concerts</h2>
+<header>
+    <h1>Upcoming Concerts</h1>
+</header>
+
 @foreach (var concert in Model)
 {
-  <h3>@concert.Title</h3>
-  <p>@concert.DateAndStartTime.ToString("d MMMM yyyy HH.mm"), @concert.Location</p>
-  @Html.ActionLink("Read more", "Details", new { concert.Id })
+    <section>
+        <header>
+            <h1>@concert.Title</h1>
+            <div class="meta">
+                <time datetime="@concert.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@concert.DateAndStartTime.ToString("d MMMM yyyy HH.mm")</time>, @concert.Location
+                @Html.ActionLink("Read more", "Details", new { concert.Id })
+            </div>
+        </header>
+    </section>
 }
