@@ -7,9 +7,9 @@ namespace CGO.Web.Models
 {
     public class Rehearsal
     {
-        public Rehearsal(int id, DateTime dateAndStartTime, DateTime finishTime, string loction)
+        public Rehearsal(int id, DateTime dateAndStartTime, DateTime finishTime, string location)
         {
-            Loction = loction;
+            Location = location;
             FinishTime = finishTime;
             DateAndStartTime = dateAndStartTime;
             Id = id;
@@ -18,6 +18,6 @@ namespace CGO.Web.Models
         public int Id { get; private set; }
         public DateTime DateAndStartTime { get; private set; }
         public DateTime FinishTime { get; private set; }
-        public string Loction { get; private set; }
+        public string Location { get; private set; }
     }
 }
