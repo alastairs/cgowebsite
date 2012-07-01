@@ -127,12 +127,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ConcertsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RehearsalsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\MarkdownHelper.cs" />
     <Compile Include="Models\Concert.cs" />
+    <Compile Include="Models\Rehearsal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -227,6 +229,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Concerts\Index.cshtml" />
     <Content Include="Views\Concerts\Details.cshtml" />
+    <Content Include="Views\Rehearsals\Index.cshtml" />
+    <Content Include="Views\Rehearsals\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
