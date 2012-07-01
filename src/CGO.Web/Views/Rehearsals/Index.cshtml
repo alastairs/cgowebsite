@@ -1,8 +1,22 @@
 ﻿@model IEnumerable<CGO.Web.Models.Rehearsal>
 
+@{
+    ViewBag.Title = "Upcoming Rehearsals";
+}
+
+<header>
+    <h1>Upcoming Rehearsals</h1>
+</header>
+
 @foreach(var rehearsal in Model)
 {
-    <h2>@rehearsal.DateAndStartTime.ToString("d MMMM yyyy")</h2>
-    <p>@rehearsal.DateAndStartTime.ToString("HH.mm") - @rehearsal.FinishTime.ToString("HH.mm")</p>
-    @Html.ActionLink("View Schedule", "Details", new { rehearsal.Id })
+    <section>
+        <h1>
+            <time datetime="@rehearsal.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@rehearsal.DateAndStartTime.ToString("d MMMM yyyy")</time>
+        </h1>
+        <div class="meta">
+            <time datetime="@rehearsal.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@rehearsal.DateAndStartTime.ToString("HH.mm")</time> - <time datetime="@rehearsal.FinishTime.ToString("yyyy-MM-ddTHH:mmzzz")">@rehearsal.FinishTime.ToString("HH.mm")</time>
+            @Html.ActionLink("View Schedule", "Details", new {rehearsal.Id})
+        </div>
+    </section>
 }

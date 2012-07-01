@@ -1,5 +1,12 @@
 ﻿@model CGO.Web.Models.Rehearsal
 
-<h2>@Model.DateAndStartTime.ToString("d MMMM yyyy")</h2>
-<p>@Model.DateAndStartTime.ToString("HH.mm") - @Model.FinishTime.ToString("HH.mm")</p>
-    
+@{
+    ViewBag.Title = Model.DateAndStartTime;
+}
+
+<header>
+    <h1><time datetime="@Model.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@Model.DateAndStartTime.ToString("d MMMM yyyy")</time></h1>
+</header>
+<section>
+    <time datetime="@Model.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@Model.DateAndStartTime.ToString("HH.mm")</time> - <time datetime="@Model.FinishTime.ToString("yyyy-MM-ddTHH:mmzzz")">@Model.FinishTime.ToString("HH.mm")</time>
+</section>
