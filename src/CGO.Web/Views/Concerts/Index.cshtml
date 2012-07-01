@@ -2,13 +2,12 @@
 
 @{
     ViewBag.Title = "Upcoming Concerts";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Upcoming Concerts</h2>
 @foreach (var concert in Model)
 {
   <h3>@concert.Title</h3>
-  <p>@concert.DateAndStartTime.ToString("dd MMMM yyyy HH.mm"), @concert.Location</p>
+  <p>@concert.DateAndStartTime.ToString("d MMMM yyyy HH.mm"), @concert.Location</p>
   @Html.ActionLink("Read more", "Details", new { concert.Id })
 }
