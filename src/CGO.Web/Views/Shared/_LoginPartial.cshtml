@@ -1,11 +1,23 @@
 ﻿@if (Request.IsAuthenticated) {
-    <p>
-        Hello, @Html.ActionLink(User.Identity.Name, "ChangePassword", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Change password" })!
-        @Html.ActionLink("Log off", "LogOff", "Account")
-    </p>
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="icon-user"></i> Username
+        <span class="caret" />
+    </a>
+    <ul class="dropdown-menu">
+        <li><a href="#">Profile</a></li>
+        <li class="divider" />
+        <li><a href="#">Sign Out</a></li>
+    </ul>
 } else {
-    <ul>
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="icon-user"></i> Log In
+        <span class="caret" />
+    </a>
+    <ul class="dropdown-menu">
+        <li><a href="@ViewBag.GoogleLoginUrl" id="googleLoginLink">Log in with Google</a></li>
+        <li><a href="@ViewBag.GoogleLoginUrl" id="facebookLoginLink">Log in with Facebook</a></li>
+        <li><a href="@ViewBag.GoogleLoginUrl" id="twitterLoginLink">Log in with Twitter</a></li>
+        <li class="divider" />
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li><a href="@ViewBag.GoogleLoginUrl" id="loginLink">Log in with Google</a></li>
     </ul>
 }
