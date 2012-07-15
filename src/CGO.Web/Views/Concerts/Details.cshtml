@@ -1,13 +1,19 @@
-﻿@model CGO.Web.Models.Concert
+﻿@using CGO.Web.Views
+@model CGO.Web.Models.Concert
 
 @{
     ViewBag.Title = Model.Title;
 }
 
-<header>
-    <h1>@Model.Title</h1>
-</header>
+<div class="hero-unit">
+    <header>
+        <h1>@Model.Title</h1>
+    </header>
+    <section>
+        <p><time datetime="@Model.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@Model.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @Model.Location</p>
+        <img src="~/Images/facebook.png" style="width: 50%" />
+    </section>
+</div>
 <section>
-    <time datetime="@Model.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@Model.DateAndStartTime.ToString("d MMMM yyyy HH.mm")</time>, @Model.Location
     <p>@Html.Markdown(Model.Description)</p>
 </section>
