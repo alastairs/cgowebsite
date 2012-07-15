@@ -2,21 +2,37 @@
 
 @{
     ViewBag.Title = "Upcoming Rehearsals";
+    const string fullDateTimeFormatString = "yyyy-MM-ddTHH:mmzzz";
+    const string dateTimeDisplayFormatString = "d MMMM";
+    const string timeFormatString = "HH.mm";
 }
 
-<header>
-    <h1>Upcoming Rehearsals</h1>
-</header>
+<div class="hero-unit">
+    @{ var nextRehearsal = Model.First(); }
+    <header>
+        <h1>
+            <time datetime="@nextRehearsal.DateAndStartTime.ToString(fullDateTimeFormatString)">@nextRehearsal.DateAndStartTime.ToString(dateTimeDisplayFormatString)</time>
+        </h1>
+    </header>
+    <section>
+        <p>
+            <time datetime="@nextRehearsal.DateAndStartTime.ToString(fullDateTimeFormatString)">@nextRehearsal.DateAndStartTime.ToString(timeFormatString)</time> - 
+            <time datetime="@nextRehearsal.FinishTime.ToString(fullDateTimeFormatString)">@nextRehearsal.FinishTime.ToString(timeFormatString)</time>,
+            @nextRehearsal.Location
+        </p>
+        <p>@Html.ActionLink("View Schedule »", "Details", new {nextRehearsal.Id}, htmlAttributes: new { @class = "btn btn-primary btn-large"})</p>
+    </section>
+</div>
 
-@foreach(var rehearsal in Model)
+@foreach(var rehearsal in Model.Skip(1))
 {
     <section>
         <h1>
-            <time datetime="@rehearsal.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@rehearsal.DateAndStartTime.ToString("d MMMM yyyy")</time>
+            <time datetime="@rehearsal.DateAndStartTime.ToString(fullDateTimeFormatString)">@rehearsal.DateAndStartTime.ToString(dateTimeDisplayFormatString)</time>
         </h1>
         <div class="meta">
-            <time datetime="@rehearsal.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@rehearsal.DateAndStartTime.ToString("HH.mm")</time> - <time datetime="@rehearsal.FinishTime.ToString("yyyy-MM-ddTHH:mmzzz")">@rehearsal.FinishTime.ToString("HH.mm")</time>
-            @Html.ActionLink("View Schedule", "Details", new {rehearsal.Id})
+            <p><time datetime="@rehearsal.DateAndStartTime.ToString(fullDateTimeFormatString)">@rehearsal.DateAndStartTime.ToString(timeFormatString)</time> - <time datetime="@rehearsal.FinishTime.ToString(fullDateTimeFormatString)">@rehearsal.FinishTime.ToString(timeFormatString)</time>, @rehearsal.Location</p>
+            <p>@Html.ActionLink("View Schedule »", "Details", new {rehearsal.Id}, htmlAttributes: new {@class = "btn"})</p>
         </div>
     </section>
 }
