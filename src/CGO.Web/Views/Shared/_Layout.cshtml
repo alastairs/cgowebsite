@@ -26,23 +26,25 @@
     <body>
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <a class="brand" href="~/">Cambridge Graduate Orchestra</a>
-                <div class="btn-group pull-right">
-                    @Html.Partial("_LoginPartial")
-                </div>
-                <div class="nav-collapse">
-                    <ul class="nav">
-                        <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Concerts", "Index", "Concerts")</li>
-                        <li>@Html.ActionLink("Rehearsals", "Index", "Rehearsals")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    </ul>
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    @Html.ActionLink("Cambridge Graduate Orchestra", "Index", "Home", htmlAttributes: new { @class = "brand" }, routeValues: null)
+                    <div class="btn-group pull-right">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Concerts", "Index", "Concerts")</li>
+                            <li>@Html.ActionLink("Rehearsals", "Index", "Rehearsals")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        </ul>
+                    </div>
                 </div>
             </div>            
         </div>
