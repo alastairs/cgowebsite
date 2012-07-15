@@ -2,21 +2,36 @@
 
 @{
     ViewBag.Title = "Upcoming Concerts";
+    const string fullDateTimeFormatString = "yyyy-MM-ddTHH:mmzzz";
+    const string dateTimeDisplayFormatString = "d MMMM yyyy HH.mm";
 }
 
-<header>
-    <h1>Upcoming Concerts</h1>
-</header>
+<div class="hero-unit">
+    @{ var nextConcert = Model.First(); }
+    <header>
+        <h1>@nextConcert.Title</h1>
+    </header>
+    <section>
+        <p><time datetime="@nextConcert.DateAndStartTime.ToString(fullDateTimeFormatString)">@nextConcert.DateAndStartTime.ToString(dateTimeDisplayFormatString)</time>, @nextConcert.Location</p>
+        <p>@Html.ActionLink("Learn more »", "Details", new { nextConcert.Id }, htmlAttributes: new { @class ="btn btn-primary btn-large" })</p>
+    </section>
+</div>
 
-@foreach (var concert in Model)
+<header>
+    <h1>All Upcoming Concerts</h1>
+</header>
+<hr />
+@foreach (var concert in Model.Skip(1))
 {
     <section>
         <header>
             <h1>@concert.Title</h1>
             <div class="meta">
-                <time datetime="@concert.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@concert.DateAndStartTime.ToString("d MMMM yyyy HH.mm")</time>, @concert.Location
-                @Html.ActionLink("Read more", "Details", new { concert.Id })
+                <p><time datetime="@concert.DateAndStartTime.ToString(fullDateTimeFormatString)">@concert.DateAndStartTime.ToString(dateTimeDisplayFormatString)</time>, @concert.Location</p>
+                <p>@Html.ActionLink("View details »", "Details", new { concert.Id }, htmlAttributes: new { @class ="btn" })</p>
             </div>
         </header>
     </section>
 }
+<hr/>
+<p>@Html.ActionLink("View past concerts »", "Archived", routeValues: null, htmlAttributes: new { @class ="btn btn-info" })</p>
