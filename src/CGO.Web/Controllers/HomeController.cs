@@ -11,6 +11,8 @@ namespace CGO.Web.Controllers
         {
             ViewBag.Title = "Cambridge Graduate Orchestra";
             ViewBag.GoogleLoginUrl = new GoogleOAuthConfiguration().MakeLoginUri("");
+            ViewBag.FacebookLoginUrl = new FacebookOAuthConfiguration().MakeLoginUri("");
+            ViewBag.TwitterLoginUrl = new FacebookOAuthConfiguration().MakeLoginUri("");
 
             var model =
                 new HomePageViewModel(
