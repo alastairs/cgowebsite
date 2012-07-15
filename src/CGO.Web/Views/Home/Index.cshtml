@@ -1,27 +1,4 @@
-﻿<header>
-    <div class="content-wrapper">
-        <div class="float-left">
-            <p class="site-title">
-                <a href="~/">@ViewBag.Title</a></p>
-        </div>
-        <div class="float-right">
-            <section id="login">
-                @Html.Partial("_LoginPartial")
-            </section>
-            <nav>
-                <ul id="menu">
-                    <li>@Html.ActionLink("Home", "Index")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Concerts", "Index", "Concerts")</li>
-                    <li>@Html.ActionLink("Rehearsals", "Index", "Rehearsals")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-            </nav>
-        </div>
-
-    </div>
-</header>
-<div id="body">
+﻿<div class="hero-unit">
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
@@ -44,6 +21,8 @@
             </p>
         </div>
     </section>
+</div>
+<div class="row-fluid">
     <section class="content-wrapper main-content clear-fix">
         <h3>
             We suggest the following steps:</h3>
@@ -70,17 +49,3 @@
         </ol>
     </section>
 </div>
-<footer>
-    <div class="content-wrapper">
-        <div class="float-left">
-            <p>&copy; 2012 - My ASP.NET MVC Application</p>
-        </div>
-        <div class="float-right">
-            <ul id="social">
-                <li><a href="http://facebook.com/cambridgegraduateorchestra" class="facebook">Facebook</a></li>
-                <li><a href="http://twitter.com/camgradorch" class="twitter">Twitter</a></li>
-            </ul>
-        </div>
-    </div>
-</footer>
-

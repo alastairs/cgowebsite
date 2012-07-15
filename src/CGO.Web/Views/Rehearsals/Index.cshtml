@@ -1,22 +1,41 @@
-﻿@model IEnumerable<CGO.Web.Models.Rehearsal>
+﻿@using CGO.Web.Views
+@model IEnumerable<CGO.Web.Models.Rehearsal>
 
 @{
     ViewBag.Title = "Upcoming Rehearsals";
 }
 
-<header>
-    <h1>Upcoming Rehearsals</h1>
-</header>
+<div class="hero-unit">
+    @{ var nextRehearsal = Model.First(); }
+    <header>
+        <h1>
+            Next Rehearsal
+        </h1>
+    </header>
+    <section>
+        <p>
+            <time datetime="@nextRehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@nextRehearsal.DateAndStartTime.ToString(FormatStrings.FullDate)</time>
+            <time datetime="@nextRehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@nextRehearsal.DateAndStartTime.ToString(FormatStrings.Time)</time> - 
+            <time datetime="@nextRehearsal.FinishTime.ToString(FormatStrings.RFC3339DateTime)">@nextRehearsal.FinishTime.ToString(FormatStrings.Time)</time>,
+            @nextRehearsal.Location
+        </p>
+        <p>@Html.ActionLink("View Schedule »", "Details", new {nextRehearsal.Id}, htmlAttributes: new { @class = "btn btn-primary btn-large"})</p>
+    </section>
+</div>
 
-@foreach(var rehearsal in Model)
+@foreach(var rehearsal in Model.Skip(1))
 {
     <section>
         <h1>
-            <time datetime="@rehearsal.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@rehearsal.DateAndStartTime.ToString("d MMMM yyyy")</time>
+            <time datetime="@rehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.DateAndStartTime.ToString(FormatStrings.FullDate)</time>
         </h1>
         <div class="meta">
-            <time datetime="@rehearsal.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@rehearsal.DateAndStartTime.ToString("HH.mm")</time> - <time datetime="@rehearsal.FinishTime.ToString("yyyy-MM-ddTHH:mmzzz")">@rehearsal.FinishTime.ToString("HH.mm")</time>
-            @Html.ActionLink("View Schedule", "Details", new {rehearsal.Id})
+            <p>
+                <time datetime="@rehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.DateAndStartTime.ToString(FormatStrings.Time)</time> - 
+                <time datetime="@rehearsal.FinishTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.FinishTime.ToString(FormatStrings.Time)</time>, 
+                @rehearsal.Location
+            </p>
+            <p>@Html.ActionLink("View Schedule »", "Details", new {rehearsal.Id}, htmlAttributes: new {@class = "btn"})</p>
         </div>
     </section>
 }

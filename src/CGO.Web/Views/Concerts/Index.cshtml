@@ -1,22 +1,36 @@
-﻿@model IEnumerable<CGO.Web.Models.Concert>
+﻿@using CGO.Web.Views
+@model IEnumerable<CGO.Web.Models.Concert>
 
 @{
     ViewBag.Title = "Upcoming Concerts";
 }
 
-<header>
-    <h1>Upcoming Concerts</h1>
-</header>
+<div class="hero-unit">
+    @{ var nextConcert = Model.First(); }
+    <header>
+        <h1>@nextConcert.Title</h1>
+    </header>
+    <section>
+        <p><time datetime="@nextConcert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@nextConcert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @nextConcert.Location</p>
+        <p>@Html.ActionLink("Learn more »", "Details", new { nextConcert.Id }, htmlAttributes: new { @class ="btn btn-primary btn-large" })</p>
+    </section>
+</div>
 
-@foreach (var concert in Model)
+<header>
+    <h1>All Upcoming Concerts</h1>
+</header>
+<hr />
+@foreach (var concert in Model.Skip(1))
 {
     <section>
         <header>
             <h1>@concert.Title</h1>
             <div class="meta">
-                <time datetime="@concert.DateAndStartTime.ToString("yyyy-MM-ddTHH:mmzzz")">@concert.DateAndStartTime.ToString("d MMMM yyyy HH.mm")</time>, @concert.Location
-                @Html.ActionLink("Read more", "Details", new { concert.Id })
+                <p><time datetime="@concert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@concert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @concert.Location</p>
+                <p>@Html.ActionLink("View details »", "Details", new { concert.Id }, htmlAttributes: new { @class ="btn" })</p>
             </div>
         </header>
     </section>
 }
+<hr/>
+<p>@Html.ActionLink("View past concerts »", "Archived", routeValues: null, htmlAttributes: new { @class ="btn btn-info" })</p>
