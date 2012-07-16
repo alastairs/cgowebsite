@@ -1,3 +1,5 @@
+using CGO.Web.Infrastructure;
+
 [assembly: WebActivator.PreApplicationStartMethod(typeof(CGO.Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(CGO.Web.App_Start.NinjectWebCommon), "Stop")]
 
@@ -43,6 +45,27 @@ namespace CGO.Web.App_Start
             var kernel = new StandardKernel();
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+
+            kernel.Bind<IOAuthConfiguration>().ToMethod(_ =>
+                {
+                    string provider = HttpContext.Current.Request.QueryString["provider"];
+                    if (provider == null)
+                    {
+                        throw new Exception();
+                    }
+
+                    if (provider.Equals("google", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return new GoogleOAuthConfiguration();
+                    }
+
+                    if (provider.Equals("facebook", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return new FacebookOAuthConfiguration();
+                    }
+
+                    throw new Exception();
+                });
             
             RegisterServices(kernel);
             return kernel;
@@ -56,6 +79,7 @@ namespace CGO.Web.App_Start
         {
             kernel.Bind(a => a.FromAssembliesMatching("CGO.*.dll")
                               .SelectAllClasses()
+                              .Excluding(new[] { typeof(GoogleOAuthConfiguration), typeof(FacebookOAuthConfiguration)})
                               .BindAllInterfaces()
                               .Configure(bind => bind.InRequestScope()));
         }        

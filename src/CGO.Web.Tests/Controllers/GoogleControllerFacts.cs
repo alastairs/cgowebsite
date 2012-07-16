@@ -18,9 +18,9 @@ namespace CGO.Web.Tests
             {
                 var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
                 oAuthConfiguration.OauthTokenUrl.Returns("http://localhost/");
-                var controller = new GoogleController(Substitute.For<IFormsAuthenticationService>(), oAuthConfiguration);
+                var controller = new OAuth2Controller(Substitute.For<IFormsAuthenticationService>(), oAuthConfiguration);
 
-                var result = controller.OAuthCallback("code", "state");
+                var result = controller.Callback("code", "state");
 
                 result.AssertActionRedirect().ToAction<HomeController>(c => c.Index());
             }
@@ -30,10 +30,10 @@ namespace CGO.Web.Tests
             {
                 var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
                 oAuthConfiguration.OauthTokenUrl.Returns("http://localhost/");
-                var controller = new GoogleController(Substitute.For<IFormsAuthenticationService>(), oAuthConfiguration);
+                var controller = new OAuth2Controller(Substitute.For<IFormsAuthenticationService>(), oAuthConfiguration);
 
                 const string redirectUrl = "/Concerts";
-                var result = controller.OAuthCallback("code", "state", redirectUrl);
+                var result = controller.Callback("code", "state", redirectUrl);
 
                 result.AssertHttpRedirect().ToUrl(redirectUrl);
             }
@@ -41,13 +41,13 @@ namespace CGO.Web.Tests
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheProvidedFormsAuthenticationServiceIsNull()
             {
-                Assert.That(() => new GoogleController(null, Substitute.For<IOAuthConfiguration>()), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new OAuth2Controller(null, Substitute.For<IOAuthConfiguration>()), Throws.InstanceOf<ArgumentNullException>());
             }
 
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheProvidedOAuthConfigurationIsNull()
             {
-                Assert.That(() => new GoogleController(Substitute.For<IFormsAuthenticationService>(), null), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new OAuth2Controller(Substitute.For<IFormsAuthenticationService>(), null), Throws.InstanceOf<ArgumentNullException>());
             }
 
             [Test]
@@ -56,9 +56,9 @@ namespace CGO.Web.Tests
                 var formsAuthenticationService = Substitute.For<IFormsAuthenticationService>();
                 var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
                 oAuthConfiguration.OauthTokenUrl.Returns("http://localhost/");
-                var controller = new GoogleController(formsAuthenticationService, oAuthConfiguration);
+                var controller = new OAuth2Controller(formsAuthenticationService, oAuthConfiguration);
 
-                controller.OAuthCallback("code", "state");
+                controller.Callback("code", "state");
                 
                 formsAuthenticationService.Received().SetAuthenticationCookie("Bob", false);
             }

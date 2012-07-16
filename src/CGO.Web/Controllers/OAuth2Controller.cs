@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace CGO.Web.Controllers
 {
-    public class GoogleController : Controller
+    public class OAuth2Controller : Controller
     {
         private const string PostDataSeparator = "&";
         private const string PostDataPairSeparator = "=";
@@ -20,7 +20,7 @@ namespace CGO.Web.Controllers
         private readonly IFormsAuthenticationService formsAuthenticationService;
         private readonly IOAuthConfiguration oAuthConfiguration;
 
-        public GoogleController(IFormsAuthenticationService formsAuthenticationService, IOAuthConfiguration oAuthConfiguration)
+        public OAuth2Controller(IFormsAuthenticationService formsAuthenticationService, IOAuthConfiguration oAuthConfiguration)
         {
             if (formsAuthenticationService == null)
             {
@@ -36,7 +36,7 @@ namespace CGO.Web.Controllers
             this.oAuthConfiguration = oAuthConfiguration;
         }
 
-        public ActionResult OAuthCallback(string code, string state, string redirectUrl = null)
+        public ActionResult Callback(string code, string state, string redirectUrl = null)
         {
             var json = ConvertAuthCodeToJson(code);
             var data = JsonConvert.DeserializeObject<dynamic>(json);
