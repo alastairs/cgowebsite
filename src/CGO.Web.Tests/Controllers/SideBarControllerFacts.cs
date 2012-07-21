@@ -36,11 +36,26 @@ namespace CGO.Web.Tests.Controllers
 
                 var result = controller.Display();
 
-                result.AssertPartialViewRendered();
+                result.AssertPartialViewRendered().ForView("_Sidebar");
             }
 
             [Test]
-            public void ReturnNotRenderTheSideBarIfThereAreNoLinksToDisplay()
+            public void RenderTheSideBarPartialViewWithTheAppropriateLinks()
+            {
+                var urlHelper = Substitute.For<UrlHelper>(Substitute.For<RequestContext>());
+                var sideBarProvider = Substitute.For<SideBarProvider>(urlHelper);
+                var expected = new List<SideBarSection> {new SideBarSection("foo", Enumerable.Empty<SideBarLink>())};
+                sideBarProvider.GetSideBarSections().Returns(_ => expected);
+                var controller = new SideBarController(sideBarProvider);
+
+                var result = controller.Display();
+
+                var renderedData = result.AssertPartialViewRendered().WithViewData<IEnumerable<SideBarSection>>();
+                Assert.That(renderedData, Is.EqualTo(expected));
+            }
+
+            [Test]
+            public void NotRenderTheSideBarIfThereAreNoLinksToDisplay()
             {
                 var controller = new SideBarController(Substitute.For<SideBarProvider>(Substitute.For<UrlHelper>(Substitute.For<RequestContext>())));
 
