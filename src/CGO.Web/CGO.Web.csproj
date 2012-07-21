@@ -149,7 +149,6 @@
     <Compile Include="Infrastructure\GoogleOAuthConfiguration.cs" />
     <Compile Include="Infrastructure\IOAuthConfiguration.cs" />
     <Compile Include="Controllers\RehearsalsController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
