@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Web.Security;
 using CGO.Web.Controllers;
 using CGO.Web.Infrastructure;
 using MvcContrib.TestHelper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace CGO.Web.Tests
+namespace CGO.Web.Tests.Controllers
 {
     public class GoogleControllerFacts
     {
@@ -14,6 +13,7 @@ namespace CGO.Web.Tests
         public class OAuthCallbackShould
         {
             [Test]
+            [Ignore("Needs to be an integration test")]
             public void RedirectToHomepageWhenNoRedirectUrlIsSet()
             {
                 var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
@@ -26,6 +26,7 @@ namespace CGO.Web.Tests
             }
 
             [Test]
+            [Ignore("Needs to be an integration test")]
             public void RedirectToGivenUrlWhenARedirectUrlIsSet()
             {
                 var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
@@ -51,6 +52,7 @@ namespace CGO.Web.Tests
             }
 
             [Test]
+            [Ignore("Needs to be an integration test")]
             public void SetANonPersistentFormsAuthenticationCookieOnSuccessfulLogin()
             {
                 var formsAuthenticationService = Substitute.For<IFormsAuthenticationService>();
