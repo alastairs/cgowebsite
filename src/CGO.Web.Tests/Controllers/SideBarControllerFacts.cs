@@ -30,7 +30,7 @@ namespace CGO.Web.Tests.Controllers
             public void RenderTheSideBarPartialViewIfThereAreLinksToDisplay()
             {
                 var urlHelper = Substitute.For<UrlHelper>(Substitute.For<RequestContext>());
-                var sideBarProvider = Substitute.For<SideBarProvider>(urlHelper);
+                var sideBarProvider = Substitute.For<SideBar>(urlHelper);
                 sideBarProvider.GetSideBarSections().Returns(_ => new List<SideBarSection>{ new SideBarSection("foo", Enumerable.Empty<SideBarLink>())});
                 var controller = new SideBarController(sideBarProvider);
 
@@ -43,7 +43,7 @@ namespace CGO.Web.Tests.Controllers
             public void RenderTheSideBarPartialViewWithTheAppropriateLinks()
             {
                 var urlHelper = Substitute.For<UrlHelper>(Substitute.For<RequestContext>());
-                var sideBarProvider = Substitute.For<SideBarProvider>(urlHelper);
+                var sideBarProvider = Substitute.For<SideBar>(urlHelper);
                 var expected = new List<SideBarSection> {new SideBarSection("foo", Enumerable.Empty<SideBarLink>())};
                 sideBarProvider.GetSideBarSections().Returns(_ => expected);
                 var controller = new SideBarController(sideBarProvider);
@@ -57,7 +57,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void NotRenderTheSideBarIfThereAreNoLinksToDisplay()
             {
-                var controller = new SideBarController(Substitute.For<SideBarProvider>(Substitute.For<UrlHelper>(Substitute.For<RequestContext>())));
+                var controller = new SideBarController(Substitute.For<SideBar>(Substitute.For<UrlHelper>(Substitute.For<RequestContext>())));
 
                 var result = controller.Display();
 

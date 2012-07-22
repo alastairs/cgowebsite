@@ -4,9 +4,9 @@ using CGO.Web.Models;
 
 namespace CGO.Web.Controllers
 {
-    public abstract class SideBarProvider
+    public abstract class SideBar
     {
-        protected SideBarProvider(UrlHelper urlHelper)
+        protected SideBar(UrlHelper urlHelper)
         {
             Url = urlHelper;
         }

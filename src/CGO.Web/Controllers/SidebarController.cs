@@ -6,22 +6,22 @@ namespace CGO.Web.Controllers
 {
     public class SideBarController : Controller
     {
-        private readonly SideBarProvider sideBarProvider;
+        private readonly SideBar sideBar;
 
-        public SideBarController(SideBarProvider sideBarProvider)
+        public SideBarController(SideBar sideBar)
         {
-            if (sideBarProvider == null)
+            if (sideBar == null)
             {
-                throw new ArgumentNullException("sideBarProvider");
+                throw new ArgumentNullException("sideBar");
             }
 
-            this.sideBarProvider = sideBarProvider;
+            this.sideBar = sideBar;
         }
 
         [ChildActionOnly]
         public virtual ActionResult Display()
         {
-            var sideBarSections = sideBarProvider.GetSideBarSections();
+            var sideBarSections = sideBar.GetSideBarSections();
 
             return sideBarSections.Any() ? PartialView("_Sidebar", sideBarSections) : null;
         }
