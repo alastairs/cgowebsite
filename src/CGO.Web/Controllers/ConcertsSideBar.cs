@@ -4,9 +4,9 @@ using CGO.Web.Models;
 
 namespace CGO.Web.Controllers
 {
-    public class ConcertsSideBarProvider : SideBarProvider
+    public class ConcertsSideBar : SideBar
     {
-        public ConcertsSideBarProvider(UrlHelper urlHelper) : base(urlHelper) { }
+        public ConcertsSideBar(UrlHelper urlHelper) : base(urlHelper) { }
 
         public override IEnumerable<SideBarSection> GetSideBarSections()
         {
