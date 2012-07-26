@@ -1,5 +1,3 @@
-using System.Web.Security;
-
 namespace CGO.Web.Infrastructure
 {
     /// <summary>
