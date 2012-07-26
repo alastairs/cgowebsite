@@ -1,0 +1,29 @@
+﻿@using CGO.Web.Models
+@model IEnumerable<SideBarSection>
+
+<div class="span3">
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+            @foreach (var sideBarSection in Model)
+            {
+                <li class="nav-header">@sideBarSection.Title</li>
+                foreach (var link in sideBarSection.Links)
+                {
+                    @SideBarLink(link)
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+@helper SideBarLink(SideBarLink link)
+{
+    if (link.IsActive)
+    {
+        <li class="active"><a href="@link.Uri" title="@link.Title">@link.Title</a></li>
+    }
+    else
+    {
+        <li><a href="@link.Uri" title="@link.Title">@link.Title</a></li>
+    }
+}

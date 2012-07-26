@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using CGO.Web.Controllers;
 using CGO.Web.Models;
 using MvcContrib.TestHelper;
 using NUnit.Framework;
 
-namespace CGO.Web.Tests
+namespace CGO.Web.Tests.Controllers
 {
     public class ConcertsControllerFacts
     {
