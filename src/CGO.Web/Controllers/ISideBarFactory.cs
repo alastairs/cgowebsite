@@ -11,7 +11,8 @@ namespace CGO.Web.Controllers
         /// 
         /// </summary>
         /// <param name="urlHelper"> </param>
+        /// <param name="controllerName"> </param>
         /// <returns></returns>
-        SideBar CreateSideBar(UrlHelper urlHelper);
+        SideBar CreateSideBar(UrlHelper urlHelper, string controllerName);
     }
 }

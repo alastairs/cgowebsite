@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Routing;
 using CGO.Web.Controllers;
 using CGO.Web.Models;
 using MvcContrib.TestHelper;
@@ -29,12 +28,10 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void RenderTheSideBarPartialViewIfThereAreLinksToDisplay()
             {
-                var sideBar = Substitute.For<SideBar>(Arg.Any<UrlHelper>());
-                var sideBarFactory = Substitute.For<ISideBarFactory>();
-                sideBarFactory.CreateSideBar(Arg.Any<UrlHelper>()).Returns(sideBar);
-                sideBar.GetSideBarSections().Returns(_ => new List<SideBarSection>{ new SideBarSection("foo", Enumerable.Empty<SideBarLink>())});
-                var controller = new SideBarController(sideBarFactory);
-
+                var expectedSideBarSections = new List<SideBarSection> {new SideBarSection("foo", Enumerable.Empty<SideBarLink>())};
+                var controller = new SideBarController(GetMockSideBarFactory(expectedSideBarSections));
+                new TestControllerBuilder().InitializeController(controller);
+                
                 var result = controller.Display();
 
                 result.AssertPartialViewRendered().ForView("_Sidebar");
@@ -43,30 +40,36 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void RenderTheSideBarPartialViewWithTheAppropriateLinks()
             {
-                var sideBar = Substitute.For<SideBar>(Arg.Any<UrlHelper>());
-                var sideBarFactory = Substitute.For<ISideBarFactory>();
-                sideBarFactory.CreateSideBar(Arg.Any<UrlHelper>()).Returns(sideBar);
-                var expected = new List<SideBarSection> { new SideBarSection("foo", Enumerable.Empty<SideBarLink>()) }; 
-                sideBar.GetSideBarSections().Returns(_ => expected);
-                var controller = new SideBarController(sideBarFactory);
-                
+                var expectedSideBarSections = new List<SideBarSection> { new SideBarSection("foo", Enumerable.Empty<SideBarLink>()) };
+                var controller = new SideBarController(GetMockSideBarFactory(expectedSideBarSections));
+                new TestControllerBuilder().InitializeController(controller);
+
                 var result = controller.Display();
 
                 var renderedData = result.AssertPartialViewRendered().WithViewData<IEnumerable<SideBarSection>>();
-                Assert.That(renderedData, Is.EqualTo(expected));
+                Assert.That(renderedData, Is.EqualTo(expectedSideBarSections));
             }
 
             [Test]
             public void NotRenderTheSideBarIfThereAreNoLinksToDisplay()
             {
-                var sideBar = Substitute.For<SideBar>(Arg.Any<UrlHelper>());
-                var sideBarFactory = Substitute.For<ISideBarFactory>();
-                sideBarFactory.CreateSideBar(Arg.Any<UrlHelper>()).Returns(sideBar);
-                var controller = new SideBarController(sideBarFactory);
+                var controller = new SideBarController(GetMockSideBarFactory(Enumerable.Empty<SideBarSection>()));
+                new TestControllerBuilder().InitializeController(controller);
 
                 var result = controller.Display();
 
                 Assert.That(result, Is.Null);
+            }
+
+            private static ISideBarFactory GetMockSideBarFactory(IEnumerable<SideBarSection> expectedSideBarSections)
+            {
+                var sideBar = Substitute.For<SideBar>(Arg.Any<UrlHelper>());
+                sideBar.GetSideBarSections().Returns(_ => expectedSideBarSections); 
+                
+                var sideBarFactory = Substitute.For<ISideBarFactory>();
+                sideBarFactory.CreateSideBar(null, string.Empty).ReturnsForAnyArgs(sideBar);
+                
+                return sideBarFactory;
             }
         }
     }
