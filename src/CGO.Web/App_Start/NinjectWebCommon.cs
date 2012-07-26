@@ -61,9 +61,6 @@ namespace CGO.Web.App_Start
                               .SelectAllClasses()
                               .BindAllInterfaces()
                               .Configure(bind => bind.InRequestScope()));
-
-            kernel.Bind<ISideBarFactory>().ToFactory().InRequestScope();
-            kernel.Bind<SideBar>().To<ConcertsSideBar>().InRequestScope();
         }
     }
 }
