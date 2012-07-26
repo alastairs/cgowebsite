@@ -21,7 +21,7 @@ namespace CGO.Web.Controllers
         [ChildActionOnly]
         public virtual ActionResult Display()
         {
-            var sideBar = sideBarFactory.CreateSideBar(Url);
+            var sideBar = sideBarFactory.CreateSideBar(Url, ControllerContext.RouteData.Values["RequestingController"] as string);
             var sideBarSections = sideBar.GetSideBarSections();
 
             return sideBarSections.Any() ? PartialView("_Sidebar", sideBarSections) : null;
