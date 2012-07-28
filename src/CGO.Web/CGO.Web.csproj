@@ -95,9 +95,6 @@
     <Reference Include="Raven.Backup">
       <HintPath>..\packages\RavenDB.Database.1.2.2048-Unstable\lib\net40\Raven.Backup.exe</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Embedded">
-      <HintPath>..\packages\RavenDB.Embedded.1.2.2048-Unstable\lib\net40\Raven.Client.Embedded.dll</HintPath>
-    </Reference>
     <Reference Include="Raven.Client.Lightweight">
       <HintPath>..\packages\RavenDB.Client.1.2.2048-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
@@ -106,6 +103,9 @@
     </Reference>
     <Reference Include="Raven.Smuggler">
       <HintPath>..\packages\RavenDB.Database.1.2.2048-Unstable\lib\net40\Raven.Smuggler.exe</HintPath>
+    </Reference>
+    <Reference Include="Raven.Web">
+      <HintPath>..\packages\RavenDB.AspNetHost.1.2.2048-Unstable\lib\net40\Raven.Web.dll</HintPath>
     </Reference>
     <Reference Include="Spatial4n.Core">
       <HintPath>..\packages\RavenDB.Database.1.2.2048-Unstable\lib\net40\Spatial4n.Core.dll</HintPath>
@@ -196,6 +196,7 @@
     <Compile Include="Controllers\EmptySideBar.cs" />
     <Compile Include="Controllers\GoogleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IDocumentSessionFactory.cs" />
     <Compile Include="Controllers\ISideBarFactory.cs" />
     <Compile Include="Controllers\SidebarController.cs" />
     <Compile Include="Controllers\SideBar.cs" />
@@ -218,10 +219,6 @@
     <Compile Include="Views\FormatStrings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\RavenDB.Embedded.1.2.2048-Unstable\tools\Raven.Studio.xap">
-      <Link>Raven.Studio.xap</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\bootstrap-responsive.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.css" />

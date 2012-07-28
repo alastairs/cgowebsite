@@ -7,6 +7,18 @@ namespace CGO.Web.Controllers
 {
     public class ConcertsController : Controller
     {
+        private readonly IDocumentSessionFactory sessionFactory;
+
+        public ConcertsController(IDocumentSessionFactory sessionFactory)
+        {
+            if (sessionFactory == null)
+            {
+                throw new ArgumentNullException("sessionFactory");
+            }
+
+            this.sessionFactory = sessionFactory;
+        }
+
         private readonly Concert[] concerts = new[]
             {
                 new Concert(1, "CGO Plays Music from Germany and Austria", new DateTime(2012, 04, 14, 20, 0, 0), "West Road Concert Hall"),
@@ -27,7 +39,11 @@ namespace CGO.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            return View("Details", concerts.Single(c => c.Id == id));
+            using (var session = sessionFactory.CreateSession())
+            {
+                var concert = session.Load<Concert>(id);
+                return View("Details", concert);
+            }
         }
 
         //
