@@ -15,5 +15,6 @@ packages/
 # Cache files
 *.cache
 
-# RavenDB data directory
+# RavenDB data directories
 src/CGO.Web/Data/
+src/CGO.Web/*.raven/
