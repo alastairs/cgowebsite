@@ -3,28 +3,30 @@ using System.Linq;
 using System.Web.Mvc;
 using CGO.Web.Models;
 
+using Raven.Client;
+
 namespace CGO.Web.Controllers
 {
     public class ConcertsController : Controller
     {
-        private readonly IDocumentSessionFactory sessionFactory;
+        private readonly IDocumentStore documentStore;
 
-        public ConcertsController(IDocumentSessionFactory sessionFactory)
+        public ConcertsController(IDocumentStore documentStore)
         {
-            if (sessionFactory == null)
+            if (documentStore == null)
             {
-                throw new ArgumentNullException("sessionFactory");
+                throw new ArgumentNullException("documentStore");
             }
 
-            this.sessionFactory = sessionFactory;
+            this.documentStore = documentStore;
         }
 
         private readonly Concert[] concerts = new[]
-            {
-                new Concert(1, "CGO Plays Music from Germany and Austria", new DateTime(2012, 04, 14, 20, 0, 0), "West Road Concert Hall"),
-                new Concert(2, "CGO around the World", new DateTime(2012, 06, 29, 20, 0, 0), "West Road Concert Hall"),
-                new Concert(3, "Russian Heritage", new DateTime(2012, 12, 01, 20, 0, 0), "West Road Concert Hall")
-            };
+        {
+            new Concert(1, "CGO Plays Music from Germany and Austria", new DateTime(2012, 04, 14, 20, 0, 0), "West Road Concert Hall"),
+            new Concert(2, "CGO around the World", new DateTime(2012, 06, 29, 20, 0, 0), "West Road Concert Hall"),
+            new Concert(3, "Russian Heritage", new DateTime(2012, 12, 01, 20, 0, 0), "West Road Concert Hall")
+        };
 
         //
         // GET: /Concerts/
@@ -39,7 +41,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            using (var session = sessionFactory.CreateSession())
+            using (var session = documentStore.OpenSession())
             {
                 var concert = session.Load<Concert>(id);
                 return View("Details", concert);

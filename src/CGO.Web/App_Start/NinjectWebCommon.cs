@@ -1,7 +1,4 @@
-using CGO.Web.Controllers;
-using Ninject.Extensions.Factory;
 using Raven.Client;
-using Raven.Client.Document;
 using Raven.Client.Embedded;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(CGO.Web.App_Start.NinjectWebCommon), "Start")]
