@@ -8,7 +8,7 @@ using MvcContrib.TestHelper;
 using NSubstitute;
 using NUnit.Framework;
 
-using Raven.Client;
+using Raven.Client.Embedded;
 
 namespace CGO.Web.Tests.Controllers
 {
@@ -42,10 +42,12 @@ namespace CGO.Web.Tests.Controllers
         [TestFixture]
         public class DetailsShould
         {
+            private EmbeddableDocumentStore store;
+
             [Test]
             public void RenderTheDetailsView()
             {
-                var documentSessionFactory = GetMockDocumentSessionFactory();
+                var documentSessionFactory = GetInMemoryDocumentSessionFactory();
                 var controller = new ConcertsController(documentSessionFactory);
 
                 var result = controller.Details(1);
@@ -56,7 +58,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void DisplayTheConcertRequested()
             {
-                var documentSessionFactory = GetMockDocumentSessionFactory();
+                var documentSessionFactory = GetInMemoryDocumentSessionFactory();
                 var controller = new ConcertsController(documentSessionFactory);
 
                 var result = controller.Details(1) as ViewResult;
@@ -65,13 +67,27 @@ namespace CGO.Web.Tests.Controllers
                 Assert.That(concert.Id, Is.EqualTo(1));
             }
 
-            private IDocumentSessionFactory GetMockDocumentSessionFactory()
+            [SetUp]
+            public void ConfigureRavenDb()
             {
-                var documentSession = Substitute.For<IDocumentSession>();
-                documentSession.Load<Concert>(Arg.Any<int>()).Returns(new Concert(1, "foo", DateTime.Now, "bar"));
+                store = new EmbeddableDocumentStore { RunInMemory = true };
+                store.Initialize();
+            }
 
+            [SetUp]
+            public void CreateSampleData()
+            {
+                using(var session = store.OpenSession())
+                {
+                    session.Store(new Concert(1, "foo", DateTime.Now, "bar"));
+                    session.SaveChanges();
+                }
+            }
+
+            private IDocumentSessionFactory GetInMemoryDocumentSessionFactory()
+            {
                 var documentSessionFactory = Substitute.For<IDocumentSessionFactory>();
-                documentSessionFactory.CreateSession().Returns(documentSession);
+                documentSessionFactory.CreateSession().Returns(store.OpenSession());
 
                 return documentSessionFactory;
             }
