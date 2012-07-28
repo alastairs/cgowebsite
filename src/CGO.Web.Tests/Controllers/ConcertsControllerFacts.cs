@@ -8,6 +8,7 @@ using MvcContrib.TestHelper;
 using NSubstitute;
 using NUnit.Framework;
 
+using Raven.Client;
 using Raven.Client.Embedded;
 
 namespace CGO.Web.Tests.Controllers
@@ -20,7 +21,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void DisplayTheIndexView()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSessionFactory>());
+                var controller = new ConcertsController(Substitute.For<IDocumentStore>());
 
                 var result = controller.Index();
 
@@ -30,7 +31,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void DisplayTheConcertsInDescendingOrderByDate()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSessionFactory>());
+                var controller = new ConcertsController(Substitute.For<IDocumentStore>());
 
                 var result = controller.Index() as ViewResult;
                 var concerts = result.Model as IEnumerable<Concert>;
@@ -42,13 +43,12 @@ namespace CGO.Web.Tests.Controllers
         [TestFixture]
         public class DetailsShould
         {
-            private EmbeddableDocumentStore store;
+            private static EmbeddableDocumentStore store;
 
             [Test]
             public void RenderTheDetailsView()
             {
-                var documentSessionFactory = GetInMemoryDocumentSessionFactory();
-                var controller = new ConcertsController(documentSessionFactory);
+                var controller = new ConcertsController(store);
 
                 var result = controller.Details(1);
 
@@ -58,8 +58,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void DisplayTheConcertRequested()
             {
-                var documentSessionFactory = GetInMemoryDocumentSessionFactory();
-                var controller = new ConcertsController(documentSessionFactory);
+                var controller = new ConcertsController(store);
 
                 var result = controller.Details(1) as ViewResult;
                 var concert = result.Model as Concert;
@@ -82,14 +81,6 @@ namespace CGO.Web.Tests.Controllers
                     session.Store(new Concert(1, "foo", DateTime.Now, "bar"));
                     session.SaveChanges();
                 }
-            }
-
-            private IDocumentSessionFactory GetInMemoryDocumentSessionFactory()
-            {
-                var documentSessionFactory = Substitute.For<IDocumentSessionFactory>();
-                documentSessionFactory.CreateSession().Returns(store.OpenSession());
-
-                return documentSessionFactory;
             }
         }
     }
