@@ -1,5 +1,7 @@
 using CGO.Web.Controllers;
 using Ninject.Extensions.Factory;
+using Raven.Client;
+using Raven.Client.Document;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(CGO.Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(CGO.Web.App_Start.NinjectWebCommon), "Stop")]
@@ -61,6 +63,19 @@ namespace CGO.Web.App_Start
                               .SelectAllClasses()
                               .BindAllInterfaces()
                               .Configure(bind => bind.InRequestScope()));
+
+            kernel.Bind<IDocumentStore>().ToMethod(_ =>
+            {
+                var documentStore = new DocumentStore
+                {
+                    ConnectionStringName = "RavenDB"
+                };
+
+                documentStore.InitializeProfiling();
+                documentStore.Initialize();
+                
+                return documentStore;
+            }).InSingletonScope();
         }
     }
 }
