@@ -59,20 +59,25 @@ namespace CGO.Web.Controllers
 
         [HttpPost]
         //[Authorize]
-        public ActionResult Create(ConcertViewModel concert)
+        public ActionResult Create(ConcertViewModel concertViewModel)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    return View("Create", concert);
+                    return View("Create", concertViewModel);
                 }
+
+                var dateAndStartTime = new DateTime(concertViewModel.Date.Year, concertViewModel.Date.Month, concertViewModel.Date.Day,
+                                                    concertViewModel.StartTime.Hour, concertViewModel.StartTime.Minute, 00);
+                var concert = new Concert(concertViewModel.Id, concertViewModel.Title, dateAndStartTime, concertViewModel.Location);
+                session.Store(concert);
 
                 return RedirectToAction("List");
             }
             catch
             {
-                return View(concert);
+                return View(concertViewModel);
             }
         }
 
