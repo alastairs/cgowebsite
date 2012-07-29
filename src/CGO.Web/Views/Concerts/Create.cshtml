@@ -13,7 +13,7 @@
 @{ Html.EnableClientValidation(); }
 @using (Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "CreateConcert" }))
 {
-    @Html.ValidationSummary(false, "Oh dear, the violas made a boo-boo. Please go back and fix the following errors:")
+    @Html.ValidationSummary(false, "Oh dear, the violas made a boo-boo. Please go back and fix the following mistakes:")
     
     <fieldset>
         <legend>Concert details</legend>
