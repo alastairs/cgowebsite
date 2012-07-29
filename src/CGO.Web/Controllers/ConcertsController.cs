@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using CGO.Web.Models;
+using CGO.Web.ViewModels;
 
 using Raven.Client;
 
@@ -58,7 +59,7 @@ namespace CGO.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ConcertViewModel concert)
         {
             try
             {
