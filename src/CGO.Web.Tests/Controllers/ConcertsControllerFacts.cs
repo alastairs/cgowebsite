@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web.Mvc;
 using CGO.Web.Controllers;
 using CGO.Web.Models;
+using CGO.Web.ViewModels;
+
 using MvcContrib.TestHelper;
 using NSubstitute;
 using NUnit.Framework;
@@ -100,6 +102,30 @@ namespace CGO.Web.Tests.Controllers
             public void DestroyRavenDbStore()
             {
                 store.Dispose();
+            }
+        }
+
+        [TestFixture]
+        public class CreateShould
+        {
+            [Test]
+            public void ShowTheCreateViewWhenCalledViaAGetRequest()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Create(); // The parameterless overload is called on GET.
+
+                result.AssertViewRendered().ForView("Create");
+            }
+
+            [Test]
+            public void ShowTheCreateViewWithTheSuppliedModelWhenThereAreValidationErrors()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Create(new ConcertViewModel()); // The overload with ConcertViewModel parameter is called on POST.
+
+                result.AssertViewRendered().ForView("Create").WithViewData<ConcertViewModel>();
             }
         }
     }

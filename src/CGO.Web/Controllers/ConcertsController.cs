@@ -51,7 +51,7 @@ namespace CGO.Web.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            return View();
+            return View("Create");
         }
 
         //
@@ -63,13 +63,11 @@ namespace CGO.Web.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                return View("Create", concert);
             }
             catch
             {
-                return View();
+                return View(concert);
             }
         }
 
