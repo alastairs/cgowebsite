@@ -63,7 +63,12 @@ namespace CGO.Web.Controllers
         {
             try
             {
-                return View("Create", concert);
+                if (!ModelState.IsValid)
+                {
+                    return View("Create", concert);
+                }
+
+                return RedirectToAction("List");
             }
             catch
             {
@@ -123,6 +128,12 @@ namespace CGO.Web.Controllers
             {
                 return View();
             }
+        }
+
+        [Authorize]
+        public ActionResult List()
+        {
+            throw new NotImplementedException();
         }
     }
 }
