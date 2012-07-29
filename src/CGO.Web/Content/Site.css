@@ -36,7 +36,11 @@ textarea.description {
     margin-bottom: 0px;
 }
 
-input.time {
+input {
+    width: 204px;
+}
+
+input.datetime {
     width: 95px;
 }
 
