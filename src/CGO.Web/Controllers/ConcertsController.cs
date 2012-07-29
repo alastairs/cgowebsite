@@ -3,16 +3,30 @@ using System.Linq;
 using System.Web.Mvc;
 using CGO.Web.Models;
 
+using Raven.Client;
+
 namespace CGO.Web.Controllers
 {
     public class ConcertsController : Controller
     {
-        private readonly Concert[] concerts = new[]
+        private readonly IDocumentSession session;
+
+        public ConcertsController(IDocumentSession session)
+        {
+            if (session == null)
             {
-                new Concert(1, "CGO Plays Music from Germany and Austria", new DateTime(2012, 04, 14, 20, 0, 0), "West Road Concert Hall"),
-                new Concert(2, "CGO around the World", new DateTime(2012, 06, 29, 20, 0, 0), "West Road Concert Hall"),
-                new Concert(3, "Russian Heritage", new DateTime(2012, 12, 01, 20, 0, 0), "West Road Concert Hall")
-            };
+                throw new ArgumentNullException("session");
+            }
+
+            this.session = session;
+        }
+
+        private readonly Concert[] concerts = new[]
+        {
+            new Concert(1, "CGO Plays Music from Germany and Austria", new DateTime(2012, 04, 14, 20, 0, 0), "West Road Concert Hall"),
+            new Concert(2, "CGO around the World", new DateTime(2012, 06, 29, 20, 0, 0), "West Road Concert Hall"),
+            new Concert(3, "Russian Heritage", new DateTime(2012, 12, 01, 20, 0, 0), "West Road Concert Hall")
+        };
 
         //
         // GET: /Concerts/
@@ -27,7 +41,8 @@ namespace CGO.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            return View("Details", concerts.Single(c => c.Id == id));
+            var concert = session.Load<Concert>(id);
+            return View("Details", concert);
         }
 
         //

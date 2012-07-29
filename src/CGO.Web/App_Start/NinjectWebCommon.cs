@@ -1,5 +1,7 @@
-using CGO.Web.Controllers;
-using Ninject.Extensions.Factory;
+using System.Reflection;
+
+using Raven.Client;
+using Raven.Client.Embedded;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(CGO.Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(CGO.Web.App_Start.NinjectWebCommon), "Stop")]
@@ -57,6 +59,8 @@ namespace CGO.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Load(Assembly.GetExecutingAssembly());
+
             kernel.Bind(a => a.FromAssembliesMatching("CGO.*.dll")
                               .SelectAllClasses()
                               .BindAllInterfaces()
