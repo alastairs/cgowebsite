@@ -9,16 +9,16 @@ namespace CGO.Web.Controllers
 {
     public class ConcertsController : Controller
     {
-        private readonly IDocumentStore documentStore;
+        private readonly IDocumentSession session;
 
-        public ConcertsController(IDocumentStore documentStore)
+        public ConcertsController(IDocumentSession session)
         {
-            if (documentStore == null)
+            if (session == null)
             {
-                throw new ArgumentNullException("documentStore");
+                throw new ArgumentNullException("session");
             }
 
-            this.documentStore = documentStore;
+            this.session = session;
         }
 
         private readonly Concert[] concerts = new[]
@@ -41,11 +41,8 @@ namespace CGO.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            using (var session = documentStore.OpenSession())
-            {
-                var concert = session.Load<Concert>(id);
-                return View("Details", concert);
-            }
+            var concert = session.Load<Concert>(id);
+            return View("Details", concert);
         }
 
         //
