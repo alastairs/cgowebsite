@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using CGO.Web.Models;
+using CGO.Web.ViewModels;
 
 using Raven.Client;
 
@@ -47,28 +48,36 @@ namespace CGO.Web.Controllers
 
         //
         // GET: /Concerts/Create
-        [Authorize]
+        //[Authorize]
         public ActionResult Create()
         {
-            return View();
+            return View("Create");
         }
 
         //
         // POST: /Concerts/Create
 
         [HttpPost]
-        [Authorize]
-        public ActionResult Create(FormCollection collection)
+        //[Authorize]
+        public ActionResult Create(ConcertViewModel concertViewModel)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (!ModelState.IsValid)
+                {
+                    return View("Create", concertViewModel);
+                }
 
-                return RedirectToAction("Index");
+                var dateAndStartTime = new DateTime(concertViewModel.Date.Year, concertViewModel.Date.Month, concertViewModel.Date.Day,
+                                                    concertViewModel.StartTime.Hour, concertViewModel.StartTime.Minute, 00);
+                var concert = new Concert(concertViewModel.Id, concertViewModel.Title, dateAndStartTime, concertViewModel.Location);
+                session.Store(concert);
+
+                return RedirectToAction("List");
             }
             catch
             {
-                return View();
+                return View(concertViewModel);
             }
         }
 
@@ -124,6 +133,12 @@ namespace CGO.Web.Controllers
             {
                 return View();
             }
+        }
+
+        [Authorize]
+        public ActionResult List()
+        {
+            throw new NotImplementedException();
         }
     }
 }
