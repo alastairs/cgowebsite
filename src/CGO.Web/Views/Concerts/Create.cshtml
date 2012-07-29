@@ -1,20 +1,50 @@
-﻿@model CGO.Web.Models.Concert
+﻿@model CGO.Web.ViewModels.ConcertViewModel
 
 @{
     ViewBag.Title = "Create new Concert";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create new Concert</h2>
+<div class="page-header">
+    <h1>Create new Concert</h1>
+</div>
 
-@Html.LabelFor(m => m.Title)
-@Html.EditorFor(m => m.Title)
+@using (Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "CreateConcert" }))
+{
+    Html.EnableClientValidation();
+    Html.ValidationSummary(false, "Oh dear, the violas made a boo-boo. Please go back and fix the following errors:");
+    <fieldset>
+        <legend>Concert details</legend>
+        
+        <h2>Basic Details</h2>
+        <p></p>
+        <p>@Html.TextBoxFor(c => c.Title, new { placeholder = "Enter title" })</p>
 
-@Html.LabelFor(m => m.DateAndStartTime)
-@Html.EditorFor(m => m.DateAndStartTime)
+        <p><input type="date" name="Date" id="Date" value="" /> <input type="time" name="StartTime" id="StartTime" value="" class="time" placeholder="Enter start time" /></p>
 
-@Html.LabelFor(m => m.Location)
-@Html.EditorFor(m => m.Location)
+        <p>@Html.TextBoxFor(c => c.Location, new { placeholder = "Enter venue " })</p>
+    
+        <script type="text/javascript">
+            $("#Location").typeahead()
+        </script>
+        
+        <h2>Marketing details</h2>
+        <p></p>
+        <p>
+            @Html.TextAreaFor(c => c.Description, new { @class = "description", placeholder = "Provide a description of the concert, including things like the pieces being played, the composers, the soloists for the concert, etc." })<br />
+            <span style="font-size: x-small">Markdown is supported for rich formatting. <a href="#" id="markdown-help">What is this?</a></span>
+        </p>
+        <p>
+            <label for="PosterImage" style="display: inline">Upload poster image: </label><input type="file" name="PosterImage" id="PosterImage" />
+        </p>
+        
+        <p>&nbsp;</p>
 
-@Html.LabelFor(m => m.Description)
-@Html.EditorFor(m => m.Description)
+        <p>
+            @Html.HiddenFor(c => c.Published)
+            <input type="submit" value="Publish Concert" class="btn btn-primary" onclick="$('#Published').val(true);$('#CreateConcert').submit();" />
+            <input type="submit" value="Save for later" class="btn" onclick="$('#Published').val(false);$('#CreateConcert').submit();" />
+            <input type="reset" value="Discard" class="btn" />
+        </p>
+    </fieldset>
+}

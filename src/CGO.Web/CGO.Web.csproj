@@ -221,6 +221,7 @@
     <Compile Include="Models\SideBarSection.cs" />
     <Compile Include="NinjectModules\RavenModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ConcertViewModel.cs" />
     <Compile Include="Views\FormatStrings.cs" />
   </ItemGroup>
   <ItemGroup>
