@@ -122,11 +122,23 @@ namespace CGO.Web.Tests.Controllers
             public void ShowTheCreateViewWithTheSuppliedModelWhenThereAreValidationErrors()
             {
                 var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                controller.ViewData.ModelState.AddModelError("Title", "Please enter a title");
 
                 var result = controller.Create(new ConcertViewModel()); // The overload with ConcertViewModel parameter is called on POST.
 
                 result.AssertViewRendered().ForView("Create").WithViewData<ConcertViewModel>();
             }
+
+            [Test]
+            public void ReturnToTheListOfConcertsWhenThereAreNoValidationErrors()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Create(new ConcertViewModel());
+
+                result.AssertActionRedirect().ToAction("List");
+            }
+        
         }
     }
 }
