@@ -15,13 +15,29 @@
             }
         </style>
         @Styles.Render("~/Content/bootstrap-responsive.min.css")
-        @Styles.Render("~/Content/Site.css")
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/bundles/jquery-ui")
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
           <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")
         
         @Scripts.Render("~/bundles/modernizr")
+        
+        <script type="text/javascript">
+            Modernizr.load({
+                test: Modernizr.input.placeholder,
+                nope: 'scripts/placeholder.js'
+            });
+
+            Modernizr.load({
+                test: Modernizr.inputtypes.datetime,
+                nope: 'scripts/datepicker.js'
+            });
+        </script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top">
@@ -69,8 +85,6 @@
                 </ul>
             </footer>
         </div>
-
-        @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
         @RenderSection("scripts", required: false)
     </body>
