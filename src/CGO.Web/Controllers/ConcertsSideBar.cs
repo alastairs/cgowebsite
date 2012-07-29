@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using CGO.Web.Models;
@@ -6,7 +7,17 @@ namespace CGO.Web.Controllers
 {
     public class ConcertsSideBar : SideBar
     {
-        public ConcertsSideBar(UrlHelper urlHelper) : base(urlHelper) { }
+        private readonly IDocumentSessionFactory documentSessionFactory;
+
+        public ConcertsSideBar(UrlHelper urlHelper, IDocumentSessionFactory documentSessionFactory) : base(urlHelper)
+        {
+            if (documentSessionFactory == null)
+            {
+                throw new ArgumentNullException("documentSessionFactory");
+            }
+
+            this.documentSessionFactory = documentSessionFactory;
+        }
 
         public override IEnumerable<SideBarSection> GetSideBarSections()
         {
@@ -21,10 +32,10 @@ namespace CGO.Web.Controllers
                         }),
                     new SideBarSection("Last Season", new[]
                         {
-                            new SideBarLink("Music Inspired by Fairy Tales 18 November 2011", Url.Action("Details", "Concerts", new {id = 0}), false),
-                            new SideBarLink("The Planets 9 March 2012", Url.Action("Details", "Concerts", new {id = 0}), false),
-                            new SideBarLink("Music from Germany and Austria 14 April 2012", Url.Action("Details", "Concerts", new {id = 1}), false),
-                            new SideBarLink("CGO Around The World 29 June 2012", Url.Action("Details", "Concerts", new {id = 2}), false)
+                            new SideBarLink("Music Inspired by Fairy Tales", Url.Action("Details", "Concerts", new {id = 0}), false),
+                            new SideBarLink("The Planets", Url.Action("Details", "Concerts", new {id = 0}), false),
+                            new SideBarLink("Music from Germany and Austria", Url.Action("Details", "Concerts", new {id = 1}), false),
+                            new SideBarLink("CGO Around The World", Url.Action("Details", "Concerts", new {id = 2}), false)
                         }),
                     new SideBarSection("Older", new[]
                         {

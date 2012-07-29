@@ -1,0 +1,31 @@
+﻿using Ninject;
+using Ninject.Modules;
+using Ninject.Web.Common;
+
+using Raven.Client;
+using Raven.Client.Embedded;
+
+namespace CGO.Web.NinjectModules
+{
+    public class RavenModule : NinjectModule
+    {
+        public override void Load()
+        {
+            Kernel.Bind<IDocumentStore>().ToMethod(_ => InitialiseDocumentStore()).InSingletonScope();
+            Kernel.Bind<IDocumentSession>().ToMethod(_ => Kernel.Get<IDocumentStore>().OpenSession()).InRequestScope();
+        }
+
+        private static IDocumentStore InitialiseDocumentStore()
+        {
+            var documentStore = new EmbeddableDocumentStore
+            {
+                DataDirectory = "CGO.raven"
+            };
+
+            documentStore.InitializeProfiling();
+            documentStore.Initialize();
+
+            return documentStore;
+        }
+    }
+}
