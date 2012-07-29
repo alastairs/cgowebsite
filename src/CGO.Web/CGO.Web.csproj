@@ -205,6 +205,7 @@
     <Compile Include="Controllers\SidebarController.cs" />
     <Compile Include="Controllers\SideBar.cs" />
     <Compile Include="Controllers\SideBarFactory.cs" />
+    <Compile Include="Helpers\InputTypes.cs" />
     <Compile Include="Infrastructure\FormsAuthenticationService.cs" />
     <Compile Include="Infrastructure\GoogleOAuthConfiguration.cs" />
     <Compile Include="Infrastructure\IOAuthConfiguration.cs" />

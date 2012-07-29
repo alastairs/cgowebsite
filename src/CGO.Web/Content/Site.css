@@ -129,7 +129,9 @@ input[type='file'] {
 }
 
 input[type="text"].input-validation-error,
-input[type="password"].input-validation-error {
+input[type="password"].input-validation-error,
+input[type="date"].input-validation-error,
+input[type="time"].input-validation-error {
     border: 1px solid #e80c4d;
 }
 

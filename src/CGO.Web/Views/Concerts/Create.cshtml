@@ -1,4 +1,5 @@
-﻿@model CGO.Web.ViewModels.ConcertViewModel
+﻿@using CGO.Web.Helpers
+@model CGO.Web.ViewModels.ConcertViewModel
 
 @{
     ViewBag.Title = "Create new Concert";
@@ -9,20 +10,24 @@
     <h1>Create new Concert</h1>
 </div>
 
+@{ Html.EnableClientValidation(); }
 @using (Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "CreateConcert" }))
 {
-    Html.EnableClientValidation();
-    Html.ValidationSummary(false, "Oh dear, the violas made a boo-boo. Please go back and fix the following errors:");
+    @Html.ValidationSummary(false, "Oh dear, the violas made a boo-boo. Please go back and fix the following errors:")
+    
     <fieldset>
         <legend>Concert details</legend>
-        
+    
         <h2>Basic Details</h2>
         <p></p>
-        <p>@Html.TextBoxFor(c => c.Title, new { placeholder = "Enter title" })</p>
+        <p>@Html.TextBoxFor(c => c.Title, new { placeholder = "Enter title" }) @Html.ValidationMessageFor(c => c.Title)</p>
 
-        <p><input type="date" name="Date" id="Date" value="" class="datetime" /> <input type="time" name="StartTime" id="StartTime" value="" class="datetime" placeholder="Enter start time" /></p>
+        <p>
+            @Html.DateFor(c => c.Date, new { @class = "datetime" }) @Html.TimeFor(c => c.StartTime, new { @class = "datetime", placeholder = "Enter start time" })
+            @Html.ValidationMessageFor(c => c.Date) @Html.ValidationMessageFor(c => c.StartTime)
+        </p>
 
-        <p>@Html.TextBoxFor(c => c.Location, new { placeholder = "Enter venue " })</p>
+        <p>@Html.TextBoxFor(c => c.Location, new { placeholder = "Enter venue " }) @Html.ValidationMessageFor(c => c.Location)</p>
     
         <script type="text/javascript">
             $("#Location").typeahead()

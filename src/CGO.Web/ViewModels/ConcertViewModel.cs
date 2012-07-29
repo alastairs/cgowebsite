@@ -10,10 +10,13 @@ namespace CGO.Web.ViewModels
         [Required(ErrorMessage = "Please enter a title")]
         public string Title { get; set; }
         
+        [Required(ErrorMessage = "Please choose a date")]
         public DateTime Date { get; set; }
+
+        [Required(ErrorMessage = "Please choose a time")]
         public DateTime StartTime { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Please enter the venue")]
         public string Location { get; set; }
         
         public string Description { get; set; }
