@@ -23,6 +23,7 @@
         <p>@Html.TextBoxFor(c => c.Title, new { placeholder = "Enter title" }) @Html.ValidationMessageFor(c => c.Title)</p>
 
         <p>
+            <label for="Date" style="display: inline">Start date and time:&nbsp;</label>
             @Html.DateFor(c => c.Date, new { @class = "datetime" }) @Html.TimeFor(c => c.StartTime, new { @class = "datetime", placeholder = "Enter start time" })
             @Html.ValidationMessageFor(c => c.Date) @Html.ValidationMessageFor(c => c.StartTime)
         </p>
@@ -30,15 +31,20 @@
         <p>@Html.TextBoxFor(c => c.Location, new { placeholder = "Enter venue " }) @Html.ValidationMessageFor(c => c.Location)</p>
     
         <script type="text/javascript">
-            $("#Location").typeahead()
+            //$("#Location").typeahead()
         </script>
         
         <h2>Marketing details</h2>
         <p></p>
-        <p>
-            @Html.TextAreaFor(c => c.Description, new { @class = "description", placeholder = "Provide a description of the concert, including things like the pieces being played, the composers, the soloists for the concert, etc." })<br />
-            <span style="font-size: x-small">Markdown is supported for rich formatting. <a href="#" id="markdown-help">What is this?</a></span>
-        </p>
+        @Scripts.Render("~/bundles/markdownEditor")
+        <div class="wmd-panel">
+            <div id="wmd-button-bar"></div>
+            @Html.TextAreaFor(c => c.Description, new { id = "wmd-input", @class = "wmd-input", placeholder = "Provide a description of the concert, including things like the pieces being played, the composers, the soloists for the concert, etc." })<br />
+        </div>
+        <div id="wmd-preview" class="wmd-panel wmd-preview"></div>
+        
+        <p>&nbsp;</p>
+        
         <p>
             <label for="PosterImage" style="display: inline">Upload poster image: </label><input type="file" name="PosterImage" id="PosterImage" />
         </p>
@@ -53,3 +59,13 @@
         </p>
     </fieldset>
 }
+
+<script type="text/javascript">
+    (function() {
+        var converter = Markdown.getSanitizingConverter();
+        var help = function () { alert("Do you need help?"); };
+        
+        var editor = new Markdown.Editor(converter, "", { handler: help });
+        editor.run();
+    })();
+</script>

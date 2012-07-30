@@ -25,6 +25,11 @@ namespace CGO.Web
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                         "~/Scripts/knockout-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/markdownEditor").Include(
+                        "~/Scripts/Markdown.Converter.js",
+                        "~/Scripts/Markdown.Sanitizer.js",
+                        "~/Scripts/Markdown.Editor.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/bundles/jquery-ui").Include("~/Content/jquery-ui-1.8.16.custom.css",
