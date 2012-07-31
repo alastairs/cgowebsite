@@ -73,6 +73,8 @@ namespace CGO.Web.Controllers
                 var concert = new Concert(concertViewModel.Id, concertViewModel.Title, dateAndStartTime, concertViewModel.Location);
                 session.Store(concert);
 
+                session.SaveChanges();
+
                 return RedirectToAction("List");
             }
             catch

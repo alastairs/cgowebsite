@@ -113,7 +113,7 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void SaveTheConcertToTheDatabaseWhenThereAreNoValidationErrors()
+            public void StoreTheConcertInTheDatabaseWhenThereAreNoValidationErrors()
             {
                 var controller = new ConcertsController(Session);
                 var concert = new Concert(1, "Foo", new DateTime(2012, 07, 29, 20, 00, 00), "Bar");
@@ -127,6 +127,24 @@ namespace CGO.Web.Tests.Controllers
                 });
 
                 Assert.That(Session.Load<Concert>(1), Is.EqualTo(concert).Using(new ConcertEqualityComparer()));
+            }
+
+            [Test]
+            public void SaveChangesToTheDatabaseWhenThereAreNoValidationErrors()
+            {
+                var mockRavenSession = Substitute.For<IDocumentSession>();
+                var controller = new ConcertsController(mockRavenSession);
+                var concert = new Concert(1, "Foo", new DateTime(2012, 07, 31, 14, 24, 00), "Bar");
+
+                controller.Create(new ConcertViewModel
+                {
+                    Date = concert.DateAndStartTime,
+                    StartTime = concert.DateAndStartTime,
+                    Location = concert.Location,
+                    Title = concert.Title
+                });
+
+                mockRavenSession.Received().SaveChanges();
             }
         }
     }
