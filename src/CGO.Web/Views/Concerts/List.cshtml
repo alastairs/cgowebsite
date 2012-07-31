@@ -1,0 +1,38 @@
+﻿@model IEnumerable<CGO.Web.ViewModels.ConcertViewModel>
+
+@{
+    ViewBag.Title = "All Concerts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h1>All Concerts</h1>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date and Start Time</th>
+            <th>Venue</th>
+            <th>Is Published?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var concert in Model)
+        {
+            <tr>
+                <td>@concert.Title</td>
+                <td>@concert.Date.ToShortDateString() @concert.StartTime.ToShortTimeString()</td>
+                <td>@concert.Location</td>
+                <td>@concert.Published</td>
+                <td>
+                    @Html.ActionLink("Publish", "Publish", "Concerts", routeValues: new { @concert.Id }, htmlAttributes: null)
+                    @Html.ActionLink("Edit", "Edit", "Concerts", routeValues: new { @concert.Id }, htmlAttributes: null)
+                    @Html.ActionLink("Delete", "Delete", "Concerts", routeValues: new { @concert.Id }, htmlAttributes: null)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

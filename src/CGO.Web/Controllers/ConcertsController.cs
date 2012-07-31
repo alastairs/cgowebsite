@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using CGO.Web.Mappers;
 using CGO.Web.Models;
 using CGO.Web.ViewModels;
 
@@ -22,18 +23,18 @@ namespace CGO.Web.Controllers
             this.session = session;
         }
 
-        private readonly Concert[] concerts = new[]
-        {
-            new Concert(1, "CGO Plays Music from Germany and Austria", new DateTime(2012, 04, 14, 20, 0, 0), "West Road Concert Hall"),
-            new Concert(2, "CGO around the World", new DateTime(2012, 06, 29, 20, 0, 0), "West Road Concert Hall"),
-            new Concert(3, "Russian Heritage", new DateTime(2012, 12, 01, 20, 0, 0), "West Road Concert Hall")
-        };
-
         //
         // GET: /Concerts/
 
         public ActionResult Index()
         {
+            var concerts = new[]
+            {
+                        new Concert(1, "CGO Plays Music from Germany and Austria", new DateTime(2012, 04, 14, 20, 0, 0), "West Road Concert Hall"),
+                        new Concert(2, "CGO around the World", new DateTime(2012, 06, 29, 20, 0, 0), "West Road Concert Hall"),
+                        new Concert(3, "Russian Heritage", new DateTime(2012, 12, 01, 20, 0, 0), "West Road Concert Hall")
+            };
+
             return View("Index", concerts.OrderByDescending(c => c.DateAndStartTime));
         }
 
@@ -140,7 +141,8 @@ namespace CGO.Web.Controllers
         [Authorize]
         public ActionResult List()
         {
-            throw new NotImplementedException();
+            var concerts = session.Query<Concert>();
+            return View("List", concerts.ToList().Select(c => c.ToViewModel<Concert, ConcertViewModel>()));
         }
     }
 }
