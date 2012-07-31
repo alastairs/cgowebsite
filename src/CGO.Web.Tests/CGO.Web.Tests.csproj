@@ -100,7 +100,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ConcertEqualityComparer.cs" />
+    <Compile Include="EqualityComparers\ConcertViewModelEqualityComparer.cs" />
+    <Compile Include="EqualityComparers\ConcertEqualityComparer.cs" />
     <Compile Include="Controllers\ConcertsControllerFacts.cs" />
     <Compile Include="Controllers\GoogleControllerFacts.cs" />
     <Compile Include="Controllers\RavenTest.cs" />

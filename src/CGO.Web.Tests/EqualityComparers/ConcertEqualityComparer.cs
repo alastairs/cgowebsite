@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using CGO.Web.Models;
 
-namespace CGO.Web.Tests.Controllers
+namespace CGO.Web.Tests.EqualityComparers
 {
     public class ConcertEqualityComparer : IEqualityComparer<Concert> 
     {
