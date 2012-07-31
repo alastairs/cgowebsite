@@ -178,6 +178,14 @@ a.raven {
     margin-top: 0;
 }
 
+[class^="icon-"], [class*=" icon-"] {
+    margin: 0 5px;
+}
+
+[class^="icon-"]:hover, [class*=" icon-"]:hover {
+    text-decoration: none;
+}
+
 /*****************************
 *   Markdown Editor Styles   *
 *****************************/

@@ -28,9 +28,9 @@
                 <td>@concert.Location</td>
                 <td>@concert.Published</td>
                 <td>
-                    @Html.ActionLink("Publish", "Publish", "Concerts", routeValues: new { @concert.Id }, htmlAttributes: null)
-                    @Html.ActionLink("Edit", "Edit", "Concerts", routeValues: new { @concert.Id }, htmlAttributes: null)
-                    @Html.ActionLink("Delete", "Delete", "Concerts", routeValues: new { @concert.Id }, htmlAttributes: null)
+                    <a href="@Url.Action("Publish", "Concerts", routeValues: new { concert.Id })" title="Publish"><i class="icon-bolt icon-large" style="color: gold"></i></a>
+                    <a href="@Url.Action("Edit", "Concerts", routeValues: new { concert.Id })" title="Edit"><i class="icon-pencil icon-large" style="color:saddlebrown"></i></a>
+                    <a href="@Url.Action("Delete", "Concerts", routeValues: new { concert.Id })" title="Delete"><i class="icon-trash icon-large" style="color: grey"></i></a>
                 </td>
             </tr>
         }
