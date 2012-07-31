@@ -215,6 +215,7 @@
     </Compile>
     <Compile Include="Helpers\MarkdownHelper.cs" />
     <Compile Include="Infrastructure\IFormsAuthenticationService.cs" />
+    <Compile Include="Mappers\MapperExtensions.cs" />
     <Compile Include="Models\Concert.cs" />
     <Compile Include="Models\HomePageViewModel.cs" />
     <Compile Include="Models\Rehearsal.cs" />
@@ -315,6 +316,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\Concerts\Create.cshtml" />
+    <Content Include="Views\Concerts\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
