@@ -51,8 +51,12 @@ namespace CGO.Web.Controllers.Api
         public void Delete(int id)
         {
             var concertToDelete = session.Load<Concert>(id);
-            session.Delete(concertToDelete);
-            session.SaveChanges();
+
+            if (concertToDelete != null)
+            {
+                session.Delete(concertToDelete);
+                session.SaveChanges();
+            }
         }
     }
 }
