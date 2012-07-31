@@ -26,13 +26,31 @@
                 <td>@concert.Title</td>
                 <td>@concert.Date.ToShortDateString() @concert.StartTime.ToShortTimeString()</td>
                 <td>@concert.Location</td>
-                <td>@concert.Published</td>
+                <td>@{ Write(concert.Published ? "Yes" : "No"); }</td>
                 <td>
-                    <a href="@Url.Action("Publish", "Concerts", routeValues: new { concert.Id })" title="Publish"><i class="icon-bolt icon-large" style="color: gold"></i></a>
-                    <a href="@Url.Action("Edit", "Concerts", routeValues: new { concert.Id })" title="Edit"><i class="icon-pencil icon-large" style="color:saddlebrown"></i></a>
-                    <a href="@Url.Action("Delete", "Concerts", routeValues: new { concert.Id })" title="Delete"><i class="icon-trash icon-large" style="color: grey"></i></a>
+                    <a href="@Url.Action("Publish", "Concerts", routeValues: new { concert.Id })" title="Publish"><i class="icon-bolt icon-large action" style="color: gold"></i></a>
+                    <a href="@Url.Action("Edit", "Concerts", routeValues: new { concert.Id })" title="Edit"><i class="icon-pencil icon-large action" style="color:saddlebrown"></i></a>
+                    <a href="@Url.Action("Delete", "Concerts", routeValues: new { concert.Id })" title="Delete"><i class="icon-trash icon-large action" style="color: grey"></i></a>
                 </td>
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            @using(Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "QuickAdd" }))
+            {
+                @Html.Hidden("Published", false)
+                <td>@Html.TextBox("ConcertViewModel.Title", value: null, htmlAttributes: new {placeholder = "Title", @class = "quickAddField"})</td>
+                <td>
+                    @Html.TextBox("ConcertViewModel.Date", value: null, htmlAttributes: new {placeholder = "Date: dd/mm/yyyy", @class = "quickAddField-small"})
+                    @Html.TextBox("ConcertViewModel.StartTime", value: null, htmlAttributes: new {placeholder = "Start Time: hh:mm", @class = "quickAddField-small"})
+                </td>
+                <td>@Html.TextBox("ConcertViewModel.Location", value: null, htmlAttributes: new {placeholder = "Venue", @class = "quickAddField"})</td>
+                <td>No</td>
+                <td><button type="submit" class="btn"><i class="icon-plus"></i> Quick Add</button></td>
+            }
+        </tr>
+    </tfoot>
 </table>
+
+<a href="@Url.Action("Create", "Concerts")" class="btn btn-primary"><i class="icon-plus"></i> New Concert</a> 
