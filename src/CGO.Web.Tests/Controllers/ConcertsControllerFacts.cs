@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using CGO.Web.Controllers;
 using CGO.Web.Models;
+using CGO.Web.Tests.EqualityComparers;
 using CGO.Web.ViewModels;
 
 using MvcContrib.TestHelper;
@@ -152,6 +153,8 @@ namespace CGO.Web.Tests.Controllers
         [TestFixture]
         public class ListShould : RavenTest
         {
+            private Concert sampleConcert;
+
             [Test]
             public void ShowTheListView()
             {
@@ -183,26 +186,28 @@ namespace CGO.Web.Tests.Controllers
                 {
                     new ConcertViewModel
                     {
-                        Id = 1,
-                        Title = "Foo",
-                        Date = new DateTime(2012, 07, 31),
-                        StartTime = new DateTime(2012, 07, 31, 13, 40, 00),
-                        Location = "Bar"
+                        Id = sampleConcert.Id,
+                        Title = sampleConcert.Title,
+                        Date = sampleConcert.DateAndStartTime,
+                        StartTime = sampleConcert.DateAndStartTime,
+                        Location = sampleConcert.Location
                     }
                 };
-            
 
                 var result = controller.List() as ViewResult;
 
-                Assert.That(result.Model, Is.EquivalentTo(expectedViewModel));
+                Assert.That(result.Model, Is.EqualTo(expectedViewModel).Using(new ConcertViewModelEqualityComparer()));
             }
 
             [SetUp]
             public void CreateSampleData()
             {
+                sampleConcert = new Concert(1, "Foo", new DateTime(2012, 07, 31, 13, 40, 00), "Bar");
+
                 using (var sampleDataSession = Store.OpenSession())
                 {
-                    sampleDataSession.Store(new Concert(1, "Foo", new DateTime(2012, 07, 31, 13, 40, 00), "Bar"));
+                    sampleDataSession.Store(sampleConcert);
+                    sampleDataSession.SaveChanges();
                 }
             }
         }
