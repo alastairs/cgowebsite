@@ -3,7 +3,11 @@
 using CGO.Web.Controllers.Api;
 using CGO.Web.Models;
 
+using NSubstitute;
+
 using NUnit.Framework;
+
+using Raven.Client;
 
 namespace CGO.Web.Tests.Controllers.Api
 {
@@ -22,6 +26,18 @@ namespace CGO.Web.Tests.Controllers.Api
                 controller.Delete(idToDelete);
 
                 Assert.That(Session.Load<Concert>(idToDelete), Is.Null);
+            }
+
+            [Test]
+            public void DoNothingIfTheConcertToDeleteDoesNotExist()
+            {
+                var mockRavenSession = Substitute.For<IDocumentSession>();
+                var controller = new ConcertsApiController(mockRavenSession);
+
+                var nonExistentDocument = idToDelete + 1;
+                controller.Delete(nonExistentDocument);
+
+                mockRavenSession.DidNotReceive().Delete(Arg.Any<Concert>());
             }
 
             [SetUp]
