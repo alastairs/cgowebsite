@@ -9,17 +9,6 @@
     <h1>All Concerts</h1>
 </div>
 
-<script type="text/javascript">
-    var deleteConcert = function(concertId) {
-        $.ajax({
-            type: "DELETE",
-            url: $("#delete-" + concertId).attr("data-url")
-        }).done(function() {
-            $("#concert-" + concertId).fadeOut();
-        });
-    };
-</script>
-
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -30,26 +19,22 @@
             <th></th>
         </tr>
     </thead>
-    <tbody id="concerts">
-        @foreach(var concert in Model.OrderByDescending(m => m.Date))
-        {
-            <tr id="concert-@concert.Id">
-                <td>@concert.Title</td>
-                <td>@concert.Date.ToString("d MMM yyyy") @concert.StartTime.ToShortTimeString()</td>
-                <td>@concert.Location</td>
-                <td>@{ Write(concert.Published ? "Yes" : "No"); }</td>
-                <td>
-                    <a href="@Url.Action("Publish", "Concerts", routeValues: new { concert.Id })" title="Publish"><i class="icon-bolt icon-large action" style="color: gold"></i></a>
-                    <a href="@Url.Action("Edit", "Concerts", routeValues: new { concert.Id })" title="Edit"><i class="icon-pencil icon-large action" style="color:saddlebrown"></i></a>
-                    <a href="#" title="Delete" onclick="deleteConcert(@concert.Id)" id="delete-@concert.Id" data-url="/api/concerts/@concert.Id"><i class="icon-trash icon-large action" style="color: grey"></i></a>
-                </td>
-            </tr>
-        }
+    <tbody data-bind="foreach: concerts">
+        <tr data-bind="attr: { id: 'concert-' + id }">
+            <td data-bind="text: title"></td>
+            <td data-bind="text: dateAndStartTime">@*@concert.Date.ToString("d MMM yyyy") @concert.StartTime.ToShortTimeString()*@</td>
+            <td data-bind="text: location"></td>
+            <td>@*@{ Write(concert.Published ? "Yes" : "No"); }*@</td>
+            <td>
+                <a title="Publish" data-bind="attr: { href: '@Url.Action("Publish", "Concerts")/' + id }"><i class="icon-bolt icon-large action" style="color: gold"></i></a>
+                <a title="Edit" data-bind="attr: { href: '@Url.Action("Edit", "Concerts")/' + id }"><i class="icon-pencil icon-large action" style="color:saddlebrown"></i></a>
+                <a href="#" title="Delete" data-bind="click: $parent.deleteConcert"><i class="icon-trash icon-large action" style="color: grey"></i></a>
+            </td>
+        </tr>
     </tbody>
     <tfoot>
         <tr>
-            @using(Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "quickAdd" }))
-            {
+            <form id="quickAdd" data-bind="submit: quickAdd">
                 @Html.Hidden("Published", false)
                 <td>@Html.TextBox("ConcertViewModel.Title", value: null, htmlAttributes: new { placeholder = "Title", @class = "quickAddField" })</td>
                 <td>
@@ -59,9 +44,23 @@
                 <td>@Html.TextBox("ConcertViewModel.Location", value: null, htmlAttributes: new { placeholder = "Venue", @class = "quickAddField" })</td>
                 <td>No</td>
                 <td><button type="submit" class="btn"><i class="icon-plus"></i> Quick Add</button></td>
-            }
+            </form>
         </tr>
     </tfoot>
 </table>
 
 <a href="@Url.Action("Create", "Concerts")" class="btn btn-primary"><i class="icon-plus"></i> New Concert</a> 
+
+<script type="text/javascript" src="~/Scripts/ViewModels/ConcertListViewModel.js"></script>
+<script type="text/javascript" src="~/Scripts/ViewModels/ConcertViewModel.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.dateFormat-1.0.js"></script>
+<script type="text/javascript">
+    (function($) {
+        $(function () {
+            $.getJSON("/api/concerts", function (data) {
+                var concertListViewModel = CGO.makeConcertListViewModel(data);
+                ko.applyBindings(concertListViewModel);
+            });
+        });
+    })(jQuery);
+</script>
