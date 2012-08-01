@@ -31,11 +31,11 @@
         </tr>
     </thead>
     <tbody id="concerts">
-        @foreach(var concert in Model)
+        @foreach(var concert in Model.OrderByDescending(m => m.Date))
         {
             <tr id="concert-@concert.Id">
                 <td>@concert.Title</td>
-                <td>@concert.Date.ToShortDateString() @concert.StartTime.ToShortTimeString()</td>
+                <td>@concert.Date.ToString("d MMM yyyy") @concert.StartTime.ToShortTimeString()</td>
                 <td>@concert.Location</td>
                 <td>@{ Write(concert.Published ? "Yes" : "No"); }</td>
                 <td>
@@ -51,12 +51,12 @@
             @using(Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "quickAdd" }))
             {
                 @Html.Hidden("Published", false)
-                <td>@Html.TextBox("ConcertViewModel.Title", value: null, htmlAttributes: new {placeholder = "Title", @class = "quickAddField"})</td>
+                <td>@Html.TextBox("ConcertViewModel.Title", value: null, htmlAttributes: new { placeholder = "Title", @class = "quickAddField" })</td>
                 <td>
-                    @Html.TextBox("ConcertViewModel.Date", value: null, htmlAttributes: new {placeholder = "Date: dd/mm/yyyy", @class = "quickAddField-small"})
-                    @Html.TextBox("ConcertViewModel.StartTime", value: null, htmlAttributes: new {placeholder = "Start Time: hh:mm", @class = "quickAddField-small"})
+                    @Html.TextBox("ConcertViewModel.Date", value: null, htmlAttributes: new { placeholder = "Date: dd/mm/yyyy", @class = "quickAddField-small", type="date" })
+                    @Html.TextBox("ConcertViewModel.StartTime", value: null, htmlAttributes: new { placeholder = "Start Time: hh:mm", @class = "quickAddField-small", type="time" })
                 </td>
-                <td>@Html.TextBox("ConcertViewModel.Location", value: null, htmlAttributes: new {placeholder = "Venue", @class = "quickAddField"})</td>
+                <td>@Html.TextBox("ConcertViewModel.Location", value: null, htmlAttributes: new { placeholder = "Venue", @class = "quickAddField" })</td>
                 <td>No</td>
                 <td><button type="submit" class="btn"><i class="icon-plus"></i> Quick Add</button></td>
             }
