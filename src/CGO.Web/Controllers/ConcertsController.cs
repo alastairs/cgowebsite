@@ -44,6 +44,12 @@ namespace CGO.Web.Controllers
         public ActionResult Details(int id)
         {
             var concert = session.Load<Concert>(id);
+
+            if (concert == null)
+            {
+                return new HttpNotFoundResult();
+            }
+
             return View("Details", concert);
         }
 
