@@ -13,9 +13,11 @@
     var deleteConcert = function(concertId) {
         $.ajax({
             type: "DELETE",
-            url: $("#concert-" + concertId).attr("data-url")
+            url: $("#delete-" + concertId).attr("data-url")
+        }).done(function() {
+            $("#concert-" + concertId).fadeOut();
         });
-    }
+    };
 </script>
 
 <table class="table table-bordered table-striped">
@@ -28,10 +30,10 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="concerts">
         @foreach(var concert in Model)
         {
-            <tr>
+            <tr id="concert-@concert.Id">
                 <td>@concert.Title</td>
                 <td>@concert.Date.ToShortDateString() @concert.StartTime.ToShortTimeString()</td>
                 <td>@concert.Location</td>
@@ -39,14 +41,14 @@
                 <td>
                     <a href="@Url.Action("Publish", "Concerts", routeValues: new { concert.Id })" title="Publish"><i class="icon-bolt icon-large action" style="color: gold"></i></a>
                     <a href="@Url.Action("Edit", "Concerts", routeValues: new { concert.Id })" title="Edit"><i class="icon-pencil icon-large action" style="color:saddlebrown"></i></a>
-                    <a href="#" title="Delete" onclick="deleteConcert(@concert.Id)" id="concert-@concert.Id" data-url="/api/concerts/@concert.Id"><i class="icon-trash icon-large action" style="color: grey"></i></a>
+                    <a href="#" title="Delete" onclick="deleteConcert(@concert.Id)" id="delete-@concert.Id" data-url="/api/concerts/@concert.Id"><i class="icon-trash icon-large action" style="color: grey"></i></a>
                 </td>
             </tr>
         }
     </tbody>
     <tfoot>
         <tr>
-            @using(Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "QuickAdd" }))
+            @using(Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "quickAdd" }))
             {
                 @Html.Hidden("Published", false)
                 <td>@Html.TextBox("ConcertViewModel.Title", value: null, htmlAttributes: new {placeholder = "Title", @class = "quickAddField"})</td>
