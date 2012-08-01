@@ -9,6 +9,15 @@
     <h1>All Concerts</h1>
 </div>
 
+<script type="text/javascript">
+    var deleteConcert = function(concertId) {
+        $.ajax({
+            type: "DELETE",
+            url: $("#concert-" + concertId).attr("data-url")
+        });
+    }
+</script>
+
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
@@ -30,7 +39,7 @@
                 <td>
                     <a href="@Url.Action("Publish", "Concerts", routeValues: new { concert.Id })" title="Publish"><i class="icon-bolt icon-large action" style="color: gold"></i></a>
                     <a href="@Url.Action("Edit", "Concerts", routeValues: new { concert.Id })" title="Edit"><i class="icon-pencil icon-large action" style="color:saddlebrown"></i></a>
-                    <a href="@Url.Action("Delete", "Concerts", routeValues: new { concert.Id })" title="Delete"><i class="icon-trash icon-large action" style="color: grey"></i></a>
+                    <a href="#" title="Delete" onclick="deleteConcert(@concert.Id)" id="concert-@concert.Id" data-url="/api/concerts/@concert.Id"><i class="icon-trash icon-large action" style="color: grey"></i></a>
                 </td>
             </tr>
         }
