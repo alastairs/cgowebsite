@@ -69,6 +69,16 @@ namespace CGO.Web.Tests.Controllers
                 Assert.That(concert.Id, Is.EqualTo(1));
             }
 
+            [Test]
+            public void ReturnA404NotFoundWhenTheConcertDoesntExist()
+            {
+                var controller = new ConcertsController(Session);
+
+                var result = controller.Details(2);
+
+                result.AssertResultIs<HttpNotFoundResult>();
+            }
+
             [SetUp]
             public void CreateSampleData()
             {
