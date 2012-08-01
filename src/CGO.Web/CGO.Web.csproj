@@ -278,6 +278,7 @@
     <Content Include="Scripts\jquery-ui-1.8.20.min.js">
       <DependentUpon>jquery-ui-1.8.20.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\jquery.dateFormat-1.0.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js">
       <DependentUpon>jquery.unobtrusive-ajax.js</DependentUpon>
@@ -297,6 +298,8 @@
     <Content Include="Scripts\Markdown.Sanitizer.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\placeholder.js" />
+    <Content Include="Scripts\ViewModels\ConcertListViewModel.js" />
+    <Content Include="Scripts\ViewModels\ConcertViewModel.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
