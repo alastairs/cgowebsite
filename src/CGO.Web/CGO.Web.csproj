@@ -195,7 +195,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\Api\ConcertsApiController.cs" />
+    <Compile Include="Controllers\Api\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsSideBar.cs" />
     <Compile Include="Controllers\EmptySideBar.cs" />
