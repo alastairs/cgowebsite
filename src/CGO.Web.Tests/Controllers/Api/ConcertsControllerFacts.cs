@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 using CGO.Web.Controllers.Api;
 using CGO.Web.Models;
@@ -11,7 +12,7 @@ using Raven.Client;
 
 namespace CGO.Web.Tests.Controllers.Api
 {
-    public class ConcertsApiControllerFacts
+    public class ConcertsControllerFacts
     {
         [TestFixture]
         public class DeleteShould : RavenTest
@@ -21,9 +22,9 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void RemoveTheConcertWithTheSpecifiedIdFromTheDatabase()
             {
-                var controller = new ConcertsApiController(Session);
+                var controller = new ConcertsController(Session);
 
-                controller.Delete(idToDelete);
+                controller.DeleteConcert(idToDelete);
 
                 Assert.That(Session.Load<Concert>(idToDelete), Is.Null);
             }
@@ -32,12 +33,22 @@ namespace CGO.Web.Tests.Controllers.Api
             public void DoNothingIfTheConcertToDeleteDoesNotExist()
             {
                 var mockRavenSession = Substitute.For<IDocumentSession>();
-                var controller = new ConcertsApiController(mockRavenSession);
+                var controller = new ConcertsController(mockRavenSession);
 
                 var nonExistentDocument = idToDelete + 1;
-                controller.Delete(nonExistentDocument);
+                controller.DeleteConcert(nonExistentDocument);
 
                 mockRavenSession.DidNotReceive().Delete(Arg.Any<Concert>());
+            }
+
+            [Test]
+            public void ReturnA204NoContentResponseCode()
+            {
+                var controller = new ConcertsController(Session);
+
+                var result = controller.DeleteConcert(idToDelete);
+
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
             }
 
             [SetUp]

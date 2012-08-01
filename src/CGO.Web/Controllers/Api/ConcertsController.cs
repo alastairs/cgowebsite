@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -11,11 +10,11 @@ using Raven.Client;
 
 namespace CGO.Web.Controllers.Api
 {
-    public class ConcertsApiController : ApiController
+    public class ConcertsController : ApiController
     {
         private readonly IDocumentSession session;
 
-        public ConcertsApiController(IDocumentSession session)
+        public ConcertsController(IDocumentSession session)
         {
             if (session == null)
             {
@@ -48,7 +47,7 @@ namespace CGO.Web.Controllers.Api
         }
 
         // DELETE api/concerts/5
-        public void Delete(int id)
+        public HttpResponseMessage DeleteConcert(int id)
         {
             var concertToDelete = session.Load<Concert>(id);
 
@@ -57,6 +56,8 @@ namespace CGO.Web.Controllers.Api
                 session.Delete(concertToDelete);
                 session.SaveChanges();
             }
+
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
     }
 }
