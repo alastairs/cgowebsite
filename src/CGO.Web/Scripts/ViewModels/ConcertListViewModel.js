@@ -1,8 +1,8 @@
 ﻿var CGO = CGO || { };
 
 CGO.makeConcertListViewModel = function ConcertListViewModel(concerts) {
-    var makeConcertViewModels = function (concertsJson) {
-        return $.map(concertsJson, function (concert) {
+    var makeConcertViewModels = function(concertsJson) {
+        return $.map(concertsJson, function(concert) {
             return CGO.makeConcertViewModel(concert);
         });
     };
@@ -11,27 +11,31 @@ CGO.makeConcertListViewModel = function ConcertListViewModel(concerts) {
         concerts: ko.observableArray(makeConcertViewModels(concerts))
     };
 
-    self.quickAdd = function () {
-        var makeDateAndStartTime = function(date, startTime) {
-            var concertDate = new Date(date);
-            concertDate.setTime(startTime);
-
-            return concertDate;
+    self.quickAdd = function() {
+        var makeDate = function(date, startTime) {
+            return Date.parse(date + "T" + startTime);
         };
 
         var concert = {
             Id: 0,
             Title: $("#ConcertViewModel_Title").val(),
-            DateAndStartTime: makeDateAndStartTime($("#ConcertViewModel_Date").val(), $("#ConcertViewModel_StartTime").val()),
+            Date: makeDate($("#ConcertViewModel_Date").val(), $("#ConcertViewModel_StartTime").val()),
+            StartTime: makeDate($("#ConcertViewModel_Date").val(), $("#ConcertViewModel_StartTime").val()),
             Location: $("#ConcertViewModel_Location").val()
         };
 
-        $.post("/api/concerts", concert, function () {
+        $.ajax({
+            url: "/api/concerts",
+            type: "post",
+            data: JSON.stringify(concert),
+            dataType: "json",
+            contentType: "application/json",
+        }).done(function () {
             self.concerts.push(CGO.makeConcertViewModel(concert));
             $("#quickAdd input").each(function() {
                 $(this).val('');
             });
-        }, "json");
+        });
     };
 
     self.deleteConcert = function (concert) {
