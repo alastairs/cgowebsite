@@ -39,8 +39,17 @@ namespace CGO.Web.Controllers.Api
         }
 
         // POST api/concerts
-        public void Post(string value)
+        public HttpResponseMessage Post(Concert concert)
         {
+            if (concert == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            session.Store(concert);
+            session.SaveChanges();
+
+            return new HttpResponseMessage(HttpStatusCode.Created);
         }
 
         // PUT api/concerts/5

@@ -31,7 +31,7 @@ CGO.makeConcertListViewModel = function ConcertListViewModel(concerts) {
             $("#quickAdd input").each(function() {
                 $(this).val('');
             });
-        });
+        }, "json");
     };
 
     self.deleteConcert = function (concert) {

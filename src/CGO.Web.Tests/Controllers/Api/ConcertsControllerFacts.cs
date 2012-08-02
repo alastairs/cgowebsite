@@ -122,5 +122,53 @@ namespace CGO.Web.Tests.Controllers.Api
                 }
             }
         }
+
+        [TestFixture]
+        public class PostShould
+        {
+            private readonly Concert concertToSave = new Concert(0, "Foo", new DateTime(2012, 08, 01, 20, 00, 00), "Bar");
+
+            [Test]
+            public void ReturnA201CreatedStatusCodeIfTheConcertModelIsOk()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Post(concertToSave);
+
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            }
+
+            [Test]
+            public void CallStoreOnTheRavenSessionIfTheConcertModelIsOk()
+            {
+                var mockRavenSession = Substitute.For<IDocumentSession>();
+                var controller = new ConcertsController(mockRavenSession);
+
+                controller.Post(concertToSave);
+
+                mockRavenSession.Received().Store(concertToSave);
+            }
+
+            [Test]
+            public void CallSaveChangesOnTheRavenSessionIfTheConcertModelIsOk()
+            {
+                var mockRavenSession = Substitute.For<IDocumentSession>();
+                var controller = new ConcertsController(mockRavenSession);
+
+                controller.Post(concertToSave);
+
+                mockRavenSession.Received().SaveChanges();
+            }
+
+            [Test]
+            public void ReturnA400BadRequestIfTheConcertModelIsNull()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Post(null);
+
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            }
+        }
     }
 }
