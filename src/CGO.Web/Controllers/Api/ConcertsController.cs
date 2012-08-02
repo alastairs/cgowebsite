@@ -28,10 +28,10 @@ namespace CGO.Web.Controllers.Api
         }
 
         // GET api/concerts
-        public IEnumerable<Concert> Get()
+        public IEnumerable<ConcertViewModel> Get()
         {
             var concerts = session.Query<Concert>();
-            return concerts.ToList().OrderByDescending(c => c.DateAndStartTime);
+            return concerts.ToList().Select(c => c.ToViewModel<Concert, ConcertViewModel>()).OrderByDescending(c => c.Date);
         }
 
         // GET api/concerts/5
