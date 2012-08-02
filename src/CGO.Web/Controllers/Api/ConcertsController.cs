@@ -5,7 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
+using CGO.Web.Mappers;
 using CGO.Web.Models;
+using CGO.Web.ViewModels;
 
 using Raven.Client;
 
@@ -39,14 +41,14 @@ namespace CGO.Web.Controllers.Api
         }
 
         // POST api/concerts
-        public HttpResponseMessage Post(Concert concert)
+        public HttpResponseMessage Post(ConcertViewModel concert)
         {
             if (concert == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
-            session.Store(concert);
+            session.Store(concert.ToModel<Concert, ConcertViewModel>());
             session.SaveChanges();
 
             return new HttpResponseMessage(HttpStatusCode.Created);

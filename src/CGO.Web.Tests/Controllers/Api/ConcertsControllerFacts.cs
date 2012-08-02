@@ -6,6 +6,7 @@ using System.Net;
 using CGO.Web.Controllers.Api;
 using CGO.Web.Models;
 using CGO.Web.Tests.EqualityComparers;
+using CGO.Web.ViewModels;
 
 using NSubstitute;
 
@@ -126,14 +127,21 @@ namespace CGO.Web.Tests.Controllers.Api
         [TestFixture]
         public class PostShould
         {
-            private readonly Concert concertToSave = new Concert(0, "Foo", new DateTime(2012, 08, 01, 20, 00, 00), "Bar");
+            private readonly ConcertViewModel concertRequest = new ConcertViewModel
+            {
+                Id = 0, 
+                Title = "Foo", 
+                Date = new DateTime(2012, 08, 01, 20, 00, 00), 
+                StartTime = new DateTime(2012, 08, 01, 20, 00, 00), 
+                Location = "Bar"
+            };
 
             [Test]
             public void ReturnA201CreatedStatusCodeIfTheConcertModelIsOk()
             {
                 var controller = new ConcertsController(Substitute.For<IDocumentSession>());
 
-                var result = controller.Post(concertToSave);
+                var result = controller.Post(concertRequest);
 
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Created));
             }
@@ -144,9 +152,10 @@ namespace CGO.Web.Tests.Controllers.Api
                 var mockRavenSession = Substitute.For<IDocumentSession>();
                 var controller = new ConcertsController(mockRavenSession);
 
-                controller.Post(concertToSave);
+                controller.Post(concertRequest);
 
-                mockRavenSession.Received().Store(concertToSave);
+                var concertToSave = new Concert(concertRequest.Id, concertRequest.Title, concertRequest.Date, concertRequest.Location);
+                mockRavenSession.Received().Store(Arg.Is<Concert>(x => new ConcertEqualityComparer().Equals(x, concertToSave)));
             }
 
             [Test]
@@ -155,7 +164,7 @@ namespace CGO.Web.Tests.Controllers.Api
                 var mockRavenSession = Substitute.For<IDocumentSession>();
                 var controller = new ConcertsController(mockRavenSession);
 
-                controller.Post(concertToSave);
+                controller.Post(concertRequest);
 
                 mockRavenSession.Received().SaveChanges();
             }
