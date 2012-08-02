@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 
 using CGO.Web.Controllers.Api;
+using CGO.Web.Mappers;
 using CGO.Web.Models;
 using CGO.Web.Tests.EqualityComparers;
 using CGO.Web.ViewModels;
@@ -70,16 +71,16 @@ namespace CGO.Web.Tests.Controllers.Api
         [TestFixture]
         public class GetShould : RavenTest
         {
-            private IEnumerable<Concert> concerts;
+            private IEnumerable<ConcertViewModel> viewModels;
 
             [Test]
-            public void ReturnAnEnumerableOfConcerts()
+            public void ReturnAnEnumerableOfConcertViewModels()
             {
                 var controller = new ConcertsController(Substitute.For<IDocumentSession>());
 
                 var result = controller.Get();
 
-                Assert.That(result, Is.InstanceOf<IEnumerable<Concert>>());
+                Assert.That(result, Is.InstanceOf<IEnumerable<ConcertViewModel>>());
             }
 
             [Test]
@@ -89,7 +90,7 @@ namespace CGO.Web.Tests.Controllers.Api
 
                 var result = controller.Get();
 
-                Assert.That(result, Is.EquivalentTo(concerts).Using(new ConcertEqualityComparer()));
+                Assert.That(result, Is.EquivalentTo(viewModels).Using(new ConcertViewModelEqualityComparer()));
             }
 
             [Test]
@@ -99,24 +100,45 @@ namespace CGO.Web.Tests.Controllers.Api
 
                 var result = controller.Get();
 
-                Assert.That(result, Is.EqualTo(concerts.OrderByDescending(c => c.DateAndStartTime)).Using(new ConcertEqualityComparer()));
+                Assert.That(result, Is.EqualTo(viewModels.OrderByDescending(c => c.Date)).Using(new ConcertViewModelEqualityComparer()));
             }
 
             [SetUp]
             public void CreateSampleData()
             {
-                concerts = new[]
+                viewModels = new[]
                 {
-                    new Concert(1, "Foo", new DateTime(2012, 08, 01, 20, 00, 00), "Bar"),
-                    new Concert(2, "Foo", new DateTime(2012, 08, 02, 20, 00, 00), "Bar"),
-                    new Concert(3, "Foo", new DateTime(2012, 07, 31, 20, 00, 00), "Bar")
+                    new ConcertViewModel
+                        {
+                                    Id = 1,
+                                    Title = "Foo",
+                                    Date = new DateTime(2012, 08, 01, 20, 00, 00), 
+                                    StartTime = new DateTime(2012, 08, 01, 20, 00, 00), 
+                                    Location = "Bar"
+                        },
+                    new ConcertViewModel
+                        {
+                                    Id = 2, 
+                                    Title = "Foo", 
+                                    Date = new DateTime(2012, 08, 02, 20, 00, 00), 
+                                    StartTime = new DateTime(2012, 08, 02, 20, 00, 00), 
+                                    Location = "Bar",
+                        },
+                    new ConcertViewModel
+                        {
+                                    Id = 3, 
+                                    Title = "Foo", 
+                                    Date = new DateTime(2012, 07, 31, 20, 00, 00), 
+                                    StartTime = new DateTime(2012, 07, 31, 20, 00, 00), 
+                                    Location = "Bar"
+                        }
                 };
 
                 using (var sampleDataSession = Store.OpenSession())
                 {
-                    foreach (var concert in concerts)
+                    foreach (var viewModel in viewModels)
                     {
-                        sampleDataSession.Store(concert);
+                        sampleDataSession.Store(viewModel.ToModel<Concert, ConcertViewModel>());
                     }
                     
                     sampleDataSession.SaveChanges();
