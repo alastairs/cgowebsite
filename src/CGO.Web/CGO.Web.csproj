@@ -298,6 +298,7 @@
     <Content Include="Scripts\Markdown.Sanitizer.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\placeholder.js" />
+    <Content Include="Scripts\rfc3339date.js" />
     <Content Include="Scripts\ViewModels\ConcertListViewModel.js" />
     <Content Include="Scripts\ViewModels\ConcertViewModel.js" />
     <Content Include="Web.config">
