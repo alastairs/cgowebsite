@@ -1,4 +1,6 @@
-﻿using CGO.Web.Models;
+﻿using System;
+
+using CGO.Web.Models;
 using CGO.Web.ViewModels;
 
 namespace CGO.Web.Mappers
@@ -17,6 +19,16 @@ namespace CGO.Web.Mappers
                     StartTime = model.DateAndStartTime,
                     Location = model.Location
                 };
+            }
+
+            return null;
+        }
+
+        public static TModel ToModel<TModel, TViewModel>(this TViewModel viewModel) where TViewModel: ConcertViewModel where TModel: Concert
+        {
+            if (typeof(TViewModel) == typeof(ConcertViewModel))
+            {
+                return (TModel)new Concert(viewModel.Id, viewModel.Title, viewModel.Date, viewModel.Location);
             }
 
             return null;
