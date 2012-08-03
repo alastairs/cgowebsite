@@ -178,6 +178,22 @@ a.raven {
     margin-top: 0;
 }
 
+.action {
+    margin: 0 5px;
+}
+
+[class^="icon-"]:hover, [class*=" icon-"]:hover {
+    text-decoration: none;
+}
+
+input.quickAddField {
+    width: 95%;
+}
+
+input.quickAddField-small {
+    width: 120px;
+}
+
 /*****************************
 *   Markdown Editor Styles   *
 *****************************/

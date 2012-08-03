@@ -1,7 +1,7 @@
 using System.Reflection;
+using System.Web.Http;
 
-using Raven.Client;
-using Raven.Client.Embedded;
+using CGO.Web.Infrastructure;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(CGO.Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(CGO.Web.App_Start.NinjectWebCommon), "Stop")]
@@ -50,6 +50,10 @@ namespace CGO.Web.App_Start
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
             
             RegisterServices(kernel);
+
+            // Set the Web API Dependency Resolver
+            GlobalConfiguration.Configuration.DependencyResolver = new NinjectWebApiDependencyResolver(kernel);
+            
             return kernel;
         }
 

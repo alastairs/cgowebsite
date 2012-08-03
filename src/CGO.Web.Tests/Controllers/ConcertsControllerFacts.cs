@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using CGO.Web.Controllers;
 using CGO.Web.Models;
+using CGO.Web.Tests.EqualityComparers;
 using CGO.Web.ViewModels;
 
 using MvcContrib.TestHelper;
@@ -13,6 +14,7 @@ using NUnit.Framework;
 
 using Raven.Client;
 using Raven.Client.Embedded;
+using Raven.Client.Linq;
 
 namespace CGO.Web.Tests.Controllers
 {
@@ -67,6 +69,16 @@ namespace CGO.Web.Tests.Controllers
                 Assert.That(concert.Id, Is.EqualTo(1));
             }
 
+            [Test]
+            public void ReturnA404NotFoundWhenTheConcertDoesntExist()
+            {
+                var controller = new ConcertsController(Session);
+
+                var result = controller.Details(2);
+
+                result.AssertResultIs<HttpNotFoundResult>();
+            }
+
             [SetUp]
             public void CreateSampleData()
             {
@@ -113,7 +125,7 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void SaveTheConcertToTheDatabaseWhenThereAreNoValidationErrors()
+            public void StoreTheConcertInTheDatabaseWhenThereAreNoValidationErrors()
             {
                 var controller = new ConcertsController(Session);
                 var concert = new Concert(1, "Foo", new DateTime(2012, 07, 29, 20, 00, 00), "Bar");
@@ -127,6 +139,86 @@ namespace CGO.Web.Tests.Controllers
                 });
 
                 Assert.That(Session.Load<Concert>(1), Is.EqualTo(concert).Using(new ConcertEqualityComparer()));
+            }
+
+            [Test]
+            public void SaveChangesToTheDatabaseWhenThereAreNoValidationErrors()
+            {
+                var mockRavenSession = Substitute.For<IDocumentSession>();
+                var controller = new ConcertsController(mockRavenSession);
+                var concert = new Concert(1, "Foo", new DateTime(2012, 07, 31, 14, 24, 00), "Bar");
+
+                controller.Create(new ConcertViewModel
+                {
+                    Date = concert.DateAndStartTime,
+                    StartTime = concert.DateAndStartTime,
+                    Location = concert.Location,
+                    Title = concert.Title
+                });
+
+                mockRavenSession.Received().SaveChanges();
+            }
+        }
+
+        [TestFixture]
+        public class ListShould : RavenTest
+        {
+            private Concert sampleConcert;
+
+            [Test]
+            public void ShowTheListView()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.List();
+
+                result.AssertViewRendered().ForView("List").WithViewData<IEnumerable<ConcertViewModel>>();
+            }
+
+            [Test]
+            public void RetrieveAllConcertsFromTheDatabase()
+            {
+                var mockRavenSession = Substitute.For<IDocumentSession>();
+                var mockQueryResult = Substitute.For<IRavenQueryable<Concert>>();
+                mockRavenSession.Query<Concert>().ReturnsForAnyArgs(mockQueryResult);
+                var controller = new ConcertsController(mockRavenSession);
+
+                controller.List();
+
+                mockRavenSession.Received().Query<Concert>();
+            }
+
+            [Test]
+            public void ConvertTheRetrievedConcertsToConcertViewModels()
+            {
+                var controller = new ConcertsController(Session);
+                var expectedViewModel = new[]
+                {
+                    new ConcertViewModel
+                    {
+                        Id = sampleConcert.Id,
+                        Title = sampleConcert.Title,
+                        Date = sampleConcert.DateAndStartTime,
+                        StartTime = sampleConcert.DateAndStartTime,
+                        Location = sampleConcert.Location
+                    }
+                };
+
+                var result = controller.List() as ViewResult;
+
+                Assert.That(result.Model, Is.EqualTo(expectedViewModel).Using(new ConcertViewModelEqualityComparer()));
+            }
+
+            [SetUp]
+            public void CreateSampleData()
+            {
+                sampleConcert = new Concert(1, "Foo", new DateTime(2012, 07, 31, 13, 40, 00), "Bar");
+
+                using (var sampleDataSession = Store.OpenSession())
+                {
+                    sampleDataSession.Store(sampleConcert);
+                    sampleDataSession.SaveChanges();
+                }
             }
         }
     }

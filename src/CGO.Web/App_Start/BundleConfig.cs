@@ -19,9 +19,6 @@ namespace CGO.Web
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                        "~/Scripts/bootstrap*"));
-
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                         "~/Scripts/knockout-*"));
 
@@ -34,6 +31,9 @@ namespace CGO.Web
 
             bundles.Add(new StyleBundle("~/bundles/jquery-ui").Include("~/Content/jquery-ui-1.8.16.custom.css",
                                                                        "~/Content/jquery.ui.1.8.16.ie.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/font-awesome").Include("~/Content/font-awesome.css",
+                                                                          "~/Content/font-awesome-ie7.css"));
         }
     }
 }

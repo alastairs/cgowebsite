@@ -195,6 +195,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\Api\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsSideBar.cs" />
     <Compile Include="Controllers\EmptySideBar.cs" />
@@ -215,6 +216,9 @@
     </Compile>
     <Compile Include="Helpers\MarkdownHelper.cs" />
     <Compile Include="Infrastructure\IFormsAuthenticationService.cs" />
+    <Compile Include="Infrastructure\NinjectWebApiDependencyResolver.cs" />
+    <Compile Include="Infrastructure\NinjectScope.cs" />
+    <Compile Include="Mappers\MapperExtensions.cs" />
     <Compile Include="Models\Concert.cs" />
     <Compile Include="Models\HomePageViewModel.cs" />
     <Compile Include="Models\Rehearsal.cs" />
@@ -230,6 +234,8 @@
     <Content Include="Content\bootstrap-responsive.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome-ie7.css" />
+    <Content Include="Content\font-awesome.css" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -249,12 +255,16 @@
     <Content Include="Content\jquery-ui-1.8.16.custom.css" />
     <Content Include="Content\jquery.ui.1.8.16.ie.css" />
     <Content Include="favicon.ico" />
+    <Content Include="font\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Images\wmd-buttons.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js">
       <DependentUpon>bootstrap.js</DependentUpon>
     </Content>
+    <Content Include="font\fontawesome-webfont.eot" />
+    <Content Include="font\fontawesome-webfont.ttf" />
+    <Content Include="font\fontawesome-webfont.woff" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <None Include="Scripts\jquery-1.7.2.intellisense.js">
       <DependentUpon>jquery-1.7.2.js</DependentUpon>
@@ -268,6 +278,7 @@
     <Content Include="Scripts\jquery-ui-1.8.20.min.js">
       <DependentUpon>jquery-ui-1.8.20.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\jquery.dateFormat-1.0.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js">
       <DependentUpon>jquery.unobtrusive-ajax.js</DependentUpon>
@@ -287,6 +298,9 @@
     <Content Include="Scripts\Markdown.Sanitizer.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\placeholder.js" />
+    <Content Include="Scripts\rfc3339date.js" />
+    <Content Include="Scripts\ViewModels\ConcertListViewModel.js" />
+    <Content Include="Scripts\ViewModels\ConcertViewModel.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -315,6 +329,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\Concerts\Create.cshtml" />
+    <Content Include="Views\Concerts\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
