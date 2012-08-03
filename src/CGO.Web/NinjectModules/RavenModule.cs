@@ -19,7 +19,8 @@ namespace CGO.Web.NinjectModules
         {
             var documentStore = new EmbeddableDocumentStore
             {
-                DataDirectory = "CGO.raven"
+                DataDirectory = "CGO.raven",
+                UseEmbeddedHttpServer = true
             };
 
             documentStore.InitializeProfiling();
