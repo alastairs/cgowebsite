@@ -35,7 +35,7 @@
     <tfoot>
         <tr>
             <form id="quickAdd" data-bind="submit: quickAdd">
-                @Html.Hidden("Published", false)
+                @Html.Hidden("IsPublished", false)
                 <td>@Html.TextBox("ConcertViewModel.Title", value: null, htmlAttributes: new { placeholder = "Title", @class = "quickAddField" })</td>
                 <td>
                     @Html.TextBox("ConcertViewModel.Date", value: null, htmlAttributes: new { placeholder = "Date: dd/mm/yyyy", @class = "quickAddField-small", type="date" })

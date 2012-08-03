@@ -43,9 +43,9 @@
         <p>&nbsp;</p>
 
         <p>
-            @Html.HiddenFor(c => c.Published)
-            <input type="submit" value="Publish Concert" class="btn btn-primary" onclick="$('#Published').val(true);$('#CreateConcert').submit();" />
-            <input type="submit" value="Save for later" class="btn" onclick="$('#Published').val(false);$('#CreateConcert').submit();" />
+            @Html.HiddenFor(c => c.IsPublished)
+            <input type="submit" value="Publish Concert" class="btn btn-primary" onclick="$('#IsPublished').val(true);$('#CreateConcert').submit();" />
+            <input type="submit" value="Save for later" class="btn" onclick="$('#IsPublished').val(false);$('#CreateConcert').submit();" />
             <input type="reset" value="Discard" class="btn" />
         </p>
     </fieldset>
