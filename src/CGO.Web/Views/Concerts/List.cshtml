@@ -24,7 +24,7 @@
             <td data-bind="text: title"></td>
             <td data-bind="text: dateAndStartTime">@*@concert.Date.ToString("d MMM yyyy") @concert.StartTime.ToShortTimeString()*@</td>
             <td data-bind="text: location"></td>
-            <td>@*@{ Write(concert.Published ? "Yes" : "No"); }*@</td>
+            <td data-bind="text: isPublished"></td>
             <td>
                 <a title="Publish" data-bind="attr: { href: '@Url.Action("Publish", "Concerts")/' + id }"><i class="icon-bolt icon-large action" style="color: gold"></i></a>
                 <a title="Edit" data-bind="attr: { href: '@Url.Action("Edit", "Concerts")/' + id }"><i class="icon-pencil icon-large action" style="color:saddlebrown"></i></a>
