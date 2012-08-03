@@ -332,6 +332,7 @@
     <Content Include="Views\Concerts\List.cshtml" />
     <Content Include="Views\Concerts\_ConcertEditForm.cshtml" />
     <Content Include="Views\Shared\_MarkdownEditor.cshtml" />
+    <Content Include="Views\Concerts\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
