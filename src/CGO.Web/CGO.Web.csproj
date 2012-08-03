@@ -330,6 +330,8 @@
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\Concerts\Create.cshtml" />
     <Content Include="Views\Concerts\List.cshtml" />
+    <Content Include="Views\Concerts\_ConcertEditForm.cshtml" />
+    <Content Include="Views\Shared\_MarkdownEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

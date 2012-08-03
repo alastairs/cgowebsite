@@ -1,0 +1,10 @@
+﻿@Scripts.Render("~/bundles/markdownEditor")
+<script type="text/javascript">
+    (function() {
+        var converter = Markdown.getSanitizingConverter();
+        var help = function () { alert("Do you need help?"); };
+        
+        var editor = new Markdown.Editor(converter, "", { handler: help });
+        editor.run();
+    })();
+</script>
