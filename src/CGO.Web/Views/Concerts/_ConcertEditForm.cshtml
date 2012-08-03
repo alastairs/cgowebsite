@@ -1,0 +1,54 @@
+﻿@using CGO.Web.Helpers
+@model CGO.Web.ViewModels.ConcertViewModel
+
+@{ Html.EnableClientValidation(); }
+@using (Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "CreateConcert" }))
+{
+    @Html.ValidationSummary(false, "Oh dear, the violas made a boo-boo. Please go back and fix the following mistakes:")
+    
+    <fieldset>
+        <legend>Concert details</legend>
+    
+        <h2>Basic Details</h2>
+        <p></p>
+        <p>@Html.TextBoxFor(c => c.Title, new { placeholder = "Enter title" }) @Html.ValidationMessageFor(c => c.Title)</p>
+
+        <p>
+            <label for="Date" style="display: inline">Start date and time:&nbsp;</label>
+            @Html.DateFor(c => c.Date, new { @class = "datetime" }) @Html.TimeFor(c => c.StartTime, new { @class = "datetime", placeholder = "Enter start time" })
+            @Html.ValidationMessageFor(c => c.Date) @Html.ValidationMessageFor(c => c.StartTime)
+        </p>
+
+        <p>@Html.TextBoxFor(c => c.Location, new { placeholder = "Enter venue " }) @Html.ValidationMessageFor(c => c.Location)</p>
+    
+        <script type="text/javascript">
+            //$("#Location").typeahead()
+        </script>
+        
+        <h2>Marketing details</h2>
+        <p></p>
+        
+        <div class="wmd-panel">
+            <div id="wmd-button-bar"></div>
+            @Html.TextAreaFor(c => c.Description, new { id = "wmd-input", @class = "wmd-input", placeholder = "Provide a description of the concert, including things like the pieces being played, the composers, the soloists for the concert, etc." })<br />
+        </div>
+        <div id="wmd-preview" class="wmd-panel wmd-preview"></div>
+        
+        <p>&nbsp;</p>
+        
+        <p>
+            <label for="PosterImage" style="display: inline">Upload poster image: </label><input type="file" name="PosterImage" id="PosterImage" />
+        </p>
+        
+        <p>&nbsp;</p>
+
+        <p>
+            @Html.HiddenFor(c => c.Published)
+            <input type="submit" value="Publish Concert" class="btn btn-primary" onclick="$('#Published').val(true);$('#CreateConcert').submit();" />
+            <input type="submit" value="Save for later" class="btn" onclick="$('#Published').val(false);$('#CreateConcert').submit();" />
+            <input type="reset" value="Discard" class="btn" />
+        </p>
+    </fieldset>
+}
+
+@Html.Partial("_MarkdownEditor")
