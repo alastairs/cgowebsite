@@ -95,7 +95,8 @@ namespace CGO.Web.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
-            return View();
+            var concert = session.Load<Concert>(id);
+            return View("Edit", concert.ToViewModel<Concert, ConcertViewModel>());
         }
 
         //
