@@ -1,12 +1,12 @@
 ﻿@if (Request.IsAuthenticated) {
     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        <i class="icon-user"></i> @User.Identity.Name
+        <i class="icon-user"></i> @Session["DisplayName"]
         <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
-        <li><a href="#">Profile</a></li>
+        <li>@Html.ActionLink("Profile", "Profile", "User")</li>
         <li class="divider"></li>
-        <li><a href="#">Sign Out</a></li>
+        <li>@Html.ActionLink("Log Out", "Logout", "User")</li>
     </ul>
 } else {
     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -17,6 +17,7 @@
         <li><a href="@ViewBag.GoogleLoginUrl" id="googleLoginLink">Log in with Google</a></li>
         <li><a href="@ViewBag.GoogleLoginUrl" id="facebookLoginLink">Log in with Facebook</a></li>
         <li><a href="@ViewBag.GoogleLoginUrl" id="twitterLoginLink">Log in with Twitter</a></li>
+        <li><a data-toggle="modal" href="#openIdLogin">Log in with an OpenID</a></li>
         <li class="divider"></li>
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
     </ul>

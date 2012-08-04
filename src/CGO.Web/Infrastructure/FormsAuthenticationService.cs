@@ -14,5 +14,10 @@ namespace CGO.Web.Infrastructure
 
             FormsAuthentication.SetAuthCookie(username, persistent);
         }
+
+        public void SignOut()
+        {
+            FormsAuthentication.SignOut();
+        }
     }
 }

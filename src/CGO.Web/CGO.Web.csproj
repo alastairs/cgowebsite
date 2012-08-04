@@ -42,6 +42,54 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetOpenAuth.Core">
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.1.0.12182\lib\net40-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core.UI">
+      <HintPath>..\packages\DotNetOpenAuth.Core.UI.4.1.0.12182\lib\net40-full\DotNetOpenAuth.Core.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.InfoCard">
+      <HintPath>..\packages\DotNetOpenAuth.InfoCard.4.1.0.12182\lib\net40-full\DotNetOpenAuth.InfoCard.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.InfoCard.UI">
+      <HintPath>..\packages\DotNetOpenAuth.InfoCard.UI.4.1.0.12182\lib\net40-full\DotNetOpenAuth.InfoCard.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Common">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Common.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OAuth.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.ServiceProvider">
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.ServiceProvider.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OAuth.ServiceProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.Provider">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Provider.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OpenId.Provider.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.Provider.UI">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Provider.UI.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OpenId.Provider.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty.UI">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.UI.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OpenId.RelyingParty.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.UI">
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.UI.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OpenId.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenIdInfoCard.UI">
+      <HintPath>..\packages\DotNetOpenAuth.OpenIdInfoCard.UI.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OpenIdInfoCard.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenIdOAuth">
+      <HintPath>..\packages\DotNetOpenAuth.OpenIdOAuth.4.1.0.12182\lib\net40-full\DotNetOpenAuth.OpenIdOAuth.dll</HintPath>
+    </Reference>
     <Reference Include="BouncyCastle.Crypto">
       <HintPath>..\packages\RavenDB.Database.1.2.2055-Unstable\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
@@ -195,13 +243,14 @@
     <Compile Include="Controllers\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsSideBar.cs" />
     <Compile Include="Controllers\EmptySideBar.cs" />
-    <Compile Include="Controllers\GoogleController.cs" />
+    <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IDocumentSessionFactory.cs" />
     <Compile Include="Controllers\ISideBarFactory.cs" />
     <Compile Include="Controllers\SidebarController.cs" />
     <Compile Include="Controllers\SideBar.cs" />
     <Compile Include="Controllers\SideBarFactory.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Infrastructure\FormsAuthenticationService.cs" />
     <Compile Include="Infrastructure\GoogleOAuthConfiguration.cs" />
     <Compile Include="Infrastructure\IOAuthConfiguration.cs" />
@@ -253,10 +302,97 @@
     <Content Include="Content\images\ui-icons_f6cf3b_256x240.png" />
     <Content Include="Content\jquery-ui-1.8.16.custom.css" />
     <Content Include="Content\jquery.ui.1.8.16.ie.css" />
+    <Content Include="Content\openid-shadow.css" />
+    <Content Include="Content\openid.css" />
     <Content Include="favicon.ico" />
     <Content Include="font\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\aol.gif" />
+    <Content Include="Images\aol.ico" />
+    <Content Include="Images\aol.ico.gif" />
+    <Content Include="Images\aol.ico.png" />
+    <Content Include="Images\blogger.ico" />
+    <Content Include="Images\blogger.ico.gif" />
+    <Content Include="Images\blogger.ico.png" />
+    <Content Include="Images\claimid.ico" />
+    <Content Include="Images\claimid.ico.gif" />
+    <Content Include="Images\claimid.ico.png" />
+    <Content Include="Images\clickpass.ico" />
+    <Content Include="Images\clickpass.ico.gif" />
+    <Content Include="Images\clickpass.ico.png" />
+    <Content Include="Images\facebook.gif" />
+    <Content Include="Images\facebook.ico" />
+    <Content Include="Images\facebook.ico.gif" />
+    <Content Include="Images\facebook.ico.png" />
+    <Content Include="Images\flickr.ico" />
+    <Content Include="Images\flickr.ico.gif" />
+    <Content Include="Images\flickr.ico.png" />
+    <Content Include="Images\google.gif" />
+    <Content Include="Images\google.ico" />
+    <Content Include="Images\google.ico.gif" />
+    <Content Include="Images\google.ico.png" />
+    <Content Include="Images\google_profile.ico" />
+    <Content Include="Images\google_profile.ico.gif" />
+    <Content Include="Images\google_profile.ico.png" />
+    <Content Include="Images\launchpad.ico" />
+    <Content Include="Images\launchpad.ico.gif" />
+    <Content Include="Images\launchpad.ico.png" />
+    <Content Include="Images\linkedin.ico" />
+    <Content Include="Images\linkedin.ico.gif" />
+    <Content Include="Images\linkedin.ico.png" />
+    <Content Include="Images\livejournal.ico" />
+    <Content Include="Images\livejournal.ico.gif" />
+    <Content Include="Images\livejournal.ico.png" />
+    <Content Include="Images\mailru.gif" />
+    <Content Include="Images\mailru.ico" />
+    <Content Include="Images\mailru.ico.gif" />
+    <Content Include="Images\mailru.ico.png" />
+    <Content Include="Images\myopenid.gif" />
+    <Content Include="Images\myopenid.ico" />
+    <Content Include="Images\myopenid.ico.gif" />
+    <Content Include="Images\myopenid.ico.png" />
+    <Content Include="Images\openid-inputicon.gif" />
+    <Content Include="Images\openid-providers-en.png" />
+    <Content Include="Images\openid.gif" />
+    <Content Include="Images\openid.ico" />
+    <Content Include="Images\openid.ico.gif" />
+    <Content Include="Images\openid.ico.png" />
+    <Content Include="Images\rambler.gif" />
+    <Content Include="Images\rambler.ico" />
+    <Content Include="Images\rambler.ico.gif" />
+    <Content Include="Images\rambler.ico.png" />
+    <Content Include="Images\technorati.ico" />
+    <Content Include="Images\technorati.ico.gif" />
+    <Content Include="Images\technorati.ico.png" />
+    <Content Include="Images\twitter.ico" />
+    <Content Include="Images\twitter.ico.gif" />
+    <Content Include="Images\twitter.ico.png" />
+    <Content Include="Images\verisign.gif" />
+    <Content Include="Images\verisign.ico" />
+    <Content Include="Images\verisign.ico.gif" />
+    <Content Include="Images\verisign.ico.png" />
+    <Content Include="Images\vidoop.ico" />
+    <Content Include="Images\vidoop.ico.gif" />
+    <Content Include="Images\vidoop.ico.png" />
+    <Content Include="Images\vkontakte.gif" />
+    <Content Include="Images\vkontakte.ico" />
+    <Content Include="Images\vkontakte.ico.gif" />
+    <Content Include="Images\vkontakte.ico.png" />
+    <Content Include="Images\winliveid.ico" />
+    <Content Include="Images\winliveid.ico.gif" />
+    <Content Include="Images\winliveid.ico.png" />
     <Content Include="Images\wmd-buttons.png" />
+    <Content Include="Images\wordpress.ico" />
+    <Content Include="Images\wordpress.ico.gif" />
+    <Content Include="Images\wordpress.ico.png" />
+    <Content Include="Images\yahoo.gif" />
+    <Content Include="Images\yahoo.ico" />
+    <Content Include="Images\yahoo.ico.gif" />
+    <Content Include="Images\yahoo.ico.png" />
+    <Content Include="Images\yandex.gif" />
+    <Content Include="Images\yandex.ico" />
+    <Content Include="Images\yandex.ico.gif" />
+    <Content Include="Images\yandex.ico.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js">
       <DependentUpon>bootstrap.js</DependentUpon>
@@ -296,6 +432,8 @@
     <Content Include="Scripts\Markdown.Editor.js" />
     <Content Include="Scripts\Markdown.Sanitizer.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
+    <Content Include="Scripts\openid-en.js" />
+    <Content Include="Scripts\openid-jquery.js" />
     <Content Include="Scripts\placeholder.js" />
     <Content Include="Scripts\rfc3339date.js" />
     <Content Include="Scripts\ViewModels\ConcertListViewModel.js" />
@@ -334,6 +472,9 @@
     <Content Include="Views\Concerts\Edit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Home\Xrds.cshtml" />
+    <Content Include="Views\Shared\_OpenIdLoginBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
