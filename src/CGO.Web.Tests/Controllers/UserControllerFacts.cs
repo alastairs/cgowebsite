@@ -1,4 +1,6 @@
-﻿using CGO.Web.Controllers;
+﻿using System;
+
+using CGO.Web.Controllers;
 using CGO.Web.Infrastructure;
 
 using NSubstitute;
@@ -11,6 +13,16 @@ namespace CGO.Web.Tests.Controllers
 {
     class UserControllerFacts
     {
+        [TestFixture]
+        public class ConstructorShould
+        {
+            [Test]
+            public void ThrowAnArgumentNullExceptionWhenTheFormsAuthenticationServiceIsNull()
+            {
+                Assert.That(() => new UserController(null), Throws.InstanceOf<ArgumentNullException>());
+            }
+        }
+
         [TestFixture]
         public class LoginShould
         {
