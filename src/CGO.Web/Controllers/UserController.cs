@@ -1,5 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using System.Web.Security;
+
+using CGO.Web.Infrastructure;
 
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OpenId;
@@ -10,6 +13,18 @@ namespace CGO.Web.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IFormsAuthenticationService formsAuthentication;
+
+        public UserController(IFormsAuthenticationService formsAuthentication)
+        {
+            if (formsAuthentication == null)
+            {
+                throw new ArgumentNullException("formsAuthentication");
+            }
+
+            this.formsAuthentication = formsAuthentication;
+        }
+
         public ActionResult Login()
         {
             return View("Login");
@@ -17,7 +32,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Logout()
         {
-            FormsAuthentication.SignOut();
+            formsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
