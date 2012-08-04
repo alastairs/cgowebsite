@@ -13,19 +13,20 @@ using NSubstitute;
 using NUnit.Framework;
 
 using Raven.Client;
-using Raven.Client.Linq;
 
 namespace CGO.Web.Tests.Controllers
 {
     public class ConcertsControllerFacts
     {
         [TestFixture]
-        public class IndexShould
+        public class IndexShould : RavenTest
         {
+            private IEnumerable<Concert> concerts;
+
             [Test]
             public void DisplayTheIndexView()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Session);
 
                 var result = controller.Index();
 
@@ -33,14 +34,59 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void DisplayTheConcertsInDescendingOrderByDate()
+            public void DisplayTheConcertsInAscendingOrderByDate()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Session);
 
                 var result = controller.Index() as ViewResult;
-                var concerts = result.Model as IEnumerable<Concert>;
+                var concertsDisplayed = result.Model as IEnumerable<Concert>;
 
-                Assert.That(concerts.OrderByDescending(c => c.DateAndStartTime), Is.EqualTo(concerts));
+                Assert.That(concertsDisplayed, Is.EqualTo(concerts.OrderBy(c => c.DateAndStartTime)).Using(new ConcertEqualityComparer()));
+            }
+
+            [Test]
+            public void DisplayTheConcertsFromTheDatabase()
+            {
+                var controller = new ConcertsController(Session);
+
+                var result = controller.Index() as ViewResult;
+
+                Assert.That(result.Model, Is.EquivalentTo(concerts).Using(new ConcertEqualityComparer()));
+            }
+
+            [Test]
+            public void DisplayOnlyConcertsInTheFuture()
+            {
+                var pastConcert = new Concert(5, "Concert in the past", new DateTime(2011, 11, 18, 20, 00, 00), "West Road Concert Hall");
+                Session.Store(pastConcert);
+                
+                var controller = new ConcertsController(Session);
+                
+                var result = controller.Index() as ViewResult;
+
+                Assert.That(result.Model, Is.Not.Contains(pastConcert).Using(new ConcertEqualityComparer()));
+            }
+
+            [SetUp]
+            public void CreateSampleData()
+            {
+                concerts = new List<Concert>
+                {
+                    new Concert(1, "2100 Concert 1", new DateTime(2100, 01, 18, 20, 00, 00), "West Road Concert Hall"),
+                    new Concert(2, "2100 Concert 2", new DateTime(2100, 02, 18, 20, 00, 00), "West Road Concert Hall"),
+                    new Concert(3, "2100 Concert 3", new DateTime(2100, 03, 18, 20, 00, 00), "West Road Concert Hall"),
+                    new Concert(4, "2100 Concert 4", new DateTime(2100, 04, 18, 20, 00, 00), "West Road Concert Hall")
+                };
+
+                using (var sampleDataSession = Store.OpenSession())
+                {
+                    foreach(var concert in concerts)
+                    {
+                        sampleDataSession.Store(concert);
+                    }
+
+                    sampleDataSession.SaveChanges();
+                }
             }
         }
 
