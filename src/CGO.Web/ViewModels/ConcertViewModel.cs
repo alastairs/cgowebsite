@@ -20,6 +20,6 @@ namespace CGO.Web.ViewModels
         public string Location { get; set; }
         
         public string Description { get; set; }
-        public bool Published { get; set; }
+        public bool IsPublished { get; set; }
     }
 }

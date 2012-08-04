@@ -28,7 +28,9 @@ namespace CGO.Web.Mappers
         {
             if (typeof(TViewModel) == typeof(ConcertViewModel))
             {
-                return (TModel)new Concert(viewModel.Id, viewModel.Title, viewModel.Date, viewModel.Location);
+                var dateAndStartTime = new DateTime(viewModel.Date.Year, viewModel.Date.Month, viewModel.Date.Day,
+                                                    viewModel.StartTime.Hour, viewModel.StartTime.Minute, 00);
+                return (TModel)new Concert(viewModel.Id, viewModel.Title, dateAndStartTime, viewModel.Location);
             }
 
             return null;
