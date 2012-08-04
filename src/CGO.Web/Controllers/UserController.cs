@@ -4,7 +4,6 @@ using System.Web.Security;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OpenId;
 using DotNetOpenAuth.OpenId.Extensions.AttributeExchange;
-using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
 using DotNetOpenAuth.OpenId.RelyingParty;
 
 namespace CGO.Web.Controllers
@@ -37,8 +36,10 @@ namespace CGO.Web.Controllers
 
         private ActionResult SendRequestToProvider(OpenIdRelyingParty openId)
         {
+            var submittedId = Request.Form["openid_manual"] ?? Request.Form["openid_identifier"];
+
             Identifier id;
-            if (Identifier.TryParse(Request.Form["openid_identifier"], out id))
+            if (Identifier.TryParse(submittedId, out id))
             {
                 try
                 {
