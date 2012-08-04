@@ -38,6 +38,26 @@ namespace CGO.Web.Tests.Controllers
 
                 formsAuthentication.Received().SignOut();
             }
+
+            [Test]
+            public void ReturnARedirectResult()
+            {
+                var controller = new UserController(Substitute.For<IFormsAuthenticationService>());
+
+                var result = controller.Logout();
+
+                result.AssertActionRedirect();
+            }
+
+            [Test]
+            public void RedirectToTheHomePage()
+            {
+                var controller = new UserController(Substitute.For<IFormsAuthenticationService>());
+
+                var result = controller.Logout();
+
+                result.AssertActionRedirect().ToAction((HomeController h) => h.Index());
+            }
         }
     }
 }
