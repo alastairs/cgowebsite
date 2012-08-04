@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CGO.Web.Controllers;
+using CGO.Web.Mappers;
 using CGO.Web.Models;
 using CGO.Web.Tests.EqualityComparers;
 using CGO.Web.ViewModels;
@@ -329,9 +330,10 @@ namespace CGO.Web.Tests.Controllers
         }
 
         [TestFixture]
-        public class EditShouldOnPost
+        public class EditShouldOnPost : RavenTest
         {
             private ConcertViewModel concertToSave = new ConcertViewModel();
+            private Concert existingConcert;
 
             [Test]
             public void RedirectToTheListViewIfNoErrorsOccurred()
@@ -363,6 +365,32 @@ namespace CGO.Web.Tests.Controllers
                 var result = controller.Edit(1, concertToSave) as ViewResult;
 
                 Assert.That(result.Model, Is.EqualTo(concertToSave));
+            }
+
+            [Test]
+            public void SaveTheChangesToTheDatabaseIfNoErrorsOccurred()
+            {
+                var controller = new ConcertsController(Session);
+                var viewModel = existingConcert.ToViewModel<Concert, ConcertViewModel>();
+                const string editedTitle = "New Title";
+                viewModel.Title = editedTitle;
+
+                controller.Edit(1, viewModel);
+
+                var editedConcert = new Concert(existingConcert.Id, editedTitle, existingConcert.DateAndStartTime, existingConcert.Location);
+                Assert.That(Session.Load<Concert>(1), Is.EqualTo(editedConcert).Using(new ConcertEqualityComparer()));
+            }
+
+            [SetUp]
+            public void CreateSampleData()
+            {
+                existingConcert = new Concert(1, "Foo", new DateTime(2012, 08, 04, 20, 00, 00), "Bar");
+
+                using (var sampleDataSession = Store.OpenSession())
+                {
+                    sampleDataSession.Store(existingConcert);
+                    sampleDataSession.SaveChanges();
+                }
             }
         }
     }
