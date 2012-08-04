@@ -22,6 +22,10 @@ namespace CGO.Web
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                         "~/Scripts/knockout-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/openid").Include(
+                        "~/Scripts/openid-jquery.js",
+                        "~/Scripts/openid-en.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/markdownEditor").Include(
                         "~/Scripts/Markdown.Converter.js",
                         "~/Scripts/Markdown.Sanitizer.js",
@@ -34,6 +38,8 @@ namespace CGO.Web
 
             bundles.Add(new StyleBundle("~/bundles/font-awesome").Include("~/Content/font-awesome.css",
                                                                           "~/Content/font-awesome-ie7.css"));
+        
+            bundles.Add(new StyleBundle("~/bundles/openid-css").Include("~/Content/openid.css", "~/Content/openid-shadow.css"));
         }
     }
 }
