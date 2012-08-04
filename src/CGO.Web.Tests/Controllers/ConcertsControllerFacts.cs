@@ -332,7 +332,6 @@ namespace CGO.Web.Tests.Controllers
         [TestFixture]
         public class EditShouldOnPost : RavenTest
         {
-            private ConcertViewModel concertToSave = new ConcertViewModel();
             private Concert existingConcert;
 
             [Test]
@@ -340,7 +339,7 @@ namespace CGO.Web.Tests.Controllers
             {
                 var controller = new ConcertsController(Substitute.For<IDocumentSession>());
 
-                var result = controller.Edit(1, concertToSave);
+                var result = controller.Edit(1, new ConcertViewModel());
 
                 result.AssertActionRedirect().ToAction("List");
             }
@@ -351,7 +350,7 @@ namespace CGO.Web.Tests.Controllers
                 var controller = new ConcertsController(Substitute.For<IDocumentSession>());
                 controller.ModelState.AddModelError("Date", "Not a date");
 
-                var result = controller.Edit(1, concertToSave);
+                var result = controller.Edit(1, new ConcertViewModel());
 
                 result.AssertViewRendered().ForView("Edit");
             }
@@ -362,9 +361,10 @@ namespace CGO.Web.Tests.Controllers
                 var controller = new ConcertsController(Substitute.For<IDocumentSession>());
                 controller.ModelState.AddModelError("Date", "Not a date");
 
-                var result = controller.Edit(1, concertToSave) as ViewResult;
+                var concertToSave1 = new ConcertViewModel();
+                var result = controller.Edit(1, concertToSave1) as ViewResult;
 
-                Assert.That(result.Model, Is.EqualTo(concertToSave));
+                Assert.That(result.Model, Is.EqualTo(concertToSave1));
             }
 
             [Test]
@@ -387,7 +387,7 @@ namespace CGO.Web.Tests.Controllers
                 var documentSession = Substitute.For<IDocumentSession>();
                 var controller = new ConcertsController(documentSession);
 
-                controller.Edit(1, concertToSave);
+                controller.Edit(1, new ConcertViewModel());
 
                 documentSession.Received().SaveChanges();
             }
