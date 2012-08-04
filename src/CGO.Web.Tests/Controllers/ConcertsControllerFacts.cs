@@ -381,6 +381,17 @@ namespace CGO.Web.Tests.Controllers
                 Assert.That(Session.Load<Concert>(1), Is.EqualTo(editedConcert).Using(new ConcertEqualityComparer()));
             }
 
+            [Test]
+            public void CallSaveChangesOnTheRavenSession()
+            {
+                var documentSession = Substitute.For<IDocumentSession>();
+                var controller = new ConcertsController(documentSession);
+
+                controller.Edit(1, concertToSave);
+
+                documentSession.Received().SaveChanges();
+            }
+
             [SetUp]
             public void CreateSampleData()
             {

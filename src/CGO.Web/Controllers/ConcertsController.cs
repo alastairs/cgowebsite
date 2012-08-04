@@ -116,6 +116,7 @@ namespace CGO.Web.Controllers
                 }
 
                 session.Store(viewModel.ToModel<Concert, ConcertViewModel>());
+                session.SaveChanges();
 
                 return RedirectToAction("List");
             }
