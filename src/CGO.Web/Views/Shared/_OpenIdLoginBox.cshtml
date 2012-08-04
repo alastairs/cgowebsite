@@ -1,0 +1,31 @@
+﻿@using (Html.BeginForm("Authenticate", "User", routeValues: new { ReturnUrl = Request.QueryString["ReturnUrl"] }, method: FormMethod.Post, htmlAttributes: new { id = "openid_form" }))
+{
+    <div id="openIdLogin" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3>Log In with OpenID</h3>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="action" value="verify" />
+            <div id="openid_choice">
+                <p>Please choose the account you would like to log in with:</p>
+                <div id="openid_btns"></div>
+            </div>
+            <div id="openid_input_area">
+                <input id="openid_identifier" name="openid_identifier" type="text" value="http://" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" id="openid_submit" class="btn btn-primary" value="Log In" />
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+        </div>
+    </div>
+}
+
+@Styles.Render("~/bundles/openid-css")
+@Scripts.Render("~/bundles/openid")
+<script>
+    (function () {
+        openid.init('openid_identifier');
+    })()
+</script>

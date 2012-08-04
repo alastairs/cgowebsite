@@ -250,6 +250,7 @@
     <Compile Include="Controllers\SidebarController.cs" />
     <Compile Include="Controllers\SideBar.cs" />
     <Compile Include="Controllers\SideBarFactory.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Infrastructure\FormsAuthenticationService.cs" />
     <Compile Include="Infrastructure\GoogleOAuthConfiguration.cs" />
     <Compile Include="Infrastructure\IOAuthConfiguration.cs" />
@@ -471,6 +472,9 @@
     <Content Include="Views\Concerts\Edit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Home\Xrds.cshtml" />
+    <Content Include="Views\Shared\_OpenIdLoginBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

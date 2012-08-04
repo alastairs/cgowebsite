@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Log In";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-error">
+        <button class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">The conductor threw a fit and stormed off.</h4>
+        <p>@ViewBag.Message</p>
+    </div>
+}
+
+@using(Html.BeginForm("Authenticate", "User", routeValues: new { ReturnUrl = Request.QueryString["ReturnUrl"] }))
+{
+    <label for="openid_identifier">OpenID: </label>
+    <input id="openid_identifier" name="openid_identifier" size="40" />
+    <input type="submit" value="Log In" />
+}
