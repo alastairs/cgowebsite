@@ -57,13 +57,7 @@
                         @Html.Partial("_LoginPartial")
                     </div>
                     <div class="nav-collapse">
-                        <ul class="nav">
-                            <li class="active">@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("Concerts", "Index", "Concerts")</li>
-                            <li>@Html.ActionLink("Rehearsals", "Index", "Rehearsals")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
+                        @Html.Partial("_MenuBar")
                     </div>
                 </div>
             </div>            
