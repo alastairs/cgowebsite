@@ -299,6 +299,16 @@ namespace CGO.Web.Tests.Controllers
                 Assert.That(result.Model, Is.EqualTo(viewModel).Using(new ConcertViewModelEqualityComparer()));
             }
 
+            [Test]
+            public void ThrowA404NotFoundIfTheRequestedConcertIdIsUnknown()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Edit(23);
+
+                result.AssertResultIs<HttpNotFoundResult>();
+            }
+
             [SetUp]
             public void CreateSampleData()
             {

@@ -96,6 +96,12 @@ namespace CGO.Web.Controllers
         public ActionResult Edit(int id)
         {
             var concert = session.Load<Concert>(id);
+
+            if (concert == null)
+            {
+                return HttpNotFound();
+            }
+
             return View("Edit", concert.ToViewModel<Concert, ConcertViewModel>());
         }
 
