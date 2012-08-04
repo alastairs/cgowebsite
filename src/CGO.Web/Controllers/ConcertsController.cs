@@ -132,8 +132,7 @@ namespace CGO.Web.Controllers
         [Authorize]
         public ActionResult List()
         {
-            var concerts = session.Query<Concert>();
-            return View("List", concerts.ToList().Select(c => c.ToViewModel<Concert, ConcertViewModel>()));
+            return View("List");
         }
     }
 }
