@@ -75,11 +75,7 @@ namespace CGO.Web.Controllers
                     return View("Create", concertViewModel);
                 }
 
-                var dateAndStartTime = new DateTime(concertViewModel.Date.Year, concertViewModel.Date.Month, concertViewModel.Date.Day,
-                                                    concertViewModel.StartTime.Hour, concertViewModel.StartTime.Minute, 00);
-                var concert = new Concert(concertViewModel.Id, concertViewModel.Title, dateAndStartTime, concertViewModel.Location);
-                session.Store(concert);
-
+                session.Store(concertViewModel.ToModel<Concert, ConcertViewModel>());
                 session.SaveChanges();
 
                 return RedirectToAction("List");
