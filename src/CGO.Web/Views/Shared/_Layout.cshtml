@@ -89,6 +89,11 @@
                 </ul>
             </footer>
         </div>
+        @if (!Request.IsAuthenticated)
+        {
+            @Html.Partial("_OpenIdLoginBox")
+        }
+
         @Scripts.Render("~/bundles/bootstrap")
         @RenderSection("scripts", required: false)
     </body>
