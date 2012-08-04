@@ -68,22 +68,15 @@ namespace CGO.Web.Controllers
         //[Authorize]
         public ActionResult Create(ConcertViewModel concertViewModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View("Create", concertViewModel);
-                }
-
-                session.Store(concertViewModel.ToModel<Concert, ConcertViewModel>());
-                session.SaveChanges();
-
-                return RedirectToAction("List");
+                return View("Create", concertViewModel);
             }
-            catch
-            {
-                return View(concertViewModel);
-            }
+
+            session.Store(concertViewModel.ToModel<Concert, ConcertViewModel>());
+            session.SaveChanges();
+
+            return RedirectToAction("List");
         }
 
         //
@@ -108,22 +101,15 @@ namespace CGO.Web.Controllers
         [Authorize]
         public ActionResult Edit(int id, ConcertViewModel viewModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View("Edit", viewModel);
-                }
-
-                session.Store(viewModel.ToModel<Concert, ConcertViewModel>());
-                session.SaveChanges();
-
-                return RedirectToAction("List");
+                return View("Edit", viewModel);
             }
-            catch
-            {
-                return View();
-            }
+
+            session.Store(viewModel.ToModel<Concert, ConcertViewModel>());
+            session.SaveChanges();
+
+            return RedirectToAction("List");
         }
 
         //
