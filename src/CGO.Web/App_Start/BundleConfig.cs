@@ -22,6 +22,9 @@ namespace CGO.Web
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                         "~/Scripts/knockout-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                        "~/Scripts/bootstrap.min.js"));
+            
             bundles.Add(new ScriptBundle("~/bundles/openid").Include(
                         "~/Scripts/openid-jquery.js",
                         "~/Scripts/openid-en.js"));
