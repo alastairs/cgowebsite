@@ -12,7 +12,7 @@ namespace CGO.Web.Controllers
     {
         public ActionResult Login()
         {
-            return View();
+            return View("Login");
         }
 
         public ActionResult Logout()
