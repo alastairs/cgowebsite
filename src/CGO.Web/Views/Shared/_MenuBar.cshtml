@@ -1,0 +1,40 @@
+﻿@functions {
+    private string GetCssClass(string actionName, string controllerName)
+    {
+        var currentControllerName = ViewContext.RouteData.Values["controller"].ToString();
+
+        var isCurrentController = currentControllerName == controllerName;
+        if (currentControllerName == "Home")
+        {
+            return GetHomeControllerLinksCssClass(actionName, isCurrentController);
+        }
+        
+        return isCurrentController ? "active" : string.Empty;
+    }
+
+    private string GetHomeControllerLinksCssClass(string actionName, bool isCurrentController)
+    {
+        if (!isCurrentController)
+        {
+            return string.Empty;
+        }
+        
+        var isCurrentAction = ViewContext.RouteData.Values["action"].ToString() == actionName;
+
+        return isCurrentAction ? "active" : string.Empty;
+    }
+
+}
+
+@helper GetMenuBarLink(string linkText, string actionName, string controllerName)
+{
+    <li class="@GetCssClass(actionName, controllerName)">@Html.ActionLink(linkText, actionName, controllerName)</li>
+}
+
+<ul class="nav">
+    @GetMenuBarLink("Home", "Index", "Home")
+    @GetMenuBarLink("Concerts", "Index", "Concerts")
+    @GetMenuBarLink("Rehearsals", "Index", "Rehearsals")
+    @GetMenuBarLink("About", "About", "Home")
+    @GetMenuBarLink("Contact", "Contact", "Home")
+</ul>

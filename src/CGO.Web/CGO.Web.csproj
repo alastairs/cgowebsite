@@ -475,6 +475,7 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Home\Xrds.cshtml" />
     <Content Include="Views\Shared\_OpenIdLoginBox.cshtml" />
+    <Content Include="Views\Shared\_MenuBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
