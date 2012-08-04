@@ -1,6 +1,6 @@
 ﻿@using (Html.BeginForm("Authenticate", "User", routeValues: new { ReturnUrl = Request.QueryString["ReturnUrl"] }, method: FormMethod.Post, htmlAttributes: new { id = "openid_form" }))
 {
-    <div id="openIdLogin" class="modal hide fade">
+    <div id="openIdLogin" class="modal hide fade" style="width: 600px">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h3>Log In with OpenID</h3>
@@ -16,7 +16,6 @@
             </div>
         </div>
         <div class="modal-footer">
-            <input type="submit" id="openid_submit" class="btn btn-primary" value="Log In" />
             <a href="#" class="btn" data-dismiss="modal">Cancel</a>
         </div>
     </div>
@@ -27,5 +26,9 @@
 <script>
     (function () {
         openid.init('openid_identifier');
-    })()
+        $('#openid_submit').addClass("btn btn-primary");
+        $('#openid_submit').css('margin-top', '-8px');
+        $('#openid_submit').css('margin-left', '5px');
+        $('#openid_submit').val('Log In');
+    })();
 </script>
