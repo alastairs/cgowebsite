@@ -1,5 +1,4 @@
-﻿@using CGO.Web.Helpers
-@model CGO.Web.ViewModels.ConcertViewModel
+﻿@model CGO.Web.ViewModels.ConcertViewModel
 
 @{ Html.EnableClientValidation(); }
 @using (Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "CreateConcert" }))
@@ -15,7 +14,7 @@
 
         <p>
             <label for="Date" style="display: inline">Start date and time:&nbsp;</label>
-            @Html.DateFor(c => c.Date, new { @class = "datetime" }) @Html.TimeFor(c => c.StartTime, new { @class = "datetime", placeholder = "Enter start time" })
+            @Html.EditorFor(c => c.Date, "Date") @Html.EditorFor(c => c.StartTime, "Time")
             @Html.ValidationMessageFor(c => c.Date) @Html.ValidationMessageFor(c => c.StartTime)
         </p>
 
