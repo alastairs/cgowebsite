@@ -116,7 +116,7 @@ namespace CGO.Web.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return View("Edit");
+                    return View("Edit", viewModel);
                 }
 
                 return RedirectToAction("List");

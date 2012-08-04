@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -13,7 +12,6 @@ using NSubstitute;
 using NUnit.Framework;
 
 using Raven.Client;
-using Raven.Client.Embedded;
 using Raven.Client.Linq;
 
 namespace CGO.Web.Tests.Controllers
@@ -354,6 +352,17 @@ namespace CGO.Web.Tests.Controllers
                 var result = controller.Edit(1, concertToSave);
 
                 result.AssertViewRendered().ForView("Edit");
+            }
+
+            [Test]
+            public void RedisplayTheEditViewWithTheProvidedViewModelWhenValidationErrorsArePresent()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                controller.ModelState.AddModelError("Date", "Not a date");
+
+                var result = controller.Edit(1, concertToSave) as ViewResult;
+
+                Assert.That(result.Model, Is.EqualTo(concertToSave));
             }
         }
     }
