@@ -110,13 +110,13 @@ namespace CGO.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, ConcertViewModel collection)
         {
             try
             {
                 // TODO: Add update logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
             catch
             {
