@@ -128,31 +128,7 @@ namespace CGO.Web.Controllers
         }
 
         //
-        // GET: /Concerts/Delete/5
-        [Authorize]
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Concerts/Delete/5
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        // GET: /Concerts/List
 
         [Authorize]
         public ActionResult List()
