@@ -329,5 +329,21 @@ namespace CGO.Web.Tests.Controllers
                 return documentSession;
             }
         }
+
+        [TestFixture]
+        public class EditShouldOnPost
+        {
+            private ConcertViewModel concertToSave = new ConcertViewModel();
+
+            [Test]
+            public void RedirectToTheListViewIfNoErrorsOccurred()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Edit(1, concertToSave);
+
+                result.AssertActionRedirect().ToAction("List");
+            }
+        }
     }
 }
