@@ -202,7 +202,6 @@
     <Compile Include="Controllers\SidebarController.cs" />
     <Compile Include="Controllers\SideBar.cs" />
     <Compile Include="Controllers\SideBarFactory.cs" />
-    <Compile Include="Helpers\InputTypes.cs" />
     <Compile Include="Infrastructure\FormsAuthenticationService.cs" />
     <Compile Include="Infrastructure\GoogleOAuthConfiguration.cs" />
     <Compile Include="Infrastructure\IOAuthConfiguration.cs" />
@@ -333,6 +332,8 @@
     <Content Include="Views\Concerts\_ConcertEditForm.cshtml" />
     <Content Include="Views\Shared\_MarkdownEditor.cshtml" />
     <Content Include="Views\Concerts\Edit.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
