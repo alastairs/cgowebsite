@@ -344,6 +344,17 @@ namespace CGO.Web.Tests.Controllers
 
                 result.AssertActionRedirect().ToAction("List");
             }
+
+            [Test]
+            public void RedisplayTheEditViewWhenValidationErrorsArePresent()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                controller.ModelState.AddModelError("Date", "Not a date");
+
+                var result = controller.Edit(1, concertToSave);
+
+                result.AssertViewRendered().ForView("Edit");
+            }
         }
     }
 }

@@ -110,11 +110,14 @@ namespace CGO.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Edit(int id, ConcertViewModel collection)
+        public ActionResult Edit(int id, ConcertViewModel viewModel)
         {
             try
             {
-                // TODO: Add update logic here
+                if (!ModelState.IsValid)
+                {
+                    return View("Edit");
+                }
 
                 return RedirectToAction("List");
             }
