@@ -1,0 +1,38 @@
+﻿@using (Html.BeginForm("Authenticate", "User", routeValues: new { ReturnUrl = Request.QueryString["ReturnUrl"] }, method: FormMethod.Post, htmlAttributes: new { id = "openid_form" }))
+{
+    <div id="openIdLogin" class="modal hide fade" style="width: 600px">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3>Log In with OpenID</h3>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="action" value="verify" />
+            <div id="openid_choice">
+                <p>Please choose the account you would like to log in with:</p>
+                <div id="openid_btns"></div>
+            </div>
+            <div id="openid_input_area">
+                <input id="openid_identifier" name="openid_identifier" type="text" value="http://" />
+            </div>
+            <div>
+                <p>Or you can enter your OpenID manually:</p>
+                <input id="openid_manual" name="openid_manual" /><button type="submit" class="btn">Log In</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+        </div>
+    </div>
+}
+
+@Styles.Render("~/bundles/openid-css")
+@Scripts.Render("~/bundles/openid")
+<script>
+    (function () {
+        openid.init('openid_identifier');
+        $('#openid_submit').addClass("btn btn-primary");
+        $('#openid_submit').css('margin-top', '-8px');
+        $('#openid_submit').css('margin-left', '5px');
+        $('#openid_submit').val('Log In');
+    })();
+</script>

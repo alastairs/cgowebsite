@@ -18,7 +18,7 @@ namespace CGO.Web.Tests.Controllers
             {
                 var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
                 oAuthConfiguration.OauthTokenUrl.Returns("http://localhost/");
-                var controller = new GoogleController(Substitute.For<IFormsAuthenticationService>(), oAuthConfiguration);
+                var controller = new OAuthController(Substitute.For<IFormsAuthenticationService>(), oAuthConfiguration);
 
                 var result = controller.OAuthCallback("code", "state");
 
@@ -31,7 +31,7 @@ namespace CGO.Web.Tests.Controllers
             {
                 var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
                 oAuthConfiguration.OauthTokenUrl.Returns("http://localhost/");
-                var controller = new GoogleController(Substitute.For<IFormsAuthenticationService>(), oAuthConfiguration);
+                var controller = new OAuthController(Substitute.For<IFormsAuthenticationService>(), oAuthConfiguration);
 
                 const string redirectUrl = "/Concerts";
                 var result = controller.OAuthCallback("code", "state", redirectUrl);
@@ -42,13 +42,13 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheProvidedFormsAuthenticationServiceIsNull()
             {
-                Assert.That(() => new GoogleController(null, Substitute.For<IOAuthConfiguration>()), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new OAuthController(null, Substitute.For<IOAuthConfiguration>()), Throws.InstanceOf<ArgumentNullException>());
             }
 
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheProvidedOAuthConfigurationIsNull()
             {
-                Assert.That(() => new GoogleController(Substitute.For<IFormsAuthenticationService>(), null), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new OAuthController(Substitute.For<IFormsAuthenticationService>(), null), Throws.InstanceOf<ArgumentNullException>());
             }
 
             [Test]
@@ -58,7 +58,7 @@ namespace CGO.Web.Tests.Controllers
                 var formsAuthenticationService = Substitute.For<IFormsAuthenticationService>();
                 var oAuthConfiguration = Substitute.For<IOAuthConfiguration>();
                 oAuthConfiguration.OauthTokenUrl.Returns("http://localhost/");
-                var controller = new GoogleController(formsAuthenticationService, oAuthConfiguration);
+                var controller = new OAuthController(formsAuthenticationService, oAuthConfiguration);
 
                 controller.OAuthCallback("code", "state");
                 
