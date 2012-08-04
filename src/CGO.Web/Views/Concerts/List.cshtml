@@ -1,6 +1,4 @@
-﻿@model IEnumerable<CGO.Web.ViewModels.ConcertViewModel>
-
-@{
+﻿@{
     ViewBag.Title = "All Concerts";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -22,7 +20,7 @@
     <tbody data-bind="foreach: concerts">
         <tr data-bind="attr: { id: 'concert-' + id }">
             <td data-bind="text: title"></td>
-            <td data-bind="text: dateAndStartTime">@*@concert.Date.ToString("d MMM yyyy") @concert.StartTime.ToShortTimeString()*@</td>
+            <td data-bind="text: dateAndStartTime"></td>
             <td data-bind="text: location"></td>
             <td data-bind="text: isPublished"></td>
             <td>
@@ -35,7 +33,7 @@
     <tfoot>
         <tr>
             <form id="quickAdd" data-bind="submit: quickAdd">
-                @Html.Hidden("Published", false)
+                @Html.Hidden("IsPublished", false)
                 <td>@Html.TextBox("ConcertViewModel.Title", value: null, htmlAttributes: new { placeholder = "Title", @class = "quickAddField" })</td>
                 <td>
                     @Html.TextBox("ConcertViewModel.Date", value: null, htmlAttributes: new { placeholder = "Date: dd/mm/yyyy", @class = "quickAddField-small", type="date" })

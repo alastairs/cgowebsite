@@ -1,0 +1,2 @@
+﻿@model DateTime?
+@Html.TextBox("", Model.HasValue ? Model.Value.ToString("HH:mm") : string.Empty, new { @class = "datetime", type = "time", placeholder = "Enter start time" })

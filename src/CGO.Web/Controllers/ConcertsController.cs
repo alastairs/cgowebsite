@@ -68,26 +68,15 @@ namespace CGO.Web.Controllers
         //[Authorize]
         public ActionResult Create(ConcertViewModel concertViewModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View("Create", concertViewModel);
-                }
-
-                var dateAndStartTime = new DateTime(concertViewModel.Date.Year, concertViewModel.Date.Month, concertViewModel.Date.Day,
-                                                    concertViewModel.StartTime.Hour, concertViewModel.StartTime.Minute, 00);
-                var concert = new Concert(concertViewModel.Id, concertViewModel.Title, dateAndStartTime, concertViewModel.Location);
-                session.Store(concert);
-
-                session.SaveChanges();
-
-                return RedirectToAction("List");
+                return View("Create", concertViewModel);
             }
-            catch
-            {
-                return View(concertViewModel);
-            }
+
+            session.Store(concertViewModel.ToModel<Concert, ConcertViewModel>());
+            session.SaveChanges();
+
+            return RedirectToAction("List");
         }
 
         //
@@ -95,7 +84,14 @@ namespace CGO.Web.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
-            return View();
+            var concert = session.Load<Concert>(id);
+
+            if (concert == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View("Edit", concert.ToViewModel<Concert, ConcertViewModel>());
         }
 
         //
@@ -103,52 +99,26 @@ namespace CGO.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, ConcertViewModel viewModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                return View("Edit", viewModel);
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            session.Store(viewModel.ToModel<Concert, ConcertViewModel>());
+            session.SaveChanges();
+
+            return RedirectToAction("List");
         }
 
         //
-        // GET: /Concerts/Delete/5
-        [Authorize]
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Concerts/Delete/5
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        // GET: /Concerts/List
 
         [Authorize]
         public ActionResult List()
         {
-            var concerts = session.Query<Concert>();
-            return View("List", concerts.ToList().Select(c => c.ToViewModel<Concert, ConcertViewModel>()));
+            return View("List");
         }
     }
 }
