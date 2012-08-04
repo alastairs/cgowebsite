@@ -1,3 +1,5 @@
+using System.Web.Security;
+
 namespace CGO.Web.Infrastructure
 {
     /// <summary>
@@ -12,5 +14,10 @@ namespace CGO.Web.Infrastructure
         /// <param name="username">The name of an authenticated user. This does not have to map to a Windows account. </param>
         /// <param name="persistent"><c>true</c> to create a persistent cookie (one that is saved across browser sessions); otherwise, <c>false</c>. </param>
         void SetAuthenticationCookie(string username, bool persistent);
+
+        /// <summary>
+        /// Clears the authentication cookie to log the user out of the site.
+        /// </summary>
+        void SignOut();
     }
 }
