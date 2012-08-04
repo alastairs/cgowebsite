@@ -115,6 +115,8 @@ namespace CGO.Web.Controllers
                     return View("Edit", viewModel);
                 }
 
+                session.Store(viewModel.ToModel<Concert, ConcertViewModel>());
+
                 return RedirectToAction("List");
             }
             catch
