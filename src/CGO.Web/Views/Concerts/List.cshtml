@@ -1,6 +1,4 @@
-﻿@model IEnumerable<CGO.Web.ViewModels.ConcertViewModel>
-
-@{
+﻿@{
     ViewBag.Title = "All Concerts";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -22,7 +20,7 @@
     <tbody data-bind="foreach: concerts">
         <tr data-bind="attr: { id: 'concert-' + id }">
             <td data-bind="text: title"></td>
-            <td data-bind="text: dateAndStartTime">@*@concert.Date.ToString("d MMM yyyy") @concert.StartTime.ToShortTimeString()*@</td>
+            <td data-bind="text: dateAndStartTime"></td>
             <td data-bind="text: location"></td>
             <td data-bind="text: isPublished"></td>
             <td>

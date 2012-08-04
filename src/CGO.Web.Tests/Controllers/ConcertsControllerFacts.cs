@@ -171,41 +171,7 @@ namespace CGO.Web.Tests.Controllers
 
                 var result = controller.List();
 
-                result.AssertViewRendered().ForView("List").WithViewData<IEnumerable<ConcertViewModel>>();
-            }
-
-            [Test]
-            public void RetrieveAllConcertsFromTheDatabase()
-            {
-                var mockRavenSession = Substitute.For<IDocumentSession>();
-                var mockQueryResult = Substitute.For<IRavenQueryable<Concert>>();
-                mockRavenSession.Query<Concert>().ReturnsForAnyArgs(mockQueryResult);
-                var controller = new ConcertsController(mockRavenSession);
-
-                controller.List();
-
-                mockRavenSession.Received().Query<Concert>();
-            }
-
-            [Test]
-            public void ConvertTheRetrievedConcertsToConcertViewModels()
-            {
-                var controller = new ConcertsController(Session);
-                var expectedViewModel = new[]
-                {
-                    new ConcertViewModel
-                    {
-                        Id = sampleConcert.Id,
-                        Title = sampleConcert.Title,
-                        Date = sampleConcert.DateAndStartTime,
-                        StartTime = sampleConcert.DateAndStartTime,
-                        Location = sampleConcert.Location
-                    }
-                };
-
-                var result = controller.List() as ViewResult;
-
-                Assert.That(result.Model, Is.EqualTo(expectedViewModel).Using(new ConcertViewModelEqualityComparer()));
+                result.AssertViewRendered().ForView("List");
             }
 
             [SetUp]
