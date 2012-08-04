@@ -1,7 +1,7 @@
 ﻿@model CGO.Web.ViewModels.ConcertViewModel
 
 @{ Html.EnableClientValidation(); }
-@using (Html.BeginForm("Create", "Concerts", FormMethod.Post, new { id = "CreateConcert" }))
+@using (Html.BeginForm())
 {
     @Html.ValidationSummary(false, "Oh dear, the violas made a boo-boo. Please go back and fix the following mistakes:")
     
@@ -43,8 +43,8 @@
 
         <p>
             @Html.HiddenFor(c => c.IsPublished)
-            <input type="submit" value="Publish Concert" class="btn btn-primary" onclick="$('#IsPublished').val(true);$('#CreateConcert').submit();" />
-            <input type="submit" value="Save for later" class="btn" onclick="$('#IsPublished').val(false);$('#CreateConcert').submit();" />
+            <input type="submit" value="Publish Concert" class="btn btn-primary" onclick="$('#IsPublished').val(true);$(this).submit();" />
+            <input type="submit" value="Save for later" class="btn" onclick="$('#IsPublished').val(false);$(this).submit();" />
             <input type="reset" value="Discard" class="btn" />
         </p>
     </fieldset>
