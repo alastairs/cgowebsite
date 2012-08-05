@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
+
 using CGO.Web.Controllers;
 using CGO.Web.Models;
 using MvcContrib.TestHelper;
@@ -69,7 +71,7 @@ namespace CGO.Web.Tests.Controllers
 
             private static ISideBarFactory GetMockSideBarFactory(IEnumerable<SideBarSection> expectedSideBarSections)
             {
-                var sideBar = Substitute.For<SideBar>(Arg.Any<UrlHelper>());
+                var sideBar = Substitute.For<SideBar>(Substitute.For<UrlHelper>(Substitute.For<RequestContext>()));
                 sideBar.GetSideBarSections().Returns(_ => expectedSideBarSections); 
                 
                 var sideBarFactory = Substitute.For<ISideBarFactory>();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using CGO.Web.Models;
@@ -8,6 +9,11 @@ namespace CGO.Web.Controllers
     {
         protected SideBar(UrlHelper urlHelper)
         {
+            if (urlHelper == null)
+            {
+                throw new ArgumentNullException("urlHelper");
+            }
+
             Url = urlHelper;
         }
 
