@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 
 using CGO.Web.Controllers;
+using CGO.Web.Infrastructure;
 
 using NSubstitute;
 
@@ -24,7 +25,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheDocumentSessionFactoryIsNull()
             {
-                Assert.That(() => new ConcertsSideBar(Substitute.For<UrlHelper>(Substitute.For<RequestContext>()), null), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new ConcertsSideBar(Substitute.For<IUrlHelper>(), null), Throws.InstanceOf<ArgumentNullException>());
             }
         }
     }
