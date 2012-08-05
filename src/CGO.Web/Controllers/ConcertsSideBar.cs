@@ -30,23 +30,34 @@ namespace CGO.Web.Controllers
 
         public override IEnumerable<SideBarSection> GetSideBarSections()
         {
-            var currentSeason = new SideBarSection("Current Season");
-
             using(var session = documentSessionFactory.CreateSession())
             {
-                var concerts = session.Query<Concert>().OrderBy(c => c.DateAndStartTime).ToList().Where(ConcertIsInCurrentSeason);
-                foreach (var concert in concerts)
-                {
-                    currentSeason.AddLink(new SideBarLink(concert.Title, Url.Action("Details", "Concerts", new { id = concert.Id }), false));
-                }
-            }
+                var concerts = session.Query<Concert>()
+                                      .OrderBy(c => c.DateAndStartTime)
+                                      .ToList(); 
+                
+                var currentSeason = GetSeasonSideBarSection(concerts, "Current Season", dateTimeProvider.Now.Year);
+                var lastSeason = GetSeasonSideBarSection(concerts, "Last Season", dateTimeProvider.Now.Year - 1);
 
-            return new[] { currentSeason };
+                return new[] { currentSeason, lastSeason };
+            }
         }
 
-        private bool ConcertIsInCurrentSeason(Concert concert)
+        private SideBarSection GetSeasonSideBarSection(IEnumerable<Concert> concerts, string title, int year)
         {
-            var currentYear = dateTimeProvider.Now.Month > 7 ? dateTimeProvider.Now.Year : dateTimeProvider.Now.Year - 1;
+            var currentSeason = new SideBarSection(title);
+
+            foreach (var concert in concerts.Where(c => ConcertIsInSeason(c, year)))
+            {
+                currentSeason.AddLink(new SideBarLink(concert.Title, Url.Action("Details", "Concerts", new { id = concert.Id }), false));
+            }
+
+            return currentSeason;
+        }
+
+        private bool ConcertIsInSeason(Concert concert, int seasonYear)
+        {
+            var currentYear = dateTimeProvider.Now.Month > 7 ? seasonYear : seasonYear - 1;
             
             return concert.DateAndStartTime >= new DateTime(currentYear, 08, 01) && concert.DateAndStartTime <= new DateTime(currentYear + 1, 07, 31);
         }
