@@ -30,6 +30,12 @@ namespace CGO.Web.Tests.Controllers
             {
                 Assert.That(() => new ConcertsSideBar(Substitute.For<IUrlHelper>(), null, Substitute.For<IDateTimeProvider>()), Throws.InstanceOf<ArgumentNullException>());
             }
+
+            [Test]
+            public void ThrowAnArgumentNullExceptionWhenTheDateTimeProviderIsNull()
+            {
+                Assert.That(() => new ConcertsSideBar(Substitute.For<IUrlHelper>(), Substitute.For<IDocumentSessionFactory>(), null), Throws.InstanceOf<ArgumentNullException>());
+            }
         }
 
         [TestFixture]
@@ -157,6 +163,132 @@ namespace CGO.Web.Tests.Controllers
                 });
 
                 Assert.That(sections.First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+            }
+
+            [Test]
+            public void ReturnTheSecondSectionForTheLastSeason()
+            {
+                var concerts = new[] { new Concert(2, "Concert", new DateTime(2011, 06, 01, 20, 00, 00), "Venue") };
+                CreateSampleData(concerts);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+
+                var sections = sideBar.GetSideBarSections();
+
+                Assert.That(sections.Skip(1).First().Title, Is.EqualTo("Last Season"));
+            }
+
+            [Test]
+            public void PresentTheLastSeasonWithTheMichaelmasConcert()
+            {
+                var michaelmasConcert = new Concert(2, "Michaelmas Concert", new DateTime(2010, 11, 26, 20, 00, 00), "Venue");
+                var concerts = new[]
+                {
+                    michaelmasConcert
+                };
+                CreateSampleData(concerts);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+
+                var sections = sideBar.GetSideBarSections();
+
+                var expectedSideBar = new SideBarSection("Last Season", new[]
+                {
+                    new SideBarLink(michaelmasConcert.Title, "/Concerts/Details/" + michaelmasConcert.Id, false)
+                });
+                Assert.That(sections.Skip(1).First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+            }
+
+            [Test]
+            public void PresentTheLastSeasonWithTheSummerConcert()
+            {
+                var summerConcert = new Concert(2, "Summer Concert", new DateTime(2011, 06, 24, 20, 00, 00), "Venue");
+                var concerts = new[]
+                {
+                    summerConcert
+                };
+                CreateSampleData(concerts);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+
+                var sections = sideBar.GetSideBarSections();
+
+                var expectedSideBar = new SideBarSection("Last Season", new[]
+                {
+                    new SideBarLink(summerConcert.Title, "/Concerts/Details/" + summerConcert.Id, false)
+                });
+                Assert.That(sections.Skip(1).First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+            }
+
+            [Test]
+            public void PresentTheLastSeasonWithConcertsInTheCurrentYear()
+            {
+                var summerConcert = new Concert(2, "Summer Concert", new DateTime(2011, 06, 24, 20, 00, 00), "Venue");
+                var concerts = new[]
+                {
+                    summerConcert
+                };
+                CreateSampleData(concerts);
+                dateTimeProvider.Now.Returns(new DateTime(2011, 12, 01));
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+
+                var sections = sideBar.GetSideBarSections();
+
+                var expectedSideBar = new SideBarSection("Last Season", new[]
+                {
+                    new SideBarLink(summerConcert.Title, "/Concerts/Details/" + summerConcert.Id, false)
+                });
+                Assert.That(sections.Skip(1).First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+            }
+
+            [Test]
+            public void PresentTheLastSeasonSortedByDateAndStartTimeInAscendingOrder()
+            {
+                var concerts = new[]
+                {
+                    new Concert(2, "Last Season concert 2", new DateTime(2011, 06, 24, 20, 00, 00), "Venue"),
+                    new Concert(1, "Last Season concert 1", new DateTime(2011, 04, 15, 20, 00, 00), "Venue")
+                };
+                CreateSampleData(concerts);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+
+                var sections = sideBar.GetSideBarSections();
+
+                var expectedSideBar = new SideBarSection("Last Season", new[]
+                {
+                    new SideBarLink("Last Season concert 1", "/Concerts/Details/1", false), 
+                    new SideBarLink("Last Season concert 2", "/Concerts/Details/2", false) 
+                });
+                Assert.That(sections.Skip(1).First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+            }
+
+            [Test]
+            public void PresentTheLastSeasonAsTheSecondSection()
+            {
+                var currentSeasonConcerts = new[]
+                {
+                    new Concert(4, "Summer Concert", new DateTime(2012, 06, 29, 20, 00, 00), "Venue"),
+                    new Concert(1, "Michaelmas Concert", new DateTime(2011, 11, 18, 20, 00, 00), "Venue"),
+                    new Concert(3, "Spring Concert", new DateTime(2012, 04, 11, 20, 00, 00), "Venue"),
+                    new Concert(2, "Lent Concert", new DateTime(2012, 03, 09, 20, 00, 00), "Venue")
+                };
+                var lastSeasonConcerts = new[]
+                {
+                    new Concert(8, "Summer Concert", new DateTime(2011, 06, 24, 20, 00, 00), "Venue"),
+                    new Concert(5, "Michaelmas Concert", new DateTime(2010, 11, 26, 20, 00, 00), "Venue"),
+                    new Concert(7, "Spring Concert", new DateTime(2011, 04, 15, 20, 00, 00), "Venue"),
+                    new Concert(6, "Lent Concert", new DateTime(2011, 03, 11, 20, 00, 00), "Venue")
+                };
+                CreateSampleData(currentSeasonConcerts.Concat(lastSeasonConcerts));
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+
+                var sections = sideBar.GetSideBarSections();
+
+                var lastSeasonSection = new SideBarSection("Last Season", new[]
+                {
+                    new SideBarLink("Michaelmas Concert", "/Concerts/Details/5", false),
+                    new SideBarLink("Lent Concert", "/Concerts/Details/6", false),
+                    new SideBarLink("Spring Concert", "/Concerts/Details/7", false),
+                    new SideBarLink("Summer Concert", "/Concerts/Details/8", false)
+                });
+                Assert.That(sections.Skip(1).First(), Is.EqualTo(lastSeasonSection).Using(new SideBarSectionEqualityComparer()));
             }
 
             [SetUp]
