@@ -35,6 +35,7 @@ namespace CGO.Web.Tests.Controllers
         public class GetSideBarSectionsShould : RavenTest
         {
             private SideBarSection currentSeason;
+            private SideBarSection lastSeason;
 
             [Test]
             public void ReturnTheFirstSectionForTheCurrentSeason()
@@ -56,6 +57,16 @@ namespace CGO.Web.Tests.Controllers
                 Assert.That(sections.First(), Is.EqualTo(currentSeason).Using(new SideBarSectionEqualityComparer()));
             }
 
+            [Test]
+            public void ReturnTheSecondSectionForThePreviousSeason()
+            {
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store));
+
+                var sections = sideBar.GetSideBarSections();
+
+                Assert.That(sections.Skip(1).First().Title, Is.EqualTo(lastSeason.Title));
+            }
+
             [SetUp]
             public void CreateExpectedSideBarSections()
             {
@@ -65,6 +76,14 @@ namespace CGO.Web.Tests.Controllers
                     new SideBarLink("Concert 2", "/Concerts/Details/2", false),
                     new SideBarLink("Concert 3", "/Concerts/Details/3", false),
                     new SideBarLink("Concert 4", "/Concerts/Details/4", false)
+                });
+
+                lastSeason = new SideBarSection("Last Season", new[]
+                {
+                    new SideBarLink("Past Concert 1", "/Concerts/Details/5", false), 
+                    new SideBarLink("Past Concert 2", "/Concerts/Details/6", false), 
+                    new SideBarLink("Past Concert 3", "/Concerts/Details/7", false), 
+                    new SideBarLink("Past Concert 4", "/Concerts/Details/8", false), 
                 });
             }
 
