@@ -1,10 +1,10 @@
-using System.Web.Mvc;
+using CGO.Web.Infrastructure;
 
 namespace CGO.Web.Controllers
 {
     public class SideBarFactory : ISideBarFactory
     {
-        public SideBar CreateSideBar(UrlHelper urlHelper, string controllerName, IDocumentSessionFactory documentSessionFactory)
+        public SideBar CreateSideBar(IUrlHelper urlHelper, string controllerName, IDocumentSessionFactory documentSessionFactory)
         {
             switch(controllerName)
             {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
+
+using CGO.Web.Infrastructure;
 using CGO.Web.Models;
 
 namespace CGO.Web.Controllers
@@ -9,7 +10,7 @@ namespace CGO.Web.Controllers
     {
         private readonly IDocumentSessionFactory documentSessionFactory;
 
-        public ConcertsSideBar(UrlHelper urlHelper, IDocumentSessionFactory documentSessionFactory) : base(urlHelper)
+        public ConcertsSideBar(IUrlHelper urlHelper, IDocumentSessionFactory documentSessionFactory) : base(urlHelper)
         {
             if (documentSessionFactory == null)
             {
