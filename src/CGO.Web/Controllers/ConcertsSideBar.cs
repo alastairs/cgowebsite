@@ -24,6 +24,8 @@ namespace CGO.Web.Controllers
         public override IEnumerable<SideBarSection> GetSideBarSections()
         {
             var currentSeasonSection = new SideBarSection("Current Season");
+            var lastSeasonSection = new SideBarSection("Last Season");
+
             using (var session = documentSessionFactory.CreateSession())
             {
                 var concerts = session.Query<Concert>().OrderBy(c => c.DateAndStartTime).ToList();
@@ -34,7 +36,7 @@ namespace CGO.Web.Controllers
                 }
             }
 
-            return new[] { currentSeasonSection };
+            return new[] { currentSeasonSection, lastSeasonSection };
         }
     }
 }
