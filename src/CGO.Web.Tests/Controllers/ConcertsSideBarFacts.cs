@@ -46,6 +46,16 @@ namespace CGO.Web.Tests.Controllers
                 Assert.That(sections.First().Title, Is.EqualTo(currentSeason.Title));
             }
 
+            [Test]
+            public void ReturnTheFirstSectionSortedByDateAscending()
+            {
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store));
+
+                var sections = sideBar.GetSideBarSections();
+
+                Assert.That(sections.First(), Is.EqualTo(currentSeason).Using(new SideBarSectionEqualityComparer()));
+            }
+
             [SetUp]
             public void CreateExpectedSideBarSections()
             {

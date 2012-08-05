@@ -26,7 +26,7 @@ namespace CGO.Web.Controllers
             var currentSeasonSection = new SideBarSection("Current Season");
             using (var session = documentSessionFactory.CreateSession())
             {
-                var concerts = session.Query<Concert>().ToList();
+                var concerts = session.Query<Concert>().OrderBy(c => c.DateAndStartTime).ToList();
 
                 foreach (var concert in concerts)
                 {
