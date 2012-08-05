@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
@@ -21,83 +22,152 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheUrlHelperIsNull()
             {
-                Assert.That(() => new ConcertsSideBar(null, Substitute.For<IDocumentSessionFactory>()), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new ConcertsSideBar(null, Substitute.For<IDocumentSessionFactory>(), Substitute.For<IDateTimeProvider>()), Throws.InstanceOf<ArgumentNullException>());
             }
 
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheDocumentSessionFactoryIsNull()
             {
-                Assert.That(() => new ConcertsSideBar(Substitute.For<IUrlHelper>(), null), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new ConcertsSideBar(Substitute.For<IUrlHelper>(), null, Substitute.For<IDateTimeProvider>()), Throws.InstanceOf<ArgumentNullException>());
             }
         }
 
         [TestFixture]
         public class GetSideBarSectionsShould : RavenTest
         {
-            private SideBarSection currentSeason;
-            private SideBarSection lastSeason;
+            private IDateTimeProvider dateTimeProvider;
 
             [Test]
             public void ReturnTheFirstSectionForTheCurrentSeason()
             {
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store));
+                var concerts = new[] { new Concert(1, "Concert", new DateTime(2012, 12, 01, 20, 00, 00), "Venue") };
+                CreateSampleData(concerts);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
-                Assert.That(sections.First().Title, Is.EqualTo(currentSeason.Title));
+                Assert.That(sections.First().Title, Is.EqualTo("Current Season"));
             }
 
             [Test]
-            public void ReturnTheFirstSectionSortedByDateAscending()
+            public void PresentTheCurrentSeasonWithConcertsInTheFuture()
             {
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store));
+                var futureConcert = new Concert(2, "Concert in the future", new DateTime(2012, 06, 29, 20, 00, 00), "Venue");
+                var concerts = new[]
+                {
+                    new Concert(1, "Concert in the past", new DateTime(2011, 06, 27, 20, 00, 00), "Venue"),
+                    futureConcert
+                };
+                CreateSampleData(concerts);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
-                Assert.That(sections.First(), Is.EqualTo(currentSeason).Using(new SideBarSectionEqualityComparer()));
+                var expectedSideBar = new SideBarSection("Current Season", new[]
+                {
+                    new SideBarLink(futureConcert.Title, "/Concerts/Details/" + futureConcert.Id, false)
+                });
+                Assert.That(sections.First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
             }
 
             [Test]
-            public void ReturnTheSecondSectionForThePreviousSeason()
+            public void PresentTheCurrentSeasonWithNoConcertsFromTheNextSeason()
             {
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store));
+                var futureConcert = new Concert(2, "Current Season concert in the future", new DateTime(2012, 06, 29, 20, 00, 00), "Venue");
+                var concerts = new[]
+                {
+                    new Concert(1, "Next Season concert", new DateTime(2012, 12, 01, 20, 00, 00), "Venue"),
+                    futureConcert
+                };
+                CreateSampleData(concerts);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
-                Assert.That(sections.Skip(1).First().Title, Is.EqualTo(lastSeason.Title));
+                var expectedSideBar = new SideBarSection("Current Season", new[]
+                {
+                    new SideBarLink(futureConcert.Title, "/Concerts/Details/" + futureConcert.Id, false)
+                });
+                Assert.That(sections.First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
             }
 
-            [SetUp]
-            public void CreateExpectedSideBarSections()
+            [Test]
+            public void PresentTheCurrentSeasonWithConcertsInThePast()
             {
-                currentSeason = new SideBarSection("Current Season", new[]
+                var pastConcert = new Concert(1, "Current Season concert in the past", new DateTime(2012, 04, 11, 20, 00, 00), "Venue");
+                var concerts = new[]
                 {
-                    new SideBarLink("Concert 1", "/Concerts/Details/1", false),
-                    new SideBarLink("Concert 2", "/Concerts/Details/2", false),
-                    new SideBarLink("Concert 3", "/Concerts/Details/3", false),
-                    new SideBarLink("Concert 4", "/Concerts/Details/4", false)
-                });
+                    pastConcert,
+                    new Concert(2, "Last Season concert", new DateTime(2011, 06, 27, 20, 00, 00), "Venue")
+                };
+                CreateSampleData(concerts);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
 
-                lastSeason = new SideBarSection("Last Season", new[]
+                var sections = sideBar.GetSideBarSections();
+
+                var expectedSideBar = new SideBarSection("Current Season", new[]
                 {
-                    new SideBarLink("Past Concert 1", "/Concerts/Details/5", false), 
-                    new SideBarLink("Past Concert 2", "/Concerts/Details/6", false), 
-                    new SideBarLink("Past Concert 3", "/Concerts/Details/7", false), 
-                    new SideBarLink("Past Concert 4", "/Concerts/Details/8", false), 
+                    new SideBarLink(pastConcert.Title, "/Concerts/Details/" + pastConcert.Id, false) 
                 });
+                Assert.That(sections.First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
             }
 
-            [SetUp]
-            public void CreateSampleData()
+            [Test]
+            public void PresentTheCurrentSeasonSortedByDateAndStartTimeInAscendingOrder()
             {
                 var concerts = new[]
                 {
-                    new Concert(1, "Concert 1", DateTime.Now.AddDays(1d), "Concert Hall"),
-                    new Concert(3, "Concert 3", DateTime.Now.AddDays(3d), "Concert Hall"),
-                    new Concert(2, "Concert 2", DateTime.Now.AddDays(2d), "Concert Hall"),
-                    new Concert(4, "Concert 4", DateTime.Now.AddDays(4d), "Concert Hall")
+                    new Concert(2, "Current Season concert 2", new DateTime(2012, 06, 29, 20, 00, 00), "Venue"),
+                    new Concert(1, "Current Season concert 1", new DateTime(2012, 04, 11, 20, 00, 00), "Venue")
                 };
+                CreateSampleData(concerts);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
 
+                var sections = sideBar.GetSideBarSections();
+
+                var expectedSideBar = new SideBarSection("Current Season", new[]
+                {
+                    new SideBarLink("Current Season concert 1", "/Concerts/Details/1", false), 
+                    new SideBarLink("Current Season concert 2", "/Concerts/Details/2", false) 
+                });
+                Assert.That(sections.First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+            }
+
+            [Test]
+            public void PresentTheCurrentSeasonAsTheFirstSection()
+            {
+                var concerts = new[]
+                {
+                    new Concert(4, "Summer Concert", new DateTime(2012, 06, 29, 20, 00, 00), "Venue"),
+                    new Concert(1, "Michaelmas Concert", new DateTime(2011, 11, 18, 20, 00, 00), "Venue"), 
+                    new Concert(3, "Spring Concert", new DateTime(2012, 04, 11, 20, 00, 00), "Venue"), 
+                    new Concert(2, "Lent Concert", new DateTime(2012, 03, 09, 20, 00, 00), "Venue")
+                };
+                CreateSampleData(concerts);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+
+                var sections = sideBar.GetSideBarSections();
+
+                var expectedSideBar = new SideBarSection("Current Season", new[]
+                {
+                    new SideBarLink("Michaelmas Concert", "/Concerts/Details/1", false), 
+                    new SideBarLink("Lent Concert", "/Concerts/Details/2", false), 
+                    new SideBarLink("Spring Concert", "/Concerts/Details/3", false), 
+                    new SideBarLink("Summer Concert", "/Concerts/Details/4", false) 
+                });
+
+                Assert.That(sections.First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+            }
+
+            [SetUp]
+            public void FixDateTimeNow()
+            {
+                dateTimeProvider = Substitute.For<IDateTimeProvider>();
+                dateTimeProvider.Now.Returns(new DateTime(2012, 05, 01));
+            }
+
+            public void CreateSampleData(IEnumerable<Concert> concerts)
+            {
                 using (var sampleDataSession = Store.OpenSession())
                 {
                     foreach (var concert in concerts)
