@@ -34,13 +34,24 @@ namespace CGO.Web.Controllers
             {
                 var concerts = session.Query<Concert>()
                                       .OrderBy(c => c.DateAndStartTime)
-                                      .ToList(); 
+                                      .ToList();
                 
                 var currentSeason = GetSeasonSideBarSection(concerts, "Current Season", dateTimeProvider.Now.Year);
                 var lastSeason = GetSeasonSideBarSection(concerts, "Last Season", dateTimeProvider.Now.Year - 1);
 
-                return new[] { currentSeason, lastSeason };
+                var archiveSection = GetArchiveSection(concerts, dateTimeProvider.Now.Year - 2);
+
+                return new[] { currentSeason, lastSeason, archiveSection };
             }
+        }
+
+        private SideBarSection GetArchiveSection(IEnumerable<Concert> concerts, int archiveStartYear)
+        {
+            var archiveSection = new SideBarSection("Older");
+
+            archiveSection.AddLink(new SideBarLink("2009-10 Season", Url.Action("Archive", "Concerts", new { year = 2009 }), false));
+            
+            return archiveSection;
         }
 
         private SideBarSection GetSeasonSideBarSection(IEnumerable<Concert> concerts, string title, int year)
