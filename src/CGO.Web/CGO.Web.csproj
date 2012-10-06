@@ -465,14 +465,12 @@
     <Content Include="Images\yandex.ico" />
     <Content Include="Images\yandex.ico.gif" />
     <Content Include="Images\yandex.ico.png" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js">
-      <DependentUpon>bootstrap.js</DependentUpon>
-    </Content>
     <Content Include="font\fontawesome-webfont.eot" />
     <Content Include="font\fontawesome-webfont.ttf" />
     <Content Include="font\fontawesome-webfont.woff" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\datepicker.js" />
     <None Include="Scripts\jquery-1.8.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
