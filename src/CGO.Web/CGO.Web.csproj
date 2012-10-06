@@ -303,7 +303,7 @@
     <Compile Include="Views\FormatStrings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\packages\RavenDB.Embedded.1.2.2092-Unstable\tools\Raven.Studio.xap">
+    <Content Include="..\packages\RavenDB.Embedded.1.2.2103-Unstable\tools\Raven.Studio.xap">
       <Link>Raven.Studio.xap</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
