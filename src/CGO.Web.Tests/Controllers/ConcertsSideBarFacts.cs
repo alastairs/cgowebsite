@@ -351,10 +351,10 @@ namespace CGO.Web.Tests.Controllers
 
                 var archiveSection = new SideBarSection("Older", new[]
                 {
-                    new SideBarLink("2010-11 Season", "/Concerts/Archive?year=2010", false), 
                     new SideBarLink("2009-10 Season", "/Concerts/Archive?year=2009", false), 
                     new SideBarLink("2008-09 Season", "/Concerts/Archive?year=2008", false), 
-                    new SideBarLink("2007-08 Season", "/Concerts/Archive?year=2007", false)
+                    new SideBarLink("2007-08 Season", "/Concerts/Archive?year=2007", false),
+                    new SideBarLink("2006-07 Season", "/Concerts/Archive?year=2006", false)
                 });
                 Assert.That(sections.Skip(2).First(), Is.EqualTo(archiveSection).Using(new SideBarSectionEqualityComparer()));
             }
