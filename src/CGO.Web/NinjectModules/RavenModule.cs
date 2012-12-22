@@ -24,8 +24,8 @@ namespace CGO.Web.NinjectModules
                 Configuration = { Port = 28645 }
             };
 
-            documentStore.InitializeProfiling();
             documentStore.Initialize();
+            documentStore.InitializeProfiling();
 
             return documentStore;
         }
