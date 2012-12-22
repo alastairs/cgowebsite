@@ -49,7 +49,15 @@ namespace CGO.Web.Controllers
         {
             var archiveSection = new SideBarSection("Older");
 
-            archiveSection.AddLink(new SideBarLink("2009-10 Season", Url.Action("Archive", "Concerts", new { year = 2009 }), false));
+            int currentArchiveYear = archiveStartYear;
+            var firstEverConcert = concerts.OrderBy(c => c.DateAndStartTime).First();
+            while (currentArchiveYear >= firstEverConcert.DateAndStartTime.Year)
+            {
+                currentArchiveYear--;
+                var archiveSeasonEndYear = currentArchiveYear + 1 - 2000; // Drop the century
+                var seasonYears = string.Format("{0}-{1:D2}", currentArchiveYear, archiveSeasonEndYear);
+                archiveSection.AddLink(new SideBarLink(string.Format("{0} Season", seasonYears), Url.Action("Archive", "Concerts", new { year = currentArchiveYear }), false));
+            }
             
             return archiveSection;
         }
