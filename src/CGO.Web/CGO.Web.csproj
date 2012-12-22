@@ -272,6 +272,9 @@
     <Compile Include="Controllers\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsSideBar.cs" />
     <Compile Include="Controllers\EmptySideBar.cs" />
+    <Compile Include="Infrastructure\DateTimeProvider.cs" />
+    <Compile Include="Infrastructure\IDateTimeProvider.cs" />
+    <Compile Include="Infrastructure\IUrlHelper.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IDocumentSessionFactory.cs" />
@@ -289,6 +292,7 @@
     </Compile>
     <Compile Include="Helpers\MarkdownHelper.cs" />
     <Compile Include="Infrastructure\IFormsAuthenticationService.cs" />
+    <Compile Include="Infrastructure\MvcUrlHelper.cs" />
     <Compile Include="Infrastructure\NinjectWebApiDependencyResolver.cs" />
     <Compile Include="Infrastructure\NinjectScope.cs" />
     <Compile Include="Mappers\MapperExtensions.cs" />

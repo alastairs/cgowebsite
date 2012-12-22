@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Web.Mvc;
 
+using CGO.Web.Infrastructure;
+
 namespace CGO.Web.Controllers
 {
     public class SideBarController : Controller
@@ -28,7 +30,7 @@ namespace CGO.Web.Controllers
         [ChildActionOnly]
         public virtual ActionResult Display()
         {
-            var sideBar = sideBarFactory.CreateSideBar(Url, ControllerContext.RouteData.Values["RequestingController"] as string, documentSessionFactory);
+            var sideBar = sideBarFactory.CreateSideBar(new MvcUrlHelper(Url), ControllerContext.RouteData.Values["RequestingController"] as string, documentSessionFactory);
             var sideBarSections = sideBar.GetSideBarSections();
 
             return sideBarSections.Any() ? PartialView("_Sidebar", sideBarSections) : null;
