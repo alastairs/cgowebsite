@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+﻿using CGO.Web.Infrastructure;
 
 namespace CGO.Web.Controllers
 {
@@ -14,6 +14,6 @@ namespace CGO.Web.Controllers
         /// <param name="controllerName"> </param>
         /// <param name="documentSessionFactory"> </param>
         /// <returns></returns>
-        SideBar CreateSideBar(UrlHelper urlHelper, string controllerName, IDocumentSessionFactory documentSessionFactory);
+        SideBar CreateSideBar(IUrlHelper urlHelper, string controllerName, IDocumentSessionFactory documentSessionFactory);
     }
 }

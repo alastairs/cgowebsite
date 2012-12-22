@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
+using System.Linq;
+
+using CGO.Web.Infrastructure;
 using CGO.Web.Models;
 
 namespace CGO.Web.Controllers
@@ -8,45 +10,75 @@ namespace CGO.Web.Controllers
     public class ConcertsSideBar : SideBar
     {
         private readonly IDocumentSessionFactory documentSessionFactory;
+        private readonly IDateTimeProvider dateTimeProvider;
 
-        public ConcertsSideBar(UrlHelper urlHelper, IDocumentSessionFactory documentSessionFactory) : base(urlHelper)
+        public ConcertsSideBar(IUrlHelper urlHelper, IDocumentSessionFactory documentSessionFactory, IDateTimeProvider dateTimeProvider) : base(urlHelper)
         {
             if (documentSessionFactory == null)
             {
                 throw new ArgumentNullException("documentSessionFactory");
             }
 
+            if (dateTimeProvider == null)
+            {
+                throw new ArgumentNullException("dateTimeProvider");
+            }
+
             this.documentSessionFactory = documentSessionFactory;
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         public override IEnumerable<SideBarSection> GetSideBarSections()
         {
-            return new[]
-                {
-                    new SideBarSection("2012-13 Season", new[]
-                        {
-                            new SideBarLink("Russian Heritage 1 December 2012", Url.Action("Details", "Concerts", new {id = 3}), false),
-                            new SideBarLink("The Witching Hour 8 March 2013", Url.Action("Details", "Concerts", new {id = 0}), false),
-                            new SideBarLink("Beethoven 12 April 2013", Url.Action("Details", "Concerts", new {id = 0}), false),
-                            new SideBarLink("28 June 2013", Url.Action("Details", "Concerts", new {id = 0}), false)
-                        }),
-                    new SideBarSection("Last Season", new[]
-                        {
-                            new SideBarLink("Music Inspired by Fairy Tales", Url.Action("Details", "Concerts", new {id = 0}), false),
-                            new SideBarLink("The Planets", Url.Action("Details", "Concerts", new {id = 0}), false),
-                            new SideBarLink("Music from Germany and Austria", Url.Action("Details", "Concerts", new {id = 1}), false),
-                            new SideBarLink("CGO Around The World", Url.Action("Details", "Concerts", new {id = 2}), false)
-                        }),
-                    new SideBarSection("Older", new[]
-                        {
-                            new SideBarLink("2010-11 Season", Url.Action("Archive", "Concerts", new {year = 2010}), false),
-                            new SideBarLink("2009-10 Season", Url.Action("Archive", "Concerts", new {year = 2009}), false),
-                            new SideBarLink("2008-09 Season", Url.Action("Archive", "Concerts", new {year = 2008}), false),
-                            new SideBarLink("2007-08 Season", Url.Action("Archive", "Concerts", new {year = 2007}), false),
-                            new SideBarLink("2006-07 Season", Url.Action("Archive", "Concerts", new {year = 2006}), false),
-                            new SideBarLink("2005-06 Season", Url.Action("Archive", "Concerts", new {year = 2005}), false)
-                        })
-                };
+            using(var session = documentSessionFactory.CreateSession())
+            {
+                var concerts = session.Query<Concert>()
+                                      .OrderBy(c => c.DateAndStartTime)
+                                      .ToList();
+                
+                var currentSeason = GetSeasonSideBarSection(concerts, "Current Season", dateTimeProvider.Now.Year);
+                var lastSeason = GetSeasonSideBarSection(concerts, "Last Season", dateTimeProvider.Now.Year - 1);
+
+                var archiveSection = GetArchiveSection(concerts, dateTimeProvider.Now.Year - 2);
+
+                return new[] { currentSeason, lastSeason, archiveSection };
+            }
+        }
+
+        private SideBarSection GetArchiveSection(IEnumerable<Concert> concerts, int archiveStartYear)
+        {
+            var archiveSection = new SideBarSection("Older");
+
+            int currentArchiveYear = archiveStartYear;
+            var firstEverConcert = concerts.OrderBy(c => c.DateAndStartTime).First();
+            while (currentArchiveYear >= firstEverConcert.DateAndStartTime.Year)
+            {
+                currentArchiveYear--;
+                var archiveSeasonEndYear = currentArchiveYear + 1 - 2000; // Drop the century
+                var seasonYears = string.Format("{0}-{1:D2}", currentArchiveYear, archiveSeasonEndYear);
+                archiveSection.AddLink(new SideBarLink(string.Format("{0} Season", seasonYears), Url.Action("Archive", "Concerts", new { year = currentArchiveYear }), false));
+            }
+            
+            return archiveSection;
+        }
+
+        private SideBarSection GetSeasonSideBarSection(IEnumerable<Concert> concerts, string title, int year)
+        {
+            var currentSeason = new SideBarSection(title);
+
+            foreach (var concert in concerts.Where(c => ConcertIsInSeason(c, year)))
+            {
+                currentSeason.AddLink(new SideBarLink(concert.Title, Url.Action("Details", "Concerts", new { id = concert.Id }), false));
+            }
+
+            return currentSeason;
+        }
+
+        private bool ConcertIsInSeason(Concert concert, int seasonYear)
+        {
+            var currentYear = dateTimeProvider.Now.Month > 7 ? seasonYear : seasonYear - 1;
+            
+            return concert.DateAndStartTime >= new DateTime(currentYear, 08, 01) && concert.DateAndStartTime <= new DateTime(currentYear + 1, 07, 31);
         }
     }
 }
