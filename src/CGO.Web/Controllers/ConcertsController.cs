@@ -33,7 +33,17 @@ namespace CGO.Web.Controllers
                                   .OrderBy(c => c.DateAndStartTime)
                                   .ToList();
 
-            return View("Index", concerts);
+            if (concerts.Any())
+            {
+                return View("Index", concerts);
+            }
+
+            if (Request.IsAuthenticated)
+            {
+                return View("List");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
         //
