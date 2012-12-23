@@ -13,13 +13,14 @@ using NSubstitute;
 using NUnit.Framework;
 
 using Raven.Client;
+using Rhino.Mocks;
 
 namespace CGO.Web.Tests.Controllers
 {
     public class ConcertsControllerFacts
     {
         [TestFixture]
-        public class IndexShould : RavenTest
+        public class WhenThereAreConcerts_IndexShould : RavenTest
         {
             private IEnumerable<Concert> concerts;
 
@@ -87,6 +88,35 @@ namespace CGO.Web.Tests.Controllers
 
                     sampleDataSession.SaveChanges();
                 }
+            }
+        }
+
+        [TestFixture]
+        public class WhenThereAreNoConcerts_IndexShould : RavenTest
+        {
+            [Test]
+            public void DisplayTheSiteHomePageIfTheRequestIsAnonymous()
+            {
+                var builder = new TestControllerBuilder();
+                var controller = new ConcertsController(Session);
+                builder.InitializeController(controller);
+
+                var result = controller.Index();
+
+                result.AssertActionRedirect().ToAction("Index").ToController("Home");
+            }
+
+            [Test]
+            public void DisplayTheCreateViewIfTheRequestIsAuthenticated()
+            {
+                var builder = new TestControllerBuilder();
+                var controller = new ConcertsController(Session);
+                builder.InitializeController(controller);
+                controller.Request.Stub(r => r.IsAuthenticated).Return(true); // Have to use RhinoMocks here, as that's what MvcContrib uses
+                
+                var result = controller.Index();
+
+                result.AssertViewRendered().ForView("List");
             }
         }
 
