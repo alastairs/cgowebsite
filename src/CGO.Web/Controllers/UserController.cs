@@ -51,7 +51,7 @@ namespace CGO.Web.Controllers
 
         private ActionResult SendRequestToProvider(OpenIdRelyingParty openId)
         {
-            var submittedId = Request.Form["openid_manual"] ?? Request.Form["openid_identifier"];
+            var submittedId = !string.IsNullOrWhiteSpace(Request.Form["openid_manual"]) ? Request.Form["openid_manual"] : Request.Form["openid_identifier"];
 
             Identifier id;
             if (Identifier.TryParse(submittedId, out id))
