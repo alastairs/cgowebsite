@@ -9,8 +9,6 @@ using CGO.Web.Models;
 using CGO.Web.Tests.EqualityComparers;
 
 using NSubstitute;
-using NSubstitute.Core;
-
 using NUnit.Framework;
 
 namespace CGO.Web.Tests.Controllers
@@ -47,7 +45,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnTheFirstSectionForTheCurrentSeason()
             {
-                var concerts = new[] { new Concert(1, "Concert", new DateTime(2012, 12, 01, 20, 00, 00), "Venue") };
+                var concerts = new[] { new Concert(1, "Concert", new DateTime(2012, 06, 29, 20, 00, 00), "Venue") };
                 CreateSampleData(concerts);
                 var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
 
@@ -169,7 +167,11 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnTheSecondSectionForTheLastSeason()
             {
-                var concerts = new[] { new Concert(2, "Concert", new DateTime(2011, 06, 01, 20, 00, 00), "Venue") };
+                var concerts = new[]
+                                   {
+                                       new Concert(1, "Current Season Concert", new DateTime(2012, 06, 29, 20, 00, 00), "Venue"), 
+                                       new Concert(2, "Concert", new DateTime(2011, 06, 01, 20, 00, 00), "Venue")
+                                   };
                 CreateSampleData(concerts);
                 var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
 
@@ -195,7 +197,7 @@ namespace CGO.Web.Tests.Controllers
                 {
                     new SideBarLink(michaelmasConcert.Title, "/Concerts/Details/" + michaelmasConcert.Id, false)
                 });
-                Assert.That(sections.Skip(1).First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+                Assert.That(sections.First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
             }
 
             [Test]
@@ -215,7 +217,7 @@ namespace CGO.Web.Tests.Controllers
                 {
                     new SideBarLink(summerConcert.Title, "/Concerts/Details/" + summerConcert.Id, false)
                 });
-                Assert.That(sections.Skip(1).First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+                Assert.That(sections.First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
             }
 
             [Test]
@@ -236,7 +238,7 @@ namespace CGO.Web.Tests.Controllers
                 {
                     new SideBarLink(summerConcert.Title, "/Concerts/Details/" + summerConcert.Id, false)
                 });
-                Assert.That(sections.Skip(1).First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+                Assert.That(sections.First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
             }
 
             [Test]
@@ -257,7 +259,7 @@ namespace CGO.Web.Tests.Controllers
                     new SideBarLink("Last Season concert 1", "/Concerts/Details/1", false), 
                     new SideBarLink("Last Season concert 2", "/Concerts/Details/2", false) 
                 });
-                Assert.That(sections.Skip(1).First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
+                Assert.That(sections.First(), Is.EqualTo(expectedSideBar).Using(new SideBarSectionEqualityComparer()));
             }
 
             [Test]
@@ -295,7 +297,12 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnTheThirdSectionForTheArchive()
             {
-                var concerts = new[] { new Concert(1, "Concert", new DateTime(2010, 06, 25, 20, 00, 00), "Venue") };
+                var concerts = new[]
+                                   {
+                                       new Concert(3, "Current Season Concert", new DateTime(2012, 06, 29, 20, 00, 00), "Venue"), 
+                                       new Concert(2, "Last Season Concert", new DateTime(2011, 06, 11, 20, 00, 00), "Venue"), 
+                                       new Concert(1, "Concert", new DateTime(2010, 06, 25, 20, 00, 00), "Venue")
+                                   };
                 CreateSampleData(concerts);
                 var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
 
@@ -317,7 +324,7 @@ namespace CGO.Web.Tests.Controllers
                 {
                     new SideBarLink("2009-10 Season", "/Concerts/Archive?year=2009", false)
                 });
-                Assert.That(sections.Skip(2).First(), Is.EqualTo(expectedSection).Using(new SideBarSectionEqualityComparer()));
+                Assert.That(sections.First(), Is.EqualTo(expectedSection).Using(new SideBarSectionEqualityComparer()));
             }
 
             [Test]
@@ -357,6 +364,36 @@ namespace CGO.Web.Tests.Controllers
                     new SideBarLink("2006-07 Season", "/Concerts/Archive?year=2006", false)
                 });
                 Assert.That(sections.Skip(2).First(), Is.EqualTo(archiveSection).Using(new SideBarSectionEqualityComparer()));
+            }
+
+            [Test]
+            public void NotPresentTheCurrentSeasonIfThereAreNoConcerts()
+            {
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+
+                var sections = sideBar.GetSideBarSections();
+
+                Assert.That(sections.Select(s => s.Title), Is.Not.Contains("Current Season"));
+            }
+
+            [Test]
+            public void NotPresentTheLastSeasonIfThereAreNoConcerts()
+            {
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+
+                var sections = sideBar.GetSideBarSections();
+
+                Assert.That(sections.Select(s => s.Title), Is.Not.Contains("Last Season"));
+            }
+
+            [Test]
+            public void NotPresentTheArchiveSectionIfThereAreNoConcerts()
+            {
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+
+                var sections = sideBar.GetSideBarSections();
+
+                Assert.That(sections.Select(s => s.Title), Is.Not.Contains("Older"));
             }
 
             [SetUp]
