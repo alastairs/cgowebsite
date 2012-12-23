@@ -37,11 +37,22 @@ namespace CGO.Web.Controllers
                                       .ToList();
                 
                 var currentSeason = GetSeasonSideBarSection(concerts, "Current Season", dateTimeProvider.Now.Year);
+                if (currentSeason.Links.Any())
+                {
+                    yield return currentSeason;
+                }
+
                 var lastSeason = GetSeasonSideBarSection(concerts, "Last Season", dateTimeProvider.Now.Year - 1);
+                if (lastSeason.Links.Any())
+                {
+                    yield return lastSeason;
+                }
 
                 var archiveSection = GetArchiveSection(concerts, dateTimeProvider.Now.Year - 2);
-
-                return new[] { currentSeason, lastSeason, archiveSection };
+                if (archiveSection.Links.Any())
+                {
+                    yield return archiveSection;
+                }
             }
         }
 
@@ -50,8 +61,8 @@ namespace CGO.Web.Controllers
             var archiveSection = new SideBarSection("Older");
 
             int currentArchiveYear = archiveStartYear;
-            var firstEverConcert = concerts.OrderBy(c => c.DateAndStartTime).First();
-            while (currentArchiveYear >= firstEverConcert.DateAndStartTime.Year)
+            var dateOfFirstEverConcert = concerts.Select(c => c.DateAndStartTime).OrderBy(d => d).DefaultIfEmpty(DateTime.MaxValue).FirstOrDefault();
+            while (currentArchiveYear >= dateOfFirstEverConcert.Year)
             {
                 currentArchiveYear--;
                 var archiveSeasonEndYear = currentArchiveYear + 1 - 2000; // Drop the century
