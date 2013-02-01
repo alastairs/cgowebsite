@@ -17,7 +17,8 @@ namespace CGO.Web.Mappers
                     Title = model.Title,
                     Date = model.DateAndStartTime,
                     StartTime = model.DateAndStartTime,
-                    Location = model.Location
+                    Location = model.Location,
+                    Description = model.Description
                 };
             }
 
@@ -30,7 +31,10 @@ namespace CGO.Web.Mappers
             {
                 var dateAndStartTime = new DateTime(viewModel.Date.Year, viewModel.Date.Month, viewModel.Date.Day,
                                                     viewModel.StartTime.Hour, viewModel.StartTime.Minute, 00);
-                return (TModel)new Concert(viewModel.Id, viewModel.Title, dateAndStartTime, viewModel.Location);
+                return (TModel)new Concert(viewModel.Id, viewModel.Title, dateAndStartTime, viewModel.Location)
+                                   {
+                                       Description = viewModel.Description
+                                   };
             }
 
             return null;
