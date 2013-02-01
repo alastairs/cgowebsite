@@ -63,7 +63,7 @@ namespace CGO.Web.Controllers
 
         //
         // GET: /Concerts/Create
-        //[Authorize]
+        [Authorize]
         public ActionResult Create()
         {
             return View("Create");
@@ -73,7 +73,7 @@ namespace CGO.Web.Controllers
         // POST: /Concerts/Create
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public ActionResult Create(ConcertViewModel concertViewModel)
         {
             if (!ModelState.IsValid)
