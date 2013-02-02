@@ -19,5 +19,20 @@ namespace CGO.Web.Models
             DateAndStartTime = dateAndStartTime;
             Location = location;
         }
+
+        public void ChangeTitle(string newTitle)
+        {
+            Title = newTitle;
+        }
+
+        public void ChangeDateAndStartTime(DateTime newDateAndStartTime)
+        {
+            DateAndStartTime = newDateAndStartTime;
+        }
+
+        public void ChangeLocation(string newLocation)
+        {
+            Location = newLocation;
+        }
     }
 }

@@ -68,7 +68,19 @@ namespace CGO.Web.Controllers.Api
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
 
+            originalConcert.ChangeTitle(updatedConcert.Title);
+            originalConcert.ChangeDateAndStartTime(GetDateTimeFromViewModel(updatedConcert));
+            originalConcert.ChangeLocation(updatedConcert.Location);
+            session.SaveChanges();
+
             return new HttpResponseMessage(HttpStatusCode.NoContent);
+        }
+
+        private DateTime GetDateTimeFromViewModel(ConcertViewModel updatedConcert)
+        {
+            return new DateTime(updatedConcert.Date.Year,
+                                updatedConcert.Date.Month, updatedConcert.Date.Day, updatedConcert.StartTime.Hour,
+                                updatedConcert.StartTime.Minute, 0);
         }
 
         // DELETE api/concerts/5
