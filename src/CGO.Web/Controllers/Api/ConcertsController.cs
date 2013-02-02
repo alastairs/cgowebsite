@@ -55,8 +55,9 @@ namespace CGO.Web.Controllers.Api
         }
 
         // PUT api/concerts/5
-        public void Put(int id, string value)
+        public HttpResponseMessage Put(int id, ConcertViewModel concert)
         {
+            return new HttpResponseMessage(HttpStatusCode.BadRequest);
         }
 
         // DELETE api/concerts/5

@@ -201,5 +201,19 @@ namespace CGO.Web.Tests.Controllers.Api
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
             }
         }
+
+        [TestFixture]
+        public class PutShould : RavenTest
+        {
+            [Test]
+            public void ReturnA400BadRequestIfTheConcertModelIsNull()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Put(4, null);
+
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            }
+        }
     }
 }
