@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Api\ConcertsControllerFacts.cs" />
     <Compile Include="Controllers\ConcertsSideBarFacts.cs" />
+    <Compile Include="EqualityComparers\ConcertApiViewModelEqualityComparer.cs" />
     <Compile Include="EqualityComparers\SideBarLinkEqualityComparer.cs" />
     <Compile Include="EqualityComparers\SideBarSectionEqualityComparer.cs" />
     <Compile Include="Controllers\UserControllerFacts.cs" />

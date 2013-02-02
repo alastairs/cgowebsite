@@ -7,7 +7,7 @@ using System.Web.Http;
 
 using CGO.Web.Mappers;
 using CGO.Web.Models;
-using CGO.Web.ViewModels;
+using CGO.Web.ViewModels.Api;
 
 using Raven.Client;
 
