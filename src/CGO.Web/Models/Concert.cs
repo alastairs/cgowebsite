@@ -9,6 +9,7 @@ namespace CGO.Web.Models
         public string Title { get; private set; }
         public DateTime DateAndStartTime { get; private set; }
         public string Location { get; private set; }
+        public bool IsPublished { get; private set; }
 
         public string Description { get; set; }
 
@@ -33,6 +34,11 @@ namespace CGO.Web.Models
         public void ChangeLocation(string newLocation)
         {
             Location = newLocation;
+        }
+
+        public void Publish()
+        {
+            IsPublished = true;
         }
     }
 }

@@ -18,7 +18,8 @@ namespace CGO.Web.Mappers
                     Date = model.DateAndStartTime,
                     StartTime = model.DateAndStartTime,
                     Location = model.Location,
-                    Description = model.Description
+                    Description = model.Description,
+                    IsPublished = model.IsPublished
                 };
             }
 
@@ -31,10 +32,17 @@ namespace CGO.Web.Mappers
             {
                 var dateAndStartTime = new DateTime(viewModel.Date.Year, viewModel.Date.Month, viewModel.Date.Day,
                                                     viewModel.StartTime.Hour, viewModel.StartTime.Minute, 00);
-                return (TModel)new Concert(viewModel.Id, viewModel.Title, dateAndStartTime, viewModel.Location)
-                                   {
-                                       Description = viewModel.Description
-                                   };
+                var model = (TModel) new Concert(viewModel.Id, viewModel.Title, dateAndStartTime, viewModel.Location)
+                                         {
+                                             Description = viewModel.Description
+                                         };
+
+                if (viewModel.IsPublished)
+                {
+                    model.Publish();
+                }
+
+                return model;
             }
 
             return null;
