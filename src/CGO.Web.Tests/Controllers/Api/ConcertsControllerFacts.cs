@@ -205,6 +205,8 @@ namespace CGO.Web.Tests.Controllers.Api
         [TestFixture]
         public class PutShould : RavenTest
         {
+            private IEnumerable<ConcertViewModel> viewModels; 
+                
             [Test]
             public void ReturnA400BadRequestIfTheConcertModelIsNull()
             {
@@ -213,6 +215,60 @@ namespace CGO.Web.Tests.Controllers.Api
                 var result = controller.Put(4, null);
 
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            }
+
+            [Test]
+            public void ReturnA204NoContentWhenTheEditSucceeds()
+            {
+                var controller = new ConcertsController(Session);
+
+                var concertToEdit = viewModels.First();
+                concertToEdit.IsPublished = true;
+                var result = controller.Put(1, concertToEdit);
+
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+            }
+
+            [SetUp]
+            public void CreateSampleData()
+            {
+                viewModels = new[]
+                {
+                    new ConcertViewModel
+                        {
+                                    Id = 1,
+                                    Title = "Foo",
+                                    Date = new DateTime(2012, 08, 01, 20, 00, 00), 
+                                    StartTime = new DateTime(2012, 08, 01, 20, 00, 00), 
+                                    Location = "Bar"
+                        },
+                    new ConcertViewModel
+                        {
+                                    Id = 2, 
+                                    Title = "Foo", 
+                                    Date = new DateTime(2012, 08, 02, 20, 00, 00), 
+                                    StartTime = new DateTime(2012, 08, 02, 20, 00, 00), 
+                                    Location = "Bar",
+                        },
+                    new ConcertViewModel
+                        {
+                                    Id = 3, 
+                                    Title = "Foo", 
+                                    Date = new DateTime(2012, 07, 31, 20, 00, 00), 
+                                    StartTime = new DateTime(2012, 07, 31, 20, 00, 00), 
+                                    Location = "Bar"
+                        }
+                };
+
+                using (var sampleDataSession = Store.OpenSession())
+                {
+                    foreach (var viewModel in viewModels)
+                    {
+                        sampleDataSession.Store(viewModel.ToModel<Concert, ConcertViewModel>());
+                    }
+
+                    sampleDataSession.SaveChanges();
+                }
             }
         }
     }
