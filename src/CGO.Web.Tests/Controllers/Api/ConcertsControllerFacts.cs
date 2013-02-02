@@ -241,6 +241,18 @@ namespace CGO.Web.Tests.Controllers.Api
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
             }
 
+            [Test]
+            public void PersistChangesIfTheConcertViewModelIsOk()
+            {
+                var controller = new ConcertsController(Session);
+                var concertToEdit = viewModels.First();
+                concertToEdit.Title = "Bar";
+
+                controller.Put(1, concertToEdit);
+
+                Assert.That(Session.Load<Concert>(1).Title, Is.EqualTo("Bar"));
+            }
+
             [SetUp]
             public void CreateSampleData()
             {
