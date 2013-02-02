@@ -55,11 +55,17 @@ namespace CGO.Web.Controllers.Api
         }
 
         // PUT api/concerts/5
-        public HttpResponseMessage Put(int id, ConcertViewModel concert)
+        public HttpResponseMessage Put(int id, ConcertViewModel updatedConcert)
         {
-            if (concert == null)
+            if (updatedConcert == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            var originalConcert = session.Load<Concert>(id);
+            if (originalConcert == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);
