@@ -71,6 +71,7 @@ namespace CGO.Web.Controllers.Api
             originalConcert.ChangeTitle(updatedConcert.Title);
             originalConcert.ChangeDateAndStartTime(GetDateTimeFromViewModel(updatedConcert));
             originalConcert.ChangeLocation(updatedConcert.Location);
+            if (updatedConcert.IsPublished) originalConcert.Publish();
             session.SaveChanges();
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);
