@@ -7,7 +7,7 @@ using CGO.Web.Controllers.Api;
 using CGO.Web.Mappers;
 using CGO.Web.Models;
 using CGO.Web.Tests.EqualityComparers;
-using CGO.Web.ViewModels;
+using CGO.Web.ViewModels.Api;
 
 using NSubstitute;
 
@@ -90,7 +90,7 @@ namespace CGO.Web.Tests.Controllers.Api
 
                 var result = controller.Get();
 
-                Assert.That(result, Is.EquivalentTo(viewModels).Using(new ConcertViewModelEqualityComparer()));
+                Assert.That(result, Is.EquivalentTo(viewModels).Using(new ConcertApiViewModelEqualityComparer()));
             }
 
             [Test]
@@ -100,7 +100,7 @@ namespace CGO.Web.Tests.Controllers.Api
 
                 var result = controller.Get();
 
-                Assert.That(result, Is.EqualTo(viewModels.OrderByDescending(c => c.Date)).Using(new ConcertViewModelEqualityComparer()));
+                Assert.That(result, Is.EqualTo(viewModels.OrderByDescending(c => c.Date)).Using(new ConcertApiViewModelEqualityComparer()));
             }
 
             [SetUp]
