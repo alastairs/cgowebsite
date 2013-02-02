@@ -60,12 +60,27 @@ namespace CGO.Web.Tests.Controllers
             {
                 var pastConcert = new Concert(5, "Concert in the past", new DateTime(2011, 11, 18, 20, 00, 00), "West Road Concert Hall");
                 Session.Store(pastConcert);
+                Session.SaveChanges();
                 
                 var controller = new ConcertsController(Session);
                 
                 var result = controller.Index() as ViewResult;
 
                 Assert.That(result.Model, Is.Not.Contains(pastConcert).Using(new ConcertEqualityComparer()));
+            }
+
+            [Test]
+            public void DisplayOnlyPublishedConcerts()
+            {
+                var unpublishedConcert = new Concert(5, "Unpublished concert", new DateTime(2101, 01, 18, 20, 00, 00), "West Road Concert Hall");
+                Session.Store(unpublishedConcert);
+                Session.SaveChanges();
+
+                var controller = new ConcertsController(Session);
+
+                var result = controller.Index() as ViewResult;
+
+                Assert.That(result.Model, Is.Not.Contains(unpublishedConcert).Using(new ConcertEqualityComparer()));
             }
 
             [SetUp]
@@ -78,6 +93,11 @@ namespace CGO.Web.Tests.Controllers
                     new Concert(3, "2100 Concert 3", new DateTime(2100, 03, 18, 20, 00, 00), "West Road Concert Hall"),
                     new Concert(4, "2100 Concert 4", new DateTime(2100, 04, 18, 20, 00, 00), "West Road Concert Hall")
                 };
+
+                foreach (var concert in concerts)
+                {
+                    concert.Publish();
+                }
 
                 using (var sampleDataSession = Store.OpenSession())
                 {
