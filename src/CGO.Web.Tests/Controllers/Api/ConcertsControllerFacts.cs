@@ -217,6 +217,18 @@ namespace CGO.Web.Tests.Controllers.Api
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
             }
 
+            [TestCase(0)]
+            [TestCase(-1)]
+            [TestCase(4)]
+            public void ReturnA404NotFoundIfTheSpecifiedIdIsUnknown(int concertId)
+            {
+                var controller = new ConcertsController(Session);
+
+                var result = controller.Put(concertId, viewModels.First());
+
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+            }
+
             [Test]
             public void ReturnA204NoContentWhenTheEditSucceeds()
             {
