@@ -103,6 +103,16 @@ namespace CGO.Web.Tests.Controllers.Api
                 Assert.That(result, Is.EqualTo(viewModels.OrderByDescending(c => c.Date)).Using(new ConcertApiViewModelEqualityComparer()));
             }
 
+            [Test]
+            public void SetTheHrefPropertyOnTheViewModel()
+            {
+                var controller = new ConcertsController(Session);
+
+                var concerts = controller.Get().ToList();
+
+                Assert.That(concerts.Select(c => c.Href), Is.EqualTo(concerts.Select(c => "/api/concerts/" + c.Id)));
+            }
+
             [SetUp]
             public void CreateSampleData()
             {
