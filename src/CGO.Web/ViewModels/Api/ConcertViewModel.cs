@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace CGO.Web.ViewModels.Api
 {
-    [DataContract]
     public class ConcertViewModel
     {
         public string Href { get; set; }
+
         public int Id { get; set; }
 
-        [DataMember(IsRequired = true)]
+        [Required]
         public string Title { get; set; }
 
-        [DataMember(IsRequired = true)]
-        public DateTime Date { get; set; }
+        // Automatically required, because this is a value type
+        public DateTime DateAndStartTime { get; set; }
 
-        [DataMember(IsRequired = true)]
-        public DateTime StartTime { get; set; }
-
-        [DataMember(IsRequired = true)]
+        [Required]
         public string Location { get; set; }
 
         public bool IsPublished { get; set; }
