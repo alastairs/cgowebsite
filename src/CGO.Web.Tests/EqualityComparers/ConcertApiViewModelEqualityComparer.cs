@@ -9,11 +9,10 @@ namespace CGO.Web.Tests.EqualityComparers
         public bool Equals(ConcertViewModel x, ConcertViewModel y)
         {
             var titlesAreEqual = x.Title == y.Title;
-            var datesAreEqual = x.Date == y.Date;
-            var startTimesAreEqual = x.StartTime == y.StartTime;
+            var datesAreEqual = x.DateAndStartTime == y.DateAndStartTime;
             var locationsAreEqual = x.Location == y.Location;
 
-            return titlesAreEqual && datesAreEqual && startTimesAreEqual && locationsAreEqual;
+            return titlesAreEqual && datesAreEqual && locationsAreEqual;
         }
 
         public int GetHashCode(ConcertViewModel concert)

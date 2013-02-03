@@ -17,11 +17,10 @@ CGO.makeConcertListViewModel = function ConcertListViewModel(concerts) {
         };
 
         var concert = {
-            Id: 0,
-            Title: $("#ConcertViewModel_Title").val(),
-            Date: makeDate($("#ConcertViewModel_Date").val(), $("#ConcertViewModel_StartTime").val()),
-            StartTime: makeDate($("#ConcertViewModel_Date").val(), $("#ConcertViewModel_StartTime").val()),
-            Location: $("#ConcertViewModel_Location").val()
+            id: 0,
+            title: $("#ConcertViewModel_Title").val(),
+            dateAndStartTime: makeDate($("#ConcertViewModel_Date").val(), $("#ConcertViewModel_StartTime").val()),
+            location: $("#ConcertViewModel_Location").val()
         };
 
         $.ajax({
@@ -30,7 +29,9 @@ CGO.makeConcertListViewModel = function ConcertListViewModel(concerts) {
             data: JSON.stringify(concert),
             dataType: "json",
             contentType: "application/json",
-        }).done(function () {
+        }).done(function (data) {
+            concert.id = data.id;
+            concert.href = data.href;
             self.concerts.push(CGO.makeConcertViewModel(concert));
             $("#quickAdd input").each(function() {
                 $(this).val('');
@@ -47,6 +48,23 @@ CGO.makeConcertListViewModel = function ConcertListViewModel(concerts) {
             url: "/api/concerts/" + concert.id
         }).done(function() {
             self.concerts.remove(concert);
+        });
+    };
+
+    self.publishConcert = function (viewModel) {
+        var concert = CGO.makeConcertModel(viewModel);
+        concert.isPublished = true;
+        
+        $.ajax({
+            type: "PUT",
+            url: concert.href,
+            data: JSON.stringify(concert),
+            dataType: "json",
+            contentType: "application/json"
+        }).success(function() {
+            viewModel._isPublished = true;
+        }).error(function() {
+            viewModel._isPublished = false;
         });
     };
 

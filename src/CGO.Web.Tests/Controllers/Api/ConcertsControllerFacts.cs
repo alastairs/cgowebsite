@@ -100,7 +100,7 @@ namespace CGO.Web.Tests.Controllers.Api
 
                 var result = controller.Get();
 
-                Assert.That(result, Is.EqualTo(viewModels.OrderByDescending(c => c.Date)).Using(new ConcertApiViewModelEqualityComparer()));
+                Assert.That(result, Is.EqualTo(viewModels.OrderByDescending(c => c.DateAndStartTime)).Using(new ConcertApiViewModelEqualityComparer()));
             }
 
             [Test]
@@ -122,24 +122,21 @@ namespace CGO.Web.Tests.Controllers.Api
                         {
                                     Id = 1,
                                     Title = "Foo",
-                                    Date = new DateTime(2012, 08, 01, 20, 00, 00), 
-                                    StartTime = new DateTime(2012, 08, 01, 20, 00, 00), 
+                                    DateAndStartTime = new DateTime(2012, 08, 01, 20, 00, 00), 
                                     Location = "Bar"
                         },
                     new ConcertViewModel
                         {
                                     Id = 2, 
                                     Title = "Foo", 
-                                    Date = new DateTime(2012, 08, 02, 20, 00, 00), 
-                                    StartTime = new DateTime(2012, 08, 02, 20, 00, 00), 
+                                    DateAndStartTime = new DateTime(2012, 08, 02, 20, 00, 00), 
                                     Location = "Bar",
                         },
                     new ConcertViewModel
                         {
                                     Id = 3, 
                                     Title = "Foo", 
-                                    Date = new DateTime(2012, 07, 31, 20, 00, 00), 
-                                    StartTime = new DateTime(2012, 07, 31, 20, 00, 00), 
+                                    DateAndStartTime = new DateTime(2012, 07, 31, 20, 00, 00), 
                                     Location = "Bar"
                         }
                 };
@@ -163,8 +160,7 @@ namespace CGO.Web.Tests.Controllers.Api
             {
                 Id = 0, 
                 Title = "Foo", 
-                Date = new DateTime(2012, 08, 01, 20, 00, 00), 
-                StartTime = new DateTime(2012, 08, 01, 20, 00, 00), 
+                DateAndStartTime = new DateTime(2012, 08, 01, 20, 00, 00), 
                 Location = "Bar"
             };
 
@@ -186,7 +182,7 @@ namespace CGO.Web.Tests.Controllers.Api
 
                 controller.Post(concertRequest);
 
-                var concertToSave = new Concert(concertRequest.Id, concertRequest.Title, concertRequest.Date, concertRequest.Location);
+                var concertToSave = new Concert(concertRequest.Id, concertRequest.Title, concertRequest.DateAndStartTime, concertRequest.Location);
                 mockRavenSession.Received().Store(Arg.Is<Concert>(x => new ConcertEqualityComparer().Equals(x, concertToSave)));
             }
 
@@ -272,24 +268,21 @@ namespace CGO.Web.Tests.Controllers.Api
                         {
                                     Id = 1,
                                     Title = "Foo",
-                                    Date = new DateTime(2012, 08, 01, 20, 00, 00), 
-                                    StartTime = new DateTime(2012, 08, 01, 20, 00, 00), 
+                                    DateAndStartTime = new DateTime(2012, 08, 01, 20, 00, 00), 
                                     Location = "Bar"
                         },
                     new ConcertViewModel
                         {
                                     Id = 2, 
                                     Title = "Foo", 
-                                    Date = new DateTime(2012, 08, 02, 20, 00, 00), 
-                                    StartTime = new DateTime(2012, 08, 02, 20, 00, 00), 
+                                    DateAndStartTime = new DateTime(2012, 08, 02, 20, 00, 00), 
                                     Location = "Bar",
                         },
                     new ConcertViewModel
                         {
                                     Id = 3, 
                                     Title = "Foo", 
-                                    Date = new DateTime(2012, 07, 31, 20, 00, 00), 
-                                    StartTime = new DateTime(2012, 07, 31, 20, 00, 00), 
+                                    DateAndStartTime = new DateTime(2012, 07, 31, 20, 00, 00), 
                                     Location = "Bar"
                         }
                 };

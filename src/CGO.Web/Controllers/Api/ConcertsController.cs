@@ -31,7 +31,7 @@ namespace CGO.Web.Controllers.Api
         public IEnumerable<ConcertViewModel> Get()
         {
             var concerts = session.Query<Concert>();
-            return concerts.ToList().Select(c => c.ToViewModel<Concert, ConcertViewModel>()).OrderByDescending(c => c.Date);
+            return concerts.ToList().Select(c => c.ToViewModel<Concert, ConcertViewModel>()).OrderByDescending(c => c.DateAndStartTime);
         }
 
         // GET api/concerts/5
@@ -69,19 +69,12 @@ namespace CGO.Web.Controllers.Api
             }
 
             originalConcert.ChangeTitle(updatedConcert.Title);
-            originalConcert.ChangeDateAndStartTime(GetDateTimeFromViewModel(updatedConcert));
+            originalConcert.ChangeDateAndStartTime(updatedConcert.DateAndStartTime);
             originalConcert.ChangeLocation(updatedConcert.Location);
             if (updatedConcert.IsPublished) originalConcert.Publish();
             session.SaveChanges();
 
             return new HttpResponseMessage(HttpStatusCode.NoContent);
-        }
-
-        private DateTime GetDateTimeFromViewModel(ConcertViewModel updatedConcert)
-        {
-            return new DateTime(updatedConcert.Date.Year,
-                                updatedConcert.Date.Month, updatedConcert.Date.Day, updatedConcert.StartTime.Hour,
-                                updatedConcert.StartTime.Minute, 0);
         }
 
         // DELETE api/concerts/5
