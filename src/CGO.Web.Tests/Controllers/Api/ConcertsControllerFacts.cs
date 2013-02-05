@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Hosting;
+using System.Web.Http.Routing;
 using CGO.Web.Controllers.Api;
 using CGO.Web.Mappers;
 using CGO.Web.Models;
@@ -164,21 +168,60 @@ namespace CGO.Web.Tests.Controllers.Api
                 Location = "Bar"
             };
 
+            private HttpRequestMessage request;
+            private HttpControllerContext controllerContext;
+
+            [TestFixtureSetUp]
+            public void ConfigureWebApi()
+            {
+                var config = new HttpConfiguration();
+
+                request = new HttpRequestMessage(HttpMethod.Post, "http://localhost/api/concerts");
+                request.Properties[HttpPropertyKeys.HttpConfigurationKey] = config;
+
+                var route = config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}");
+                var routeData = new HttpRouteData(route, new HttpRouteValueDictionary { { "controller", "concerts" } });
+                
+                controllerContext = new HttpControllerContext(config, routeData, request);
+            }
+
             [Test]
             public void ReturnA201CreatedStatusCodeIfTheConcertModelIsOk()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
-
+                var controller = CreateConcertsController(Substitute.For<IDocumentSession>());
                 var result = controller.Post(concertRequest);
 
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Created));
             }
 
             [Test]
+            public void ReturnTheNewConcertsHrefInTheLocationHeader()
+            {
+                var controller = CreateConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Post(concertRequest);
+
+                Assert.That(result.Headers.Location, Is.Not.Null);
+            }
+
+            [Test]
+            public async void ReturnTheNewConcertInTheResponseBody()
+            {
+                var controller = CreateConcertsController(Substitute.For<IDocumentSession>());
+                var expected = concertRequest;
+                expected.Id = 0;
+                expected.Href = "/api/concerts/0";
+
+                var result = await controller.Post(concertRequest).Content.ReadAsAsync<ConcertViewModel>();
+
+                Assert.That(result, Is.EqualTo(expected).Using(new ConcertApiViewModelEqualityComparer()));
+            }
+
+            [Test]
             public void CallStoreOnTheRavenSessionIfTheConcertModelIsOk()
             {
                 var mockRavenSession = Substitute.For<IDocumentSession>();
-                var controller = new ConcertsController(mockRavenSession);
+                var controller = CreateConcertsController(mockRavenSession);
 
                 controller.Post(concertRequest);
 
@@ -190,9 +233,10 @@ namespace CGO.Web.Tests.Controllers.Api
             public void CallSaveChangesOnTheRavenSessionIfTheConcertModelIsOk()
             {
                 var mockRavenSession = Substitute.For<IDocumentSession>();
-                var controller = new ConcertsController(mockRavenSession);
+                var controller = CreateConcertsController(mockRavenSession);
 
                 controller.Post(concertRequest);
+                
 
                 mockRavenSession.Received().SaveChanges();
             }
@@ -200,11 +244,20 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void ReturnA400BadRequestIfTheConcertModelIsNull()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = CreateConcertsController(Substitute.For<IDocumentSession>());
 
                 var result = controller.Post(null);
 
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            }
+
+            private ConcertsController CreateConcertsController(IDocumentSession documentSession)
+            {
+                return new ConcertsController(documentSession)
+                {
+                    ControllerContext = controllerContext,
+                    Request = request
+                };
             }
         }
 
