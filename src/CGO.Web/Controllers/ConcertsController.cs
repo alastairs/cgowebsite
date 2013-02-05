@@ -30,6 +30,7 @@ namespace CGO.Web.Controllers
         {
             var concerts = session.Query<Concert>()
                                   .Where(c => c.DateAndStartTime > DateTime.Now)
+                                  .Where(c => c.IsPublished)
                                   .OrderBy(c => c.DateAndStartTime)
                                   .ToList();
 
@@ -63,7 +64,7 @@ namespace CGO.Web.Controllers
 
         //
         // GET: /Concerts/Create
-        //[Authorize]
+        [Authorize]
         public ActionResult Create()
         {
             return View("Create");
@@ -73,7 +74,7 @@ namespace CGO.Web.Controllers
         // POST: /Concerts/Create
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         public ActionResult Create(ConcertViewModel concertViewModel)
         {
             if (!ModelState.IsValid)
