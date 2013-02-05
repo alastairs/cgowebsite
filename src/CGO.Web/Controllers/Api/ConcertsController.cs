@@ -41,17 +41,21 @@ namespace CGO.Web.Controllers.Api
         }
 
         // POST api/concerts
-        public HttpResponseMessage Post(ConcertViewModel concert)
+        public HttpResponseMessage Post(ConcertViewModel viewModel)
         {
-            if (concert == null)
+            if (viewModel == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
-            session.Store(concert.ToModel<Concert, ConcertViewModel>());
+            var concert = viewModel.ToModel<Concert, ConcertViewModel>();
+            session.Store(concert);
             session.SaveChanges();
-
-            return new HttpResponseMessage(HttpStatusCode.Created);
+            viewModel = concert.ToViewModel<Concert, ConcertViewModel>();
+            
+            var response = Request.CreateResponse(HttpStatusCode.Created, viewModel);
+            response.Headers.Location = new Uri(viewModel.Href, UriKind.Relative);
+            return response;
         }
 
         // PUT api/concerts/5
