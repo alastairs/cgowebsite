@@ -1,40 +1,41 @@
 ﻿var CGO = CGO || { };
 
-CGO.makeConcertListViewModel = function ConcertListViewModel(concerts) {
-    var makeConcertViewModels = function(concertsJson) {
-        return $.map(concertsJson, function(concert) {
-            return CGO.makeConcertViewModel(concert);
-        });
-    };
-
-    var self = {
-        concerts: ko.observableArray(makeConcertViewModels(concerts))
-    };
-
+CGO.makeConcertListViewModel = function ConcertListViewModel() {
+    var self = this;
+    self.concerts = ko.observableArray([]);
+    self.newConcertTitle = ko.observable();
+    self.newConcertDate = ko.observable();
+    self.newConcertStartTime = ko.observable();
+    self.newConcertLocation = ko.observable();
+    
     self.quickAdd = function() {
         var makeDate = function(date, startTime) {
             return Date.parse(date + "T" + startTime);
         };
 
-        var concert = {
-            Id: 0,
-            Title: $("#ConcertViewModel_Title").val(),
-            Date: makeDate($("#ConcertViewModel_Date").val(), $("#ConcertViewModel_StartTime").val()),
-            StartTime: makeDate($("#ConcertViewModel_Date").val(), $("#ConcertViewModel_StartTime").val()),
-            Location: $("#ConcertViewModel_Location").val()
-        };
-
+        var concert = CGO.makeConcertViewModel({
+            title: this.newConcertTitle(),
+            dateAndStartTime: makeDate(this.newConcertDate(),
+                                       this.newConcertStartTime()),
+            location: this.newConcertLocation()
+        });
+        
         $.ajax({
             url: "/api/concerts",
             type: "post",
-            data: JSON.stringify(concert),
+            data: JSON.stringify(CGO.makeConcertModel(concert)),
             dataType: "json",
             contentType: "application/json",
-        }).done(function () {
-            self.concerts.push(CGO.makeConcertViewModel(concert));
-            $("#quickAdd input").each(function() {
-                $(this).val('');
-            });
+        }).done(function (data) {
+            concert.id(data.id);
+            concert.href(data.href);
+            
+            self.concerts.push(concert);
+            
+            self.newConcertTitle("");
+            self.newConcertDate("");
+            self.newConcertStartTime("");
+            self.newConcertLocation("");
         });
     };
 
@@ -44,11 +45,35 @@ CGO.makeConcertListViewModel = function ConcertListViewModel(concerts) {
 
         $.ajax({
             type: "DELETE",
-            url: "/api/concerts/" + concert.id
+            url: "/api/concerts/" + concert.id()
         }).done(function() {
             self.concerts.remove(concert);
         });
     };
+
+    self.publishConcert = function (viewModel) {
+        var concert = CGO.makeConcertModel(viewModel);
+        concert.isPublished = true;
+        
+        $.ajax({
+            type: "PUT",
+            url: concert.href,
+            data: JSON.stringify(concert),
+            dataType: "json",
+            contentType: "application/json"
+        }).success(function() {
+            viewModel.isPublished(true);
+        }).error(function() {
+            viewModel.isPublished(false);
+        });
+    };
+
+    $.getJSON("/api/concerts", function(concertsJson) {
+        var mappedConcerts = $.map(concertsJson, function(concert) {
+            return CGO.makeConcertViewModel(concert);
+        });
+        self.concerts(mappedConcerts);
+    });
 
     return self;
 };

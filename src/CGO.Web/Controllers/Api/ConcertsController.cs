@@ -7,7 +7,7 @@ using System.Web.Http;
 
 using CGO.Web.Mappers;
 using CGO.Web.Models;
-using CGO.Web.ViewModels;
+using CGO.Web.ViewModels.Api;
 
 using Raven.Client;
 
@@ -31,7 +31,7 @@ namespace CGO.Web.Controllers.Api
         public IEnumerable<ConcertViewModel> Get()
         {
             var concerts = session.Query<Concert>();
-            return concerts.ToList().Select(c => c.ToViewModel<Concert, ConcertViewModel>()).OrderByDescending(c => c.Date);
+            return concerts.ToList().Select(c => c.ToViewModel<Concert, ConcertViewModel>()).OrderByDescending(c => c.DateAndStartTime);
         }
 
         // GET api/concerts/5
@@ -41,22 +41,44 @@ namespace CGO.Web.Controllers.Api
         }
 
         // POST api/concerts
-        public HttpResponseMessage Post(ConcertViewModel concert)
+        public HttpResponseMessage Post(ConcertViewModel viewModel)
         {
-            if (concert == null)
+            if (viewModel == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
-            session.Store(concert.ToModel<Concert, ConcertViewModel>());
+            var concert = viewModel.ToModel<Concert, ConcertViewModel>();
+            session.Store(concert);
             session.SaveChanges();
-
-            return new HttpResponseMessage(HttpStatusCode.Created);
+            viewModel = concert.ToViewModel<Concert, ConcertViewModel>();
+            
+            var response = Request.CreateResponse(HttpStatusCode.Created, viewModel);
+            response.Headers.Location = new Uri(viewModel.Href, UriKind.Relative);
+            return response;
         }
 
         // PUT api/concerts/5
-        public void Put(int id, string value)
+        public HttpResponseMessage Put(int id, ConcertViewModel updatedConcert)
         {
+            if (updatedConcert == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            var originalConcert = session.Load<Concert>(id);
+            if (originalConcert == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+
+            originalConcert.ChangeTitle(updatedConcert.Title);
+            originalConcert.ChangeDateAndStartTime(updatedConcert.DateAndStartTime);
+            originalConcert.ChangeLocation(updatedConcert.Location);
+            if (updatedConcert.IsPublished) originalConcert.Publish();
+            session.SaveChanges();
+
+            return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
 
         // DELETE api/concerts/5

@@ -1,39 +1,38 @@
 ﻿using System;
-
+using AutoMapper;
 using CGO.Web.Models;
-using CGO.Web.ViewModels;
 
 namespace CGO.Web.Mappers
 {
     public static class MapperExtensions
     {
-        public static TViewModel ToViewModel<TModel, TViewModel>(this TModel model) where TViewModel: ConcertViewModel where TModel: Concert
+        static MapperExtensions()
         {
-            if (typeof(TModel) == typeof(Concert))
-            {
-                return (TViewModel) new ConcertViewModel
-                {
-                    Id = model.Id,
-                    Title = model.Title,
-                    Date = model.DateAndStartTime,
-                    StartTime = model.DateAndStartTime,
-                    Location = model.Location
-                };
-            }
+            Mapper.CreateMap<Concert, ViewModels.ConcertViewModel>()
+                  .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.DateAndStartTime))
+                  .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.DateAndStartTime));
+            Mapper.CreateMap<ViewModels.ConcertViewModel, Concert>()
+                  .ConstructUsing(vm => new Concert(vm.Id, vm.Title, GetDateAndStartTimeFromViewModel(vm.Date, vm.StartTime), vm.Location));
 
-            return null;
+            Mapper.CreateMap<Concert, ViewModels.Api.ConcertViewModel>()
+                  .ForMember(dest => dest.Href, opt => opt.MapFrom(src => "/api/concerts/" + src.Id));
+            Mapper.CreateMap<ViewModels.Api.ConcertViewModel, Concert>()
+                  .ConstructUsing(vm => new Concert(vm.Id, vm.Title, vm.DateAndStartTime, vm.Location));
         }
 
-        public static TModel ToModel<TModel, TViewModel>(this TViewModel viewModel) where TViewModel: ConcertViewModel where TModel: Concert
+        public static TViewModel ToViewModel<TModel, TViewModel>(this TModel model)
         {
-            if (typeof(TViewModel) == typeof(ConcertViewModel))
-            {
-                var dateAndStartTime = new DateTime(viewModel.Date.Year, viewModel.Date.Month, viewModel.Date.Day,
-                                                    viewModel.StartTime.Hour, viewModel.StartTime.Minute, 00);
-                return (TModel)new Concert(viewModel.Id, viewModel.Title, dateAndStartTime, viewModel.Location);
-            }
+            return Mapper.Map<TViewModel>(model);
+        }
 
-            return null;
+        public static TModel ToModel<TModel, TViewModel>(this TViewModel viewModel)
+        {
+            return Mapper.Map<TModel>(viewModel);
+        }
+
+        private static DateTime GetDateAndStartTimeFromViewModel(DateTime date, DateTime time)
+        {
+            return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 00);
         }
     }
 }
