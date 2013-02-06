@@ -20,7 +20,7 @@
     <tbody data-bind="foreach: concerts">
         <tr data-bind="attr: { id: 'concert-' + id() }">
             <td data-bind="text: title"></td>
-            <td data-bind="text: dateAndStartTime"></td>
+            <td data-bind="text: formatDate(dateAndStartTime, 'd MMM yyyy, HH:mm')"></td>
             <td data-bind="text: location"></td>
             <td data-bind="text: isPublished() ? 'Yes' : 'No'"></td>
             <td>
@@ -53,6 +53,7 @@
 <script type="text/javascript" src="~/Scripts/ViewModels/ConcertViewModel.js"></script>
 <script type="text/javascript" src="~/Scripts/jquery.dateFormat-1.0.js"></script>
 <script type="text/javascript" src="~/Scripts/rfc3339date.js"></script>
+<script type="text/javascript" src="~/Scripts/commonFunctions.js"></script>
 <script type="text/javascript">
     (function($) {
         $(function() {
