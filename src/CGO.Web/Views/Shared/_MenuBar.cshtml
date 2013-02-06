@@ -28,7 +28,23 @@
 
 @helper GetMenuBarLink(string linkText, string actionName, string controllerName)
 {
-    <li class="@GetCssClass(actionName, controllerName)">@Html.ActionLink(linkText, actionName, controllerName)</li>
+    <li class="dropdown @GetCssClass(actionName, controllerName)">
+        @if (controllerName == "Concerts" && Request.IsAuthenticated)
+        {
+            <a href="@Url.Action(actionName, controllerName)" class="dropdown-toggle" data-toggle="dropdown">
+                @linkText
+                <b class="caret"></b>
+            </a>
+            
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Administer Concerts", "List", "Concerts")</li>
+            </ul>
+        }
+        else
+        {
+            @Html.ActionLink(linkText, actionName, controllerName)
+        }
+    </li>
 }
 
 <ul class="nav">
