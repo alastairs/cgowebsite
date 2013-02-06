@@ -34,12 +34,12 @@
         <tr>
             <form id="quickAdd" data-bind="submit: quickAdd">
                 <input type="hidden" name="isPublished" value="false" />
-                <td><input name="title" placeholder="Title" class="quickAddField" data-bind="value: newConcertTitle" /></td>
+                <td><input name="title" placeholder="Title" class="quickAddField" data-bind="value: newConcertTitle" required /></td>
                 <td>
-                    <input type="date" name="date" placeholder="Date: dd/mm/yyyy" class="quickAddField-small" data-bind="value: newConcertDate" />
-                    <input type="time" name="startTime" placeholder="Start Time: hh:mm" class="quickAddField-small" data-bind="value: newConcertStartTime" />
+                    <input type="date" name="date" placeholder="Date: dd/mm/yyyy" class="quickAddField-small" data-bind="value: newConcertDate" required />
+                    <input type="time" name="startTime" placeholder="Start Time: hh:mm" class="quickAddField-small" data-bind="value: newConcertStartTime" required />
                 </td>
-                <td><input name="location" placeholder="Venue" class="quickAddField" data-bind="value: newConcertLocation" /></td>
+                <td><input name="location" placeholder="Venue" class="quickAddField" data-bind="value: newConcertLocation" required /></td>
                 <td>No</td>
                 <td><button type="submit" class="btn"><i class="icon-plus"></i> Quick Add</button></td>
             </form>
