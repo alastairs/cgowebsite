@@ -7,8 +7,12 @@ CGO.makeConcertListViewModel = function ConcertListViewModel() {
     self.newConcertDate = ko.observable();
     self.newConcertStartTime = ko.observable();
     self.newConcertLocation = ko.observable();
-    
+
     self.quickAdd = function() {
+        if (!$("#quickAdd").valid()) {
+            return;
+        }
+
         var makeDate = function(date, startTime) {
             return Date.parse(date + "T" + startTime);
         };
@@ -16,22 +20,22 @@ CGO.makeConcertListViewModel = function ConcertListViewModel() {
         var concert = CGO.makeConcertViewModel({
             title: this.newConcertTitle(),
             dateAndStartTime: makeDate(this.newConcertDate(),
-                                       this.newConcertStartTime()),
+                this.newConcertStartTime()),
             location: this.newConcertLocation()
         });
-        
+
         $.ajax({
             url: "/api/concerts",
             type: "post",
             data: JSON.stringify(CGO.makeConcertModel(concert)),
             dataType: "json",
             contentType: "application/json",
-        }).done(function (data) {
+        }).done(function(data) {
             concert.id(data.id);
             concert.href(data.href);
-            
+
             self.concerts.push(concert);
-            
+
             self.newConcertTitle("");
             self.newConcertDate("");
             self.newConcertStartTime("");
@@ -39,7 +43,7 @@ CGO.makeConcertListViewModel = function ConcertListViewModel() {
         });
     };
 
-    self.deleteConcert = function (concert) {
+    self.deleteConcert = function(concert) {
         // TODO: show a modal warning if the concert is published.
         // Should we show it whether or not the concert is published?
 
@@ -51,10 +55,10 @@ CGO.makeConcertListViewModel = function ConcertListViewModel() {
         });
     };
 
-    self.publishConcert = function (viewModel) {
+    self.publishConcert = function(viewModel) {
         var concert = CGO.makeConcertModel(viewModel);
         concert.isPublished = true;
-        
+
         $.ajax({
             type: "PUT",
             url: concert.href,

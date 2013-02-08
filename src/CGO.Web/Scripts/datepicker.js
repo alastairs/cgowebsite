@@ -3,7 +3,7 @@
     $input.datepicker({
         minDate: $input.attr('min'),
         maxDate: $input.attr('max'),
-        dateFormat: 'yy-mm-dd'
+        dateFormat: 'dd/mm/yy'
     });
 });
 
