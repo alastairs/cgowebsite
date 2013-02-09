@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RavenConcertDetailsServiceFacts.cs" />
+    <Compile Include="RavenConcertsSeasonServiceFacts.cs" />
     <Compile Include="RavenTest.cs" />
   </ItemGroup>
   <ItemGroup>
