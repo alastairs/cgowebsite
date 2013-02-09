@@ -518,6 +518,15 @@ namespace CGO.Web.Tests.Controllers
                 Assert.That(viewModel, Is.Not.Contains(unpublishedConcert).Using(new ConcertEqualityComparer()));
             }
 
+            [Test]
+            public void SetTheConcertSeasonPropertyInTheViewBag()
+            {
+                var controller = new ConcertsController(Session);
+
+                var result = controller.Archive(2009) as ViewResult;
+
+                Assert.That(result.ViewBag.ConcertSeason, Is.EqualTo("2009-2010"));
+            }
 
             [SetUp]
             public void CreateTestData()
