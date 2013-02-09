@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using CGO.Domain;
 using CGO.Web.Models;
 
 namespace CGO.Web.Mappers

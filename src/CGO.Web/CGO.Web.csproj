@@ -306,7 +306,6 @@
     <Compile Include="Infrastructure\NinjectWebApiDependencyResolver.cs" />
     <Compile Include="Infrastructure\NinjectScope.cs" />
     <Compile Include="Mappers\MapperExtensions.cs" />
-    <Compile Include="Models\Concert.cs" />
     <Compile Include="Models\HomePageViewModel.cs" />
     <Compile Include="Models\Rehearsal.cs" />
     <Compile Include="Models\SideBarLink.cs" />
@@ -572,6 +571,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CGO.Domain\CGO.Domain.csproj">
+      <Project>{2ec137a8-eb60-4efa-aa30-3b5234bf7616}</Project>
+      <Name>CGO.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

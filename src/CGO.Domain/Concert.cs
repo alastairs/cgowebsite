@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CGO.Web.Models
+namespace CGO.Domain
 {
     public class Concert
     {
