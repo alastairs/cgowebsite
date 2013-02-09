@@ -32,7 +32,9 @@ namespace CGO.DataAccess.Raven
 
         public IReadOnlyCollection<Concert> GetConcertsInSeason(int seasonStartYear)
         {
-            return ravenSession.Query<Concert>().ToList();
+            return ravenSession.Query<Concert>()
+                               .Where(c => c.DateAndStartTime >= DateTime.Parse(seasonStartYear + "-08-01"))
+                               .ToList();
         }
     }
 }
