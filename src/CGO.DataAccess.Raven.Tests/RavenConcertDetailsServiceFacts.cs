@@ -1,4 +1,5 @@
-﻿using CGO.Domain;
+﻿using System;
+using CGO.Domain;
 using NSubstitute;
 using NUnit.Framework;
 using Raven.Client;
@@ -20,6 +21,19 @@ namespace CGO.DataAccess.Raven.Tests
                 concertDetailsService.GetConcert(concertId);
 
                 ravenSession.Received().Load<Concert>(concertId);
+            }
+
+            [Test]
+            public void ReturnTheResultOfSessionLoad()
+            {
+                var ravenSession = Substitute.For<IDocumentSession>();
+                var expectedConcert = new Concert(1, "Test Concert", DateTime.MinValue, "Venue");
+                ravenSession.Load<Concert>(1).Returns(expectedConcert);
+                var concertDetailsService = new RavenConcertDetailsService(ravenSession);
+
+                var actualConcert = concertDetailsService.GetConcert(1);
+
+                Assert.That(actualConcert, Is.EqualTo(expectedConcert));
             }
         }
     }
