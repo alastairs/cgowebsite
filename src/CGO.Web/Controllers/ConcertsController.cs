@@ -14,8 +14,9 @@ namespace CGO.Web.Controllers
     {
         private readonly IDocumentSession session;
         private readonly IConcertDetailsService concertDetailsService;
+        private readonly IConcertsSeasonService concertsSeasonService;
 
-        public ConcertsController(IDocumentSession session, IConcertDetailsService concertDetailsService)
+        public ConcertsController(IDocumentSession session, IConcertDetailsService concertDetailsService, IConcertsSeasonService concertsSeasonService)
         {
             if (session == null)
             {
@@ -27,8 +28,14 @@ namespace CGO.Web.Controllers
                 throw new ArgumentNullException("concertDetailsService");
             }
 
+            if (concertsSeasonService == null)
+            {
+                throw new ArgumentNullException("concertsSeasonService");
+            }
+
             this.session = session;
             this.concertDetailsService = concertDetailsService;
+            this.concertsSeasonService = concertsSeasonService;
         }
 
         //
