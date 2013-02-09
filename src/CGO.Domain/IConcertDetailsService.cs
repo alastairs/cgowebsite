@@ -19,5 +19,11 @@ namespace CGO.Domain
         /// </summary>
         /// <returns>A collection of concerts in the published state.</returns>
         IReadOnlyCollection<Concert> GetFutureConcerts();
+
+        /// <summary>
+        /// Saves the specified concert to the backing store.
+        /// </summary>
+        /// <param name="concert">The concert to save.</param>
+        void SaveConcert(Concert concert);
     }
 }
