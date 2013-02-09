@@ -63,6 +63,30 @@ namespace CGO.Web.Controllers
         }
 
         //
+        // GET: /Concerts/Archive/2009
+
+        public ActionResult Archive(int year)
+        {
+            var concerts = session.Query<Concert>()
+                                  .Where(c => c.DateAndStartTime >= DateTime.Parse(year + "-08-01") && 
+                                              c.DateAndStartTime <= DateTime.Parse(year + 1 + "-07-31"))
+                                  .Where(c => c.IsPublished)
+                                  .ToList();
+
+            ViewBag.ConcertSeason = string.Format("{0}-{1}", year, year + 1);
+
+            return View("Archive", concerts);
+        }
+
+        //
+        // GET: /Concerts/Archived/
+
+        public ActionResult Archived()
+        {
+            return View("ArchiveIndex");
+        }
+
+        //
         // GET: /Concerts/Create
         [Authorize]
         public ActionResult Create()

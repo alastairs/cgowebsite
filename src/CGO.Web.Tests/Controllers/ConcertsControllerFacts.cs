@@ -466,5 +466,102 @@ namespace CGO.Web.Tests.Controllers
                 }
             }
         }
+
+        [TestFixture]
+        public class ArchiveShould : RavenTest
+        {
+            private IReadOnlyCollection<Concert> concerts2009;
+
+            [Test]
+            public void ReturnArchiveView()
+            {
+                var controller = new ConcertsController(Session);
+
+                var result = controller.Archive(2009);
+
+                result.AssertViewRendered().ForView("Archive");
+            }
+
+            [Test]
+            public void ReturnArchiveViewWithConcerts()
+            {
+                var controller = new ConcertsController(Session);
+
+                var result = controller.Archive(2009);
+
+                result.AssertViewRendered().WithViewData<IReadOnlyCollection<Concert>>();
+            }
+
+            [Test]
+            public void ReturnArchiveWithTheConcertsFromTheRequestedSeason()
+            {
+                var controller = new ConcertsController(Session);
+                IReadOnlyCollection<Concert> expectedData = concerts2009.ToArray();
+
+                var result = controller.Archive(2009) as ViewResult;
+                var viewModel = result.Model as IReadOnlyCollection<Concert>;
+
+                Assert.That(viewModel, Is.EqualTo(expectedData).Using(new ConcertEqualityComparer()));
+            }
+
+            [Test]
+            public void ReturnOnlyPublishedConcertsFromTheRequestedSeason()
+            {
+                var controller = new ConcertsController(Session);
+                var unpublishedConcert = new Concert(1, "Unpublished 2009 Concert", new DateTime(2009, 11, 14), "West Road Concert Hall");
+                Session.Store(unpublishedConcert);
+                Session.SaveChanges();
+
+                var result = controller.Archive(2009) as ViewResult;
+                var viewModel = result.Model as IReadOnlyCollection<Concert>;
+
+                Assert.That(viewModel, Is.Not.Contains(unpublishedConcert).Using(new ConcertEqualityComparer()));
+            }
+
+            [Test]
+            public void SetTheConcertSeasonPropertyInTheViewBag()
+            {
+                var controller = new ConcertsController(Session);
+
+                var result = controller.Archive(2009) as ViewResult;
+
+                Assert.That(result.ViewBag.ConcertSeason, Is.EqualTo("2009-2010"));
+            }
+
+            [SetUp]
+            public void CreateTestData()
+            {
+                concerts2009 = new List<Concert>
+                {
+                    new Concert(2, "Michaelmas", new DateTime(2009, 11, 13), "West Road Concert Hall"), 
+                    new Concert(3, "Lent", new DateTime(2010, 02, 26), "West Road Concert Hall"), 
+                    new Concert(4, "Spring", new DateTime(2010, 04, 2), "West Road Concert Hall"), 
+                    new Concert(5, "Summer", new DateTime(2010, 06, 25), "West Road Concert Hall")
+                };
+
+                var concerts2009List = concerts2009.ToList();
+                concerts2009List.ForEach(c => c.Publish());
+
+                using (var sampleDataSession = Store.OpenSession())
+                {
+                    concerts2009List.ForEach(sampleDataSession.Store);          
+                    sampleDataSession.SaveChanges();
+                }
+            }
+        }
+
+        [TestFixture]
+        public class ArchivedShould
+        {
+            [Test]
+            public void ReturnTheArchiveIndexView()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Archived();
+
+                result.AssertViewRendered().ForView("ArchiveIndex");
+            } 
+        }
     }
 }
