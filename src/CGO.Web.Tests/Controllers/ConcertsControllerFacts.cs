@@ -504,6 +504,21 @@ namespace CGO.Web.Tests.Controllers
                 Assert.That(viewModel, Is.EqualTo(expectedData).Using(new ConcertEqualityComparer()));
             }
 
+            [Test]
+            public void ReturnOnlyPublishedConcertsFromTheRequestedSeason()
+            {
+                var controller = new ConcertsController(Session);
+                var unpublishedConcert = new Concert(1, "Unpublished 2009 Concert", new DateTime(2009, 11, 14), "West Road Concert Hall");
+                Session.Store(unpublishedConcert);
+                Session.SaveChanges();
+
+                var result = controller.Archive(2009) as ViewResult;
+                var viewModel = result.Model as IReadOnlyCollection<Concert>;
+
+                Assert.That(viewModel, Is.Not.Contains(unpublishedConcert).Using(new ConcertEqualityComparer()));
+            }
+
+
             [SetUp]
             public void CreateTestData()
             {
