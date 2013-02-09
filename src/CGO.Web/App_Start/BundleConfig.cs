@@ -13,8 +13,8 @@ namespace CGO.Web
                         "~/Scripts/jquery-ui*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.unobtrusive*",
-                        "~/Scripts/jquery.validate*"));
+                        //"~/Scripts/jquery.unobtrusive*",
+                        "~/Scripts/jquery.validate.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));

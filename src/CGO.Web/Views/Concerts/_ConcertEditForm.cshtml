@@ -45,7 +45,7 @@
             @Html.HiddenFor(c => c.IsPublished)
             <input type="submit" value="Publish Concert" class="btn btn-primary" onclick="$('#IsPublished').val(true);$(this).submit();" />
             <input type="submit" value="Save for later" class="btn" onclick="$('#IsPublished').val(false);$(this).submit();" />
-            <input type="reset" value="Discard" class="btn" />
+            <a href="@Url.Action("List")" class="btn">Discard</a>
         </p>
     </fieldset>
 }

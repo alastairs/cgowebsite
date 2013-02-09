@@ -6,13 +6,9 @@ CGO.makeConcertViewModel = function(concert) {
         href: ko.observable(concert.href),
         title: ko.observable(concert.title),
         location: ko.observable(concert.location),
-        _dateAndStartTime: concert.dateAndStartTime,
+        dateAndStartTime: concert.dateAndStartTime,
         isPublished: ko.observable(concert.isPublished)
     };
-
-    self.dateAndStartTime = ko.computed(function() {
-        return $.format.date(new Date(this._dateAndStartTime).toString(), 'd MMM yyyy, HH:mm');
-    }, self);
 
     return self;
 };
@@ -23,7 +19,7 @@ CGO.makeConcertModel = function(concertViewModel) {
         href: concertViewModel.href(),
         title: concertViewModel.title(),
         location: concertViewModel.location(),
-        dateAndStartTime: concertViewModel._dateAndStartTime,
+        dateAndStartTime: concertViewModel.dateAndStartTime,
         isPublished: concertViewModel.isPublished
     };
 }
