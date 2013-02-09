@@ -40,5 +40,10 @@ namespace CGO.DataAccess.Raven
                                .OrderBy(c => c.DateAndStartTime)
                                .ToList();
         }
+
+        public void SaveConcert(Concert concert)
+        {
+            ravenSession.Store(concert);
+        }
     }
 }

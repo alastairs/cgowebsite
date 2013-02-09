@@ -36,5 +36,22 @@ namespace CGO.DataAccess.Raven.Tests
                 Assert.That(actualConcert, Is.EqualTo(expectedConcert));
             }
         }
+
+        [TestFixture]
+        public class SaveConcertShould
+        {
+            [Test]
+            public void CallStoreOnTheRavenSessionWithTheProvidedConcert()
+            {
+                var ravenSession = Substitute.For<IDocumentSession>();
+                var concertDetailsService = new RavenConcertDetailsService(ravenSession,
+                                                                           Substitute.For<IDateTimeProvider>());
+                var concert = new Concert(1, "Test Concert", DateTime.MinValue, "Venue");
+                
+                concertDetailsService.SaveConcert(concert);
+
+                ravenSession.Received(1).Store(concert);
+            } 
+        }
     }
 }
