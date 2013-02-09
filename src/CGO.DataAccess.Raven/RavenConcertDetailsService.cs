@@ -20,8 +20,7 @@ namespace CGO.DataAccess.Raven
 
         public Concert GetConcert(int concertId)
         {
-            ravenSession.Load<Concert>(concertId);
-            return null;
+            return ravenSession.Load<Concert>(concertId);
         }
     }
 }
