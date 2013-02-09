@@ -51,7 +51,19 @@ namespace CGO.DataAccess.Raven.Tests
                 concertDetailsService.SaveConcert(concert);
 
                 ravenSession.Received(1).Store(concert);
-            } 
+            }
+
+            [Test]
+            public void CallSaveChangesOnTheRavenSession()
+            {
+                var ravenSession = Substitute.For<IDocumentSession>();
+                var concertDetailsService = new RavenConcertDetailsService(ravenSession,
+                                                                           Substitute.For<IDateTimeProvider>());
+
+                concertDetailsService.SaveConcert(new Concert(1, "Test Concert", DateTime.MinValue, "Venue"));
+
+                ravenSession.Received(1).SaveChanges();
+            }
         }
     }
 }

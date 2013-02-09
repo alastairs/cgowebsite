@@ -44,6 +44,7 @@ namespace CGO.DataAccess.Raven
         public void SaveConcert(Concert concert)
         {
             ravenSession.Store(concert);
+            ravenSession.SaveChanges();
         }
     }
 }
