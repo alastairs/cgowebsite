@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using CGO.Domain;
 using CGO.Web.Mappers;
 using CGO.Web.Models;
 using CGO.Web.ViewModels.Api;

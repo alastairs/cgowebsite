@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using CGO.Domain;
 using CGO.Web.Mappers;
 using CGO.Web.Models;
 using CGO.Web.ViewModels;

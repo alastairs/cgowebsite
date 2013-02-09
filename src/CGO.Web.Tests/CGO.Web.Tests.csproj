@@ -149,6 +149,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CGO.Domain\CGO.Domain.csproj">
+      <Project>{2EC137A8-EB60-4EFA-AA30-3B5234BF7616}</Project>
+      <Name>CGO.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CGO.Web\CGO.Web.csproj">
       <Project>{97614706-b50c-4ace-9331-4b5f1b52ef28}</Project>
       <Name>CGO.Web</Name>

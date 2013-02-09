@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using CGO.Domain;
 using CGO.Web.Infrastructure;
 using CGO.Web.Models;
 
