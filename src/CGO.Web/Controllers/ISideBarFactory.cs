@@ -11,9 +11,8 @@ namespace CGO.Web.Controllers
         /// 
         /// </summary>
         /// <param name="urlHelper"> </param>
-        /// <param name="controllerName"> </param>
         /// <param name="documentSessionFactory"> </param>
         /// <returns></returns>
-        SideBar CreateSideBar(IUrlHelper urlHelper, string controllerName, IDocumentSessionFactory documentSessionFactory);
+        SideBar CreateSideBar(IUrlHelper urlHelper, IDocumentSessionFactory documentSessionFactory);
     }
 }
