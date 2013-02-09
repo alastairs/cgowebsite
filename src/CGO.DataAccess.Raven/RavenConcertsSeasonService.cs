@@ -9,20 +9,29 @@ namespace CGO.DataAccess.Raven
     public class RavenConcertsSeasonService : IConcertsSeasonService
     {
         private readonly IDocumentSession ravenSession;
+        private readonly IDateTimeProvider dateTimeProvider;
 
-        public RavenConcertsSeasonService(IDocumentSession ravenSession)
+        public RavenConcertsSeasonService(IDocumentSession ravenSession, IDateTimeProvider dateTimeProvider)
         {
             if (ravenSession == null)
             {
                 throw new ArgumentNullException("ravenSession");
             }
 
+            if (dateTimeProvider == null)
+            {
+                throw new ArgumentNullException("dateTimeProvider");
+            }
+
             this.ravenSession = ravenSession;
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         public IReadOnlyCollection<Concert> GetConcertsInCurrentSeason()
         {
-            throw new NotImplementedException();
+            return ravenSession.Query<Concert>()
+                               .Where(c => c.DateAndStartTime <= DateTime.Parse(dateTimeProvider.Now.Year + "-07-31"))
+                               .ToList();
         }
 
         public IReadOnlyCollection<Concert> GetConcertsInPreviousSeason()
