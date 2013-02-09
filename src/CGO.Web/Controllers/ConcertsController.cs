@@ -125,7 +125,7 @@ namespace CGO.Web.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
-            var concert = session.Load<Concert>(id);
+            var concert = concertDetailsService.GetConcert(id);
 
             if (concert == null)
             {
