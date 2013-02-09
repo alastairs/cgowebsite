@@ -63,6 +63,14 @@ namespace CGO.Web.Controllers
         }
 
         //
+        // GET: /Concerts/Archive/2009
+
+        public ActionResult Archive(int year)
+        {
+            return View("Archive");
+        }
+
+        //
         // GET: /Concerts/Create
         [Authorize]
         public ActionResult Create()
