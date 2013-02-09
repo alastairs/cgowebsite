@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RavenConcertDetailsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CGO.Domain\CGO.Domain.csproj">
