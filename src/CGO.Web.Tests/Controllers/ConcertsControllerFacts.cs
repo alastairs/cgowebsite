@@ -289,10 +289,8 @@ namespace CGO.Web.Tests.Controllers
         }
 
         [TestFixture]
-        public class EditShouldOnPost : RavenTest
+        public class EditShouldOnPost
         {
-            private Concert existingConcert;
-
             [Test]
             public void RedirectToTheListViewIfNoErrorsOccurred()
             {
@@ -330,42 +328,15 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void SaveTheChangesToTheDatabaseIfNoErrorsOccurred()
+            public void CallSaveOnTheConcertDetailsServiceIfNoErrorsOccurred()
             {
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>(),
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), concertDetailsService,
                                                         Substitute.For<IConcertsSeasonService>());
-                var viewModel = existingConcert.ToViewModel<Concert, ConcertViewModel>();
-                const string editedTitle = "New Title";
-                viewModel.Title = editedTitle;
-
-                controller.Edit(1, viewModel);
-
-                var editedConcert = new Concert(existingConcert.Id, editedTitle, existingConcert.DateAndStartTime, existingConcert.Location);
-                Assert.That(Session.Load<Concert>(1), Is.EqualTo(editedConcert).Using(new ConcertEqualityComparer()));
-            }
-
-            [Test]
-            public void CallSaveChangesOnTheRavenSession()
-            {
-                var documentSession = Substitute.For<IDocumentSession>();
-                var controller = new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>(),
-                                                        Substitute.For<IConcertsSeasonService>());
-
+                
                 controller.Edit(1, new ConcertViewModel());
 
-                documentSession.Received().SaveChanges();
-            }
-
-            [SetUp]
-            public void CreateSampleData()
-            {
-                existingConcert = new Concert(1, "Foo", new DateTime(2012, 08, 04, 20, 00, 00), "Bar");
-
-                using (var sampleDataSession = Store.OpenSession())
-                {
-                    sampleDataSession.Store(existingConcert);
-                    sampleDataSession.SaveChanges();
-                }
+                concertDetailsService.ReceivedWithAnyArgs(1).SaveConcert(null);
             }
         }
 
