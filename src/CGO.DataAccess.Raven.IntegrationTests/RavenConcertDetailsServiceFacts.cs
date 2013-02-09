@@ -95,5 +95,24 @@ namespace CGO.DataAccess.Raven.IntegrationTests
                 return dateTimeProvider;
             }
         }
+
+        [TestFixture]
+        public class SaveChangesShould : RavenTest
+        {
+            [Test]
+            public void AllowTheConcertToBeRoundTripped()
+            {
+                var concert = new Concert(1, "Test Concert", DateTime.MinValue, "Venue");
+                var concertDetailsService = new RavenConcertDetailsService(Session, Substitute.For<IDateTimeProvider>());
+
+                concertDetailsService.SaveConcert(concert);
+                var actualConcert = Session.Load<Concert>(1);
+
+                Assert.That(actualConcert.Id, Is.EqualTo(concert.Id));
+                Assert.That(actualConcert.Title, Is.EqualTo(concert.Title));
+                Assert.That(actualConcert.DateAndStartTime, Is.EqualTo(concert.DateAndStartTime));
+                Assert.That(actualConcert.Location, Is.EqualTo(concert.Location));
+            } 
+        }
     }
 }
