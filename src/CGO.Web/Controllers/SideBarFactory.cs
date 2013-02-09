@@ -1,5 +1,5 @@
 using System;
-
+using CGO.Domain;
 using CGO.Web.Infrastructure;
 
 namespace CGO.Web.Controllers
