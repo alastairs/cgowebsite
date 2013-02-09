@@ -33,6 +33,20 @@ namespace CGO.DataAccess.Raven.IntegrationTests
                 Assert.That(actualConcerts.Select(c => c.Id), Is.EqualTo(expectedConcerts.Take(1).Select(c => c.Id)));
             }
 
+            [Test]
+            public void ReturnOnlyPublishedConcerts()
+            {
+                const int unpublishedConcertId = 3;
+                CreateConcerts();
+                Session.Store(new Concert(unpublishedConcertId, "Unpublished Concert", new DateTime(2010, 02, 26), "West Road Concert Hall"));
+                Session.SaveChanges();
+                var concertsSeasonService = new RavenConcertsSeasonService(Session);
+
+                var seasonConcerts = concertsSeasonService.GetConcertsInSeason(2009);
+
+                Assert.That(seasonConcerts.Select(c => c.Id), Is.Not.Contains(unpublishedConcertId));
+            }
+
             private IEnumerable<Concert> CreateConcerts()
             {
                 var concerts = new List<Concert>
