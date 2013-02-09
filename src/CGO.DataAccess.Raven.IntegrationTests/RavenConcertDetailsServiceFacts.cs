@@ -43,7 +43,7 @@ namespace CGO.DataAccess.Raven.IntegrationTests
 
                 var futureConcerts = concertDetailsService.GetFutureConcerts();
 
-                Assert.That(futureConcerts.Single().Id, Is.EqualTo(2));
+                Assert.That(futureConcerts.Select(c => c.Id), Is.EquivalentTo(new[] {2, 4}));
             }
 
             [Test]
@@ -56,16 +56,33 @@ namespace CGO.DataAccess.Raven.IntegrationTests
                 Assert.That(futureConcerts.Select(c => c.Id), Is.Not.Contains(3));
             }
 
+            [Test]
+            public void ReturnTheConcertsSortedByDateAscending()
+            {
+                var concertDetailsService = new RavenConcertDetailsService(Session, GetMockDateTimeProvider());
+
+                var futureConcerts = concertDetailsService.GetFutureConcerts();
+
+                Assert.That(futureConcerts.Select(c => c.Id), Is.EqualTo(new[] { 4, 2 }));
+            }
+
             [SetUp]
             public void CreateSampleData()
             {
                 using (var sampleDataSession = Store.OpenSession())
                 {
                     sampleDataSession.Store(new Concert(1, "Past Concert", new DateTime(2012, 06, 29), "Venue"));
+                    
                     var futurePublishedConcert = new Concert(2, "Future Concert", new DateTime(2013, 03, 08), "Venue");
                     futurePublishedConcert.Publish();
                     sampleDataSession.Store(futurePublishedConcert);
+                    
                     sampleDataSession.Store(new Concert(3, "Unpublished Concert", new DateTime(2013, 03, 08), "Venue"));
+                    
+                    futurePublishedConcert = new Concert(4, "Future Concert", new DateTime(2013, 02, 14), "Venue");
+                    futurePublishedConcert.Publish();
+                    sampleDataSession.Store(futurePublishedConcert);
+                    
                     sampleDataSession.SaveChanges();
                 }
             }

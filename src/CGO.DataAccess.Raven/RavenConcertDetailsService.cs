@@ -37,6 +37,7 @@ namespace CGO.DataAccess.Raven
             return ravenSession.Query<Concert>()
                                .Where(c => c.DateAndStartTime > dateTimeProvider.Now)
                                .Where(c => c.IsPublished)
+                               .OrderBy(c => c.DateAndStartTime)
                                .ToList();
         }
     }
