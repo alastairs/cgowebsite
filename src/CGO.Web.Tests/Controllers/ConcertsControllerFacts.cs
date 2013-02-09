@@ -479,6 +479,16 @@ namespace CGO.Web.Tests.Controllers
 
                 result.AssertViewRendered().ForView("Archive");
             }
+
+            [Test]
+            public void ReturnArchiveViewWithConcerts()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Archive(2009);
+
+                result.AssertViewRendered().WithViewData<IReadOnlyCollection<ConcertViewModel>>();
+            }
         }
     }
 }
