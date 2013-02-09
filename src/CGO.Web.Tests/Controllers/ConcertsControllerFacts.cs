@@ -468,12 +468,14 @@ namespace CGO.Web.Tests.Controllers
         }
 
         [TestFixture]
-        public class ArchiveShould
+        public class ArchiveShould : RavenTest
         {
+            private IReadOnlyCollection<Concert> concerts2009;
+
             [Test]
             public void ReturnArchiveView()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Session);
 
                 var result = controller.Archive(2009);
 
@@ -483,11 +485,44 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnArchiveViewWithConcerts()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Session);
 
                 var result = controller.Archive(2009);
 
-                result.AssertViewRendered().WithViewData<IReadOnlyCollection<ConcertViewModel>>();
+                result.AssertViewRendered().WithViewData<IReadOnlyCollection<Concert>>();
+            }
+
+            [Test]
+            public void ReturnArchiveWithTheConcertsFromTheRequestedSeason()
+            {
+                var controller = new ConcertsController(Session);
+                IReadOnlyCollection<Concert> expectedData = concerts2009.ToArray();
+
+                var result = controller.Archive(2009) as ViewResult;
+                var viewModel = result.Model as IReadOnlyCollection<Concert>;
+
+                Assert.That(viewModel, Is.EqualTo(expectedData).Using(new ConcertEqualityComparer()));
+            }
+
+            [SetUp]
+            public void CreateTestData()
+            {
+                concerts2009 = new List<Concert>
+                {
+                    new Concert(2, "Michaelmas", new DateTime(2009, 11, 13), "West Road Concert Hall"), 
+                    new Concert(3, "Lent", new DateTime(2010, 02, 26), "West Road Concert Hall"), 
+                    new Concert(4, "Spring", new DateTime(2010, 04, 2), "West Road Concert Hall"), 
+                    new Concert(5, "Summer", new DateTime(2010, 06, 25), "West Road Concert Hall")
+                };
+
+                var concerts2009List = concerts2009.ToList();
+                concerts2009List.ForEach(c => c.Publish());
+
+                using (var sampleDataSession = Store.OpenSession())
+                {
+                    concerts2009List.ForEach(sampleDataSession.Store);          
+                    sampleDataSession.SaveChanges();
+                }
             }
         }
     }
