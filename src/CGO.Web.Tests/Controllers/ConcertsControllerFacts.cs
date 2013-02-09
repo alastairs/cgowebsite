@@ -138,7 +138,7 @@ namespace CGO.Web.Tests.Controllers
         }
 
         [TestFixture]
-        public class CreateShould : RavenTest
+        public class CreateShould
         {
             [Test]
             public void ShowTheCreateViewWhenCalledViaAGetRequest()
@@ -175,40 +175,21 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void StoreTheConcertInTheDatabaseWhenThereAreNoValidationErrors()
+            public void CallSaveOnTheConcertDetailsServiceWhenThereAreNoValidationErrors()
             {
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>(),
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), concertDetailsService,
                                                         Substitute.For<IConcertsSeasonService>());
-                var concert = new Concert(1, "Foo", new DateTime(2012, 07, 29, 20, 00, 00), "Bar");
 
                 controller.Create(new ConcertViewModel
                 {
-                    Date = concert.DateAndStartTime,
-                    StartTime = concert.DateAndStartTime,
-                    Location = concert.Location,
-                    Title = concert.Title
+                    Date = new DateTime(2012, 07, 29, 20, 00, 00),
+                    StartTime = new DateTime(2012, 07, 29, 20, 00, 00),
+                    Location = "Bar",
+                    Title = "Foo"
                 });
 
-                Assert.That(Session.Load<Concert>(1), Is.EqualTo(concert).Using(new ConcertEqualityComparer()));
-            }
-
-            [Test]
-            public void SaveChangesToTheDatabaseWhenThereAreNoValidationErrors()
-            {
-                var mockRavenSession = Substitute.For<IDocumentSession>();
-                var controller = new ConcertsController(mockRavenSession, Substitute.For<IConcertDetailsService>(),
-                                                        Substitute.For<IConcertsSeasonService>());
-                var concert = new Concert(1, "Foo", new DateTime(2012, 07, 31, 14, 24, 00), "Bar");
-
-                controller.Create(new ConcertViewModel
-                {
-                    Date = concert.DateAndStartTime,
-                    StartTime = concert.DateAndStartTime,
-                    Location = concert.Location,
-                    Title = concert.Title
-                });
-
-                mockRavenSession.Received().SaveChanges();
+                concertDetailsService.ReceivedWithAnyArgs(1).SaveConcert(null);
             }
         }
 
