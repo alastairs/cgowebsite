@@ -62,23 +62,6 @@
                     onfocusout: function (element) {
                         $(element).valid();
                     },
-                    rules: {
-                        title: {
-                            required: true
-                        },
-                        date: {
-                            required: true,
-                            date: true,
-                            min: $("#date").attr('min')
-                        },
-                        startTime: {
-                            time: true,
-                            required: true
-                        },
-                        location: {
-                            required: true
-                        }
-                    },
                     showErrors: function (errorMap, errorList) {
                         $.each(this.successList, function (index, value) {
                             $(value).popover("hide");
