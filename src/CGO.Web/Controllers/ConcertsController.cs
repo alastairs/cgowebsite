@@ -67,7 +67,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Archive(int year)
         {
-            return View("Archive");
+            return View("Archive", new[] { new ConcertViewModel() });
         }
 
         //
