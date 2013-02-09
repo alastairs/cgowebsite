@@ -466,5 +466,19 @@ namespace CGO.Web.Tests.Controllers
                 }
             }
         }
+
+        [TestFixture]
+        public class ArchiveShould
+        {
+            [Test]
+            public void ReturnArchiveView()
+            {
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+
+                var result = controller.Archive(2009);
+
+                result.AssertViewRendered().ForView("Archive");
+            }
+        }
     }
 }

@@ -563,6 +563,7 @@
     <Content Include="Views\Home\Xrds.cshtml" />
     <Content Include="Views\Shared\_OpenIdLoginBox.cshtml" />
     <Content Include="Views\Shared\_MenuBar.cshtml" />
+    <Content Include="Views\Concerts\Archive.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
