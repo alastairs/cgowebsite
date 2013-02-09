@@ -48,41 +48,59 @@
 </form>
 
 <a href="@Url.Action("Create", "Concerts")" class="btn btn-primary"><i class="icon-plus"></i> New Concert</a> 
-
+@section Scripts{
 @Scripts.Render("~/bundles/jqueryval")
 <script type="text/javascript" src="~/Scripts/ViewModels/ConcertListViewModel.js"></script>
 <script type="text/javascript" src="~/Scripts/ViewModels/ConcertViewModel.js"></script>
 <script type="text/javascript" src="~/Scripts/jquery.dateFormat-1.0.js"></script>
 <script type="text/javascript" src="~/Scripts/rfc3339date.js"></script>
 <script type="text/javascript" src="~/Scripts/commonFunctions.js"></script>
-<script type="text/javascript">
-    (function($) {
-        $(function () {
-            $("#quickAdd").validate({
-                debug: true,
-                onfocusout: function (element) {
-                    $(element).valid();
-                },
-                rules: {
-                    title: {
-                        required: true
+    <script type="text/javascript">
+        (function($) {
+            $(function () {
+                $("#quickAdd").validate({
+                    onfocusout: function (element) {
+                        $(element).valid();
                     },
-                    date: {
-                        required: true,
-                        date: true,
-                        min: $("#date").attr('min')
+                    rules: {
+                        title: {
+                            required: true
+                        },
+                        date: {
+                            required: true,
+                            date: true,
+                            min: $("#date").attr('min')
+                        },
+                        startTime: {
+                            time: true,
+                            required: true
+                        },
+                        location: {
+                            required: true
+                        }
                     },
-                    startTime: {
-                        time: true,
-                        required: true
-                    },
-                    location: {
-                        required: true
+                    showErrors: function (errorMap, errorList) {
+                        $.each(this.successList, function (index, value) {
+                            $(value).popover("hide");
+                        });
+                        
+                        $.each(errorList, function (index, value) {
+                            var popover = $(value.element).popover({
+                                trigger: "manual",
+                                placement: "bottom",
+                                content: value.message,
+                                template: '<div class="popover fade bottom in" style="display: block"><div class="arrow"></div><h3 class="popover-title">Validation Error</h3><div class="popover-content"></div></div>'
+                            });
+
+                            popover.data("popover").options.content = value.message;
+                            $(value.element).popover("show");
+                        });
+
                     }
-                }
-            });
+                });
             
-            ko.applyBindings(CGO.makeConcertListViewModel());
-        });
-    })(jQuery);
-</script>
+                ko.applyBindings(CGO.makeConcertListViewModel());
+            });
+        })(jQuery);
+    </script>
+}
