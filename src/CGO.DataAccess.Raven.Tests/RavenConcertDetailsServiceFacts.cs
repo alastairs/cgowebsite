@@ -15,7 +15,7 @@ namespace CGO.DataAccess.Raven.Tests
             public void CallSessionLoadWithTheProvidedIdentity()
             {
                 var ravenSession = Substitute.For<IDocumentSession>();
-                var concertDetailsService = new RavenConcertDetailsService(ravenSession);
+                var concertDetailsService = new RavenConcertDetailsService(ravenSession, Substitute.For<IDateTimeProvider>());
                 const int concertId = 3;
 
                 concertDetailsService.GetConcert(concertId);
@@ -29,7 +29,7 @@ namespace CGO.DataAccess.Raven.Tests
                 var ravenSession = Substitute.For<IDocumentSession>();
                 var expectedConcert = new Concert(1, "Test Concert", DateTime.MinValue, "Venue");
                 ravenSession.Load<Concert>(1).Returns(expectedConcert);
-                var concertDetailsService = new RavenConcertDetailsService(ravenSession);
+                var concertDetailsService = new RavenConcertDetailsService(ravenSession, Substitute.For<IDateTimeProvider>());
 
                 var actualConcert = concertDetailsService.GetConcert(1);
 
