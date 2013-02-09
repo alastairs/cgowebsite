@@ -7,7 +7,6 @@ using CGO.Web.Controllers;
 using CGO.Web.Mappers;
 using CGO.Web.Tests.EqualityComparers;
 using CGO.Web.ViewModels;
-
 using MvcContrib.TestHelper;
 using NSubstitute;
 using NUnit.Framework;
@@ -20,14 +19,13 @@ namespace CGO.Web.Tests.Controllers
     public class ConcertsControllerFacts
     {
         [TestFixture]
-        public class WhenThereAreConcerts_IndexShould : RavenTest
+        public class WhenThereAreConcerts_IndexShould
         {
-            private IEnumerable<Concert> concerts;
-
             [Test]
             public void DisplayTheIndexView()
             {
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
+                var concertDetailsService = GetMockConcertDetailsService(new[] { new Concert(1, "Test Concert", DateTime.MinValue, "Venue") });
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), concertDetailsService);
 
                 var result = controller.Index();
 
@@ -35,90 +33,33 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void DisplayTheConcertsInAscendingOrderByDate()
-            {
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
-
-                var result = controller.Index() as ViewResult;
-                var concertsDisplayed = result.Model as IEnumerable<Concert>;
-
-                Assert.That(concertsDisplayed, Is.EqualTo(concerts.OrderBy(c => c.DateAndStartTime)).Using(new ConcertEqualityComparer()));
-            }
-
-            [Test]
             public void DisplayTheConcertsFromTheDatabase()
             {
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
+                var expectedConcerts = new[] { new Concert(1, "Test Concert", DateTime.MinValue, "Venue") };
+                var concertDetailsService = GetMockConcertDetailsService(expectedConcerts);
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), concertDetailsService);
 
                 var result = controller.Index() as ViewResult;
 
-                Assert.That(result.Model, Is.EquivalentTo(concerts).Using(new ConcertEqualityComparer()));
+                Assert.That(result.Model, Is.EquivalentTo(expectedConcerts).Using(new ConcertEqualityComparer()));
             }
 
-            [Test]
-            public void DisplayOnlyConcertsInTheFuture()
+            private static IConcertDetailsService GetMockConcertDetailsService(IReadOnlyCollection<Concert> expectedConcerts)
             {
-                var pastConcert = new Concert(5, "Concert in the past", new DateTime(2011, 11, 18, 20, 00, 00), "West Road Concert Hall");
-                Session.Store(pastConcert);
-                Session.SaveChanges();
-                
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
-                
-                var result = controller.Index() as ViewResult;
-
-                Assert.That(result.Model, Is.Not.Contains(pastConcert).Using(new ConcertEqualityComparer()));
-            }
-
-            [Test]
-            public void DisplayOnlyPublishedConcerts()
-            {
-                var unpublishedConcert = new Concert(5, "Unpublished concert", new DateTime(2101, 01, 18, 20, 00, 00), "West Road Concert Hall");
-                Session.Store(unpublishedConcert);
-                Session.SaveChanges();
-
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
-
-                var result = controller.Index() as ViewResult;
-
-                Assert.That(result.Model, Is.Not.Contains(unpublishedConcert).Using(new ConcertEqualityComparer()));
-            }
-
-            [SetUp]
-            public void CreateSampleData()
-            {
-                concerts = new List<Concert>
-                {
-                    new Concert(1, "2100 Concert 1", new DateTime(2100, 01, 18, 20, 00, 00), "West Road Concert Hall"),
-                    new Concert(2, "2100 Concert 2", new DateTime(2100, 02, 18, 20, 00, 00), "West Road Concert Hall"),
-                    new Concert(3, "2100 Concert 3", new DateTime(2100, 03, 18, 20, 00, 00), "West Road Concert Hall"),
-                    new Concert(4, "2100 Concert 4", new DateTime(2100, 04, 18, 20, 00, 00), "West Road Concert Hall")
-                };
-
-                foreach (var concert in concerts)
-                {
-                    concert.Publish();
-                }
-
-                using (var sampleDataSession = Store.OpenSession())
-                {
-                    foreach(var concert in concerts)
-                    {
-                        sampleDataSession.Store(concert);
-                    }
-
-                    sampleDataSession.SaveChanges();
-                }
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                concertDetailsService.GetFutureConcerts().Returns(expectedConcerts);
+                return concertDetailsService;
             }
         }
 
         [TestFixture]
-        public class WhenThereAreNoConcerts_IndexShould : RavenTest
+        public class WhenThereAreNoConcerts_IndexShould
         {
             [Test]
             public void DisplayTheSiteHomePageIfTheRequestIsAnonymous()
             {
                 var builder = new TestControllerBuilder();
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), GetMockConcertDetailsService());
                 builder.InitializeController(controller);
 
                 var result = controller.Index();
@@ -130,13 +71,20 @@ namespace CGO.Web.Tests.Controllers
             public void DisplayTheCreateViewIfTheRequestIsAuthenticated()
             {
                 var builder = new TestControllerBuilder();
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), GetMockConcertDetailsService());
                 builder.InitializeController(controller);
                 controller.Request.Stub(r => r.IsAuthenticated).Return(true); // Have to use RhinoMocks here, as that's what MvcContrib uses
                 
                 var result = controller.Index();
 
                 result.AssertViewRendered().ForView("List");
+            }
+
+            private static IConcertDetailsService GetMockConcertDetailsService()
+            {
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                concertDetailsService.GetFutureConcerts().Returns(Enumerable.Empty<Concert>().ToList());
+                return concertDetailsService;
             }
         }
 

@@ -36,11 +36,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Index()
         {
-            var concerts = session.Query<Concert>()
-                                  .Where(c => c.DateAndStartTime > DateTime.Now)
-                                  .Where(c => c.IsPublished)
-                                  .OrderBy(c => c.DateAndStartTime)
-                                  .ToList();
+            var concerts = concertDetailsService.GetFutureConcerts();
 
             if (concerts.Any())
             {
