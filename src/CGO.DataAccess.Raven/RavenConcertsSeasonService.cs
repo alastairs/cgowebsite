@@ -35,6 +35,7 @@ namespace CGO.DataAccess.Raven
             return ravenSession.Query<Concert>()
                                .Where(c => c.DateAndStartTime >= DateTime.Parse(seasonStartYear + "-08-01"))
                                .Where(c => c.DateAndStartTime <= DateTime.Parse(seasonStartYear + 1 + "-07-31"))
+                               .Where(c => c.IsPublished)
                                .ToList();
         }
     }
