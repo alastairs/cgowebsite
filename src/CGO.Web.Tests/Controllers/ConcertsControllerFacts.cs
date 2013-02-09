@@ -281,15 +281,13 @@ namespace CGO.Web.Tests.Controllers
         }
 
         [TestFixture]
-        public class EditShouldOnGet : RavenTest
+        public class EditShouldOnGet
         {
-            private Concert concertToEdit;
-
             [Test]
             public void ShowTheEditView()
             {
-                var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>());
+                var concertDetailsService = GetMockConcertDetailsService();
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), concertDetailsService);
 
                 var result = controller.Edit(1);
 
@@ -299,8 +297,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ShowTheEditViewWithAConcertViewModel()
             {
-                var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>());
+                var concertDetailsService = GetMockConcertDetailsService();
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), concertDetailsService);
 
                 var result = controller.Edit(1);
 
@@ -310,15 +308,15 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ShowTheEditViewForTheConcertSpecified()
             {
-                var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>());
+                var concertDetailsService = GetMockConcertDetailsService();
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), concertDetailsService);
                 var viewModel = new ConcertViewModel
                 {
                     Id = 1,
-                    Title = "Foo",
-                    Date = new DateTime(2012, 08, 04, 20, 00, 00),
-                    StartTime = new DateTime(2012, 08, 04, 20, 00, 00),
-                    Location = "Bar",
+                    Title = "Test Concert",
+                    Date = DateTime.MinValue,
+                    StartTime = DateTime.MinValue,
+                    Location = "Venue",
                     IsPublished = false
                 };
 
@@ -328,33 +326,15 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void CallLoadOnTheRavenSessionWithTheSpecifiedId()
+            public void CallGetConcertOnTheConcertDetailsServiceWithTheSpecifiedId()
             {
-                var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>());
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), concertDetailsService);
 
-                const int concertDocumentToLoad = 1;
-                controller.Edit(concertDocumentToLoad);
+                const int concertId = 1;
+                controller.Edit(concertId);
 
-                documentSession.Received().Load<Concert>(concertDocumentToLoad);
-            }
-
-            [Test]
-            public void RetrieveTheConcertFromTheDatabase()
-            {
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
-                var viewModel = new ConcertViewModel
-                {
-                    Id = concertToEdit.Id,
-                    Title = concertToEdit.Title,
-                    Date = concertToEdit.DateAndStartTime,
-                    StartTime = concertToEdit.DateAndStartTime,
-                    Location = concertToEdit.Location
-                };
-
-                var result = controller.Edit(2) as ViewResult;
-
-                Assert.That(result.Model, Is.EqualTo(viewModel).Using(new ConcertViewModelEqualityComparer()));
+                concertDetailsService.Received().GetConcert(concertId);
             }
 
             [Test]
@@ -367,24 +347,11 @@ namespace CGO.Web.Tests.Controllers
                 result.AssertResultIs<HttpNotFoundResult>();
             }
 
-            [SetUp]
-            public void CreateSampleData()
+            private IConcertDetailsService GetMockConcertDetailsService()
             {
-                concertToEdit = new Concert(2, "Bar", new DateTime(2012, 08, 04, 20, 00, 00), "Foo");
-
-                using (var session = Store.OpenSession())
-                {
-                    session.Store(concertToEdit);
-                    session.SaveChanges();
-                }
-            }
-
-            private static IDocumentSession GetMockDocumentSession()
-            {
-                var documentSession = Substitute.For<IDocumentSession>();
-                documentSession.Load<Concert>(1).ReturnsForAnyArgs(new Concert(1, "Foo", new DateTime(2012, 08, 04, 20, 00, 00), "Bar"));
-
-                return documentSession;
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                concertDetailsService.GetConcert(1).ReturnsForAnyArgs(new Concert(1, "Test Concert", DateTime.MinValue, "Venue"));
+                return concertDetailsService;
             }
         }
 
