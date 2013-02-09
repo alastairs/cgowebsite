@@ -46,6 +46,16 @@ namespace CGO.DataAccess.Raven.IntegrationTests
                 Assert.That(futureConcerts.Single().Id, Is.EqualTo(2));
             }
 
+            [Test]
+            public void ReturnOnlyPublishedConcerts()
+            {
+                var concertDetailsService = new RavenConcertDetailsService(Session, GetMockDateTimeProvider());
+
+                var futureConcerts = concertDetailsService.GetFutureConcerts();
+
+                Assert.That(futureConcerts.Select(c => c.Id), Is.Not.Contains(3));
+            }
+
             [SetUp]
             public void CreateSampleData()
             {
@@ -53,7 +63,9 @@ namespace CGO.DataAccess.Raven.IntegrationTests
                 {
                     sampleDataSession.Store(new Concert(1, "Past Concert", new DateTime(2012, 06, 29), "Venue"));
                     var futurePublishedConcert = new Concert(2, "Future Concert", new DateTime(2013, 03, 08), "Venue");
+                    futurePublishedConcert.Publish();
                     sampleDataSession.Store(futurePublishedConcert);
+                    sampleDataSession.Store(new Concert(3, "Unpublished Concert", new DateTime(2013, 03, 08), "Venue"));
                     sampleDataSession.SaveChanges();
                 }
             }
