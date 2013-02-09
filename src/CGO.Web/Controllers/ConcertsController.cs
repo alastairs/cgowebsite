@@ -113,9 +113,7 @@ namespace CGO.Web.Controllers
                 return View("Create", concertViewModel);
             }
 
-            session.Store(concertViewModel.ToModel<Concert, ConcertViewModel>());
-            session.SaveChanges();
-
+            concertDetailsService.SaveConcert(concertViewModel.ToModel<Concert, ConcertViewModel>());
             return RedirectToAction("List");
         }
 
