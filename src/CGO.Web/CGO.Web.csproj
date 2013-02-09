@@ -571,6 +571,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CGO.DataAccess.Raven\CGO.DataAccess.Raven.csproj">
+      <Project>{a0c063a6-483c-4591-8ec2-048eb932200a}</Project>
+      <Name>CGO.DataAccess.Raven</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CGO.Domain\CGO.Domain.csproj">
       <Project>{2ec137a8-eb60-4efa-aa30-3b5234bf7616}</Project>
       <Name>CGO.Domain</Name>
