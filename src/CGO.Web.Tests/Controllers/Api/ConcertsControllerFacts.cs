@@ -10,7 +10,6 @@ using System.Web.Http.Routing;
 using CGO.Domain;
 using CGO.Web.Controllers.Api;
 using CGO.Web.Mappers;
-using CGO.Web.Models;
 using CGO.Web.Tests.EqualityComparers;
 using CGO.Web.ViewModels.Api;
 
@@ -32,7 +31,7 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void RemoveTheConcertWithTheSpecifiedIdFromTheDatabase()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 controller.DeleteConcert(idToDelete);
 
@@ -43,7 +42,7 @@ namespace CGO.Web.Tests.Controllers.Api
             public void DoNothingIfTheConcertToDeleteDoesNotExist()
             {
                 var mockRavenSession = Substitute.For<IDocumentSession>();
-                var controller = new ConcertsController(mockRavenSession);
+                var controller = new ConcertsController(mockRavenSession, Substitute.For<IConcertDetailsService>());
 
                 var nonExistentDocument = idToDelete + 1;
                 controller.DeleteConcert(nonExistentDocument);
@@ -54,7 +53,7 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void ReturnA204NoContentResponseCode()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.DeleteConcert(idToDelete);
 
@@ -81,7 +80,7 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void ReturnAnEnumerableOfConcertViewModels()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Get();
 
@@ -91,7 +90,7 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void ReturnAllTheConcertsInTheDatabase()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Get();
 
@@ -101,7 +100,7 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void ReturnTheConcertsInDescendingOrderOfDate()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Get();
 
@@ -111,7 +110,7 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void SetTheHrefPropertyOnTheViewModel()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var concerts = controller.Get().ToList();
 
@@ -254,7 +253,7 @@ namespace CGO.Web.Tests.Controllers.Api
 
             private ConcertsController CreateConcertsController(IDocumentSession documentSession)
             {
-                return new ConcertsController(documentSession)
+                return new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>())
                 {
                     ControllerContext = controllerContext,
                     Request = request
@@ -270,7 +269,7 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void ReturnA400BadRequestIfTheConcertModelIsNull()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Put(4, null);
 
@@ -282,7 +281,7 @@ namespace CGO.Web.Tests.Controllers.Api
             [TestCase(4)]
             public void ReturnA404NotFoundIfTheSpecifiedIdIsUnknown(int concertId)
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Put(concertId, viewModels.First());
 
@@ -292,7 +291,7 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void ReturnA204NoContentWhenTheEditSucceeds()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var concertToEdit = viewModels.First();
                 concertToEdit.IsPublished = true;
@@ -304,7 +303,7 @@ namespace CGO.Web.Tests.Controllers.Api
             [Test]
             public void PersistChangesIfTheConcertViewModelIsOk()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
                 var concertToEdit = viewModels.First();
                 concertToEdit.Title = "Bar";
 
