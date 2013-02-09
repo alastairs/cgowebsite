@@ -9,6 +9,24 @@ namespace CGO.DataAccess.Raven.Tests
     public class RavenConcertDetailsServiceFacts
     {
         [TestFixture]
+        public class ConstructorShould
+        {
+            [Test]
+            public void ThrowAnArgumentNullExceptionWhenTheRavenSessionIsNull()
+            {
+                Assert.That(() => new RavenConcertDetailsService(null, Substitute.For<IDateTimeProvider>()),
+                            Throws.InstanceOf<ArgumentNullException>());
+            }
+            
+            [Test]
+            public void ThrowAnArgumentNullExceptionWhenTheDateTimeProviderIsNull()
+            {
+                Assert.That(() => new RavenConcertDetailsService(Substitute.For<IDocumentSession>(), null),
+                            Throws.InstanceOf<ArgumentNullException>());
+            }
+        }
+
+        [TestFixture]
         public class GetConcertShould
         {
             [Test]
