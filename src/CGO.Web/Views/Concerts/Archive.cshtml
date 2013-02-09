@@ -1,7 +1,20 @@
-﻿@model IReadOnlyCollection<CGO.Web.Models.Concert>
+﻿@using CGO.Web.Views
+@model IReadOnlyCollection<CGO.Web.Models.Concert>
 
 @{
     ViewBag.Title = "Archive";
 }
 
-<h1>Archive</h1>
+<h1>@ViewBag.ConcertSeason Season</h1>
+@foreach (var concert in Model)
+{
+    <section>
+        <header>
+            <h2>@concert.Title</h2>
+        </header>
+        <div>
+            <p><time datetime="@concert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@concert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @concert.Location</p>
+            <p>@Html.ActionLink("View details »", "Details", new { concert.Id }, htmlAttributes: new { @class ="btn" })</p>
+        </div>
+    </section>
+}
