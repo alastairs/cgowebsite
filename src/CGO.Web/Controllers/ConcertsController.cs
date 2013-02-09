@@ -13,15 +13,22 @@ namespace CGO.Web.Controllers
     public class ConcertsController : Controller
     {
         private readonly IDocumentSession session;
+        private readonly IConcertDetailsService concertDetailsService;
 
-        public ConcertsController(IDocumentSession session)
+        public ConcertsController(IDocumentSession session, IConcertDetailsService concertDetailsService)
         {
             if (session == null)
             {
                 throw new ArgumentNullException("session");
             }
 
+            if (concertDetailsService == null)
+            {
+                throw new ArgumentNullException("concertDetailsService");
+            }
+
             this.session = session;
+            this.concertDetailsService = concertDetailsService;
         }
 
         //

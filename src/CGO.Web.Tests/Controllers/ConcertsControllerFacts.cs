@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using CGO.Domain;
 using CGO.Web.Controllers;
 using CGO.Web.Mappers;
-using CGO.Web.Models;
 using CGO.Web.Tests.EqualityComparers;
 using CGO.Web.ViewModels;
 
@@ -28,7 +27,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void DisplayTheIndexView()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Index();
 
@@ -38,7 +37,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void DisplayTheConcertsInAscendingOrderByDate()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Index() as ViewResult;
                 var concertsDisplayed = result.Model as IEnumerable<Concert>;
@@ -49,7 +48,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void DisplayTheConcertsFromTheDatabase()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Index() as ViewResult;
 
@@ -63,7 +62,7 @@ namespace CGO.Web.Tests.Controllers
                 Session.Store(pastConcert);
                 Session.SaveChanges();
                 
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
                 
                 var result = controller.Index() as ViewResult;
 
@@ -77,7 +76,7 @@ namespace CGO.Web.Tests.Controllers
                 Session.Store(unpublishedConcert);
                 Session.SaveChanges();
 
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Index() as ViewResult;
 
@@ -119,7 +118,7 @@ namespace CGO.Web.Tests.Controllers
             public void DisplayTheSiteHomePageIfTheRequestIsAnonymous()
             {
                 var builder = new TestControllerBuilder();
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
                 builder.InitializeController(controller);
 
                 var result = controller.Index();
@@ -131,7 +130,7 @@ namespace CGO.Web.Tests.Controllers
             public void DisplayTheCreateViewIfTheRequestIsAuthenticated()
             {
                 var builder = new TestControllerBuilder();
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
                 builder.InitializeController(controller);
                 controller.Request.Stub(r => r.IsAuthenticated).Return(true); // Have to use RhinoMocks here, as that's what MvcContrib uses
                 
@@ -147,7 +146,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void RenderTheDetailsView()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Details(1);
 
@@ -157,7 +156,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void DisplayTheConcertRequested()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Details(1) as ViewResult;
                 var concert = result.Model as Concert;
@@ -168,7 +167,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnA404NotFoundWhenTheConcertDoesntExist()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Details(2);
 
@@ -192,7 +191,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ShowTheCreateViewWhenCalledViaAGetRequest()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Create(); // The parameterless overload is called on GET.
 
@@ -202,7 +201,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ShowTheCreateViewWithTheSuppliedModelWhenThereAreValidationErrors()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
                 controller.ViewData.ModelState.AddModelError("Title", "Please enter a title");
 
                 var result = controller.Create(new ConcertViewModel()); // The overload with ConcertViewModel parameter is called on POST.
@@ -213,7 +212,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnToTheListOfConcertsWhenThereAreNoValidationErrors()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Create(new ConcertViewModel());
 
@@ -223,7 +222,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void StoreTheConcertInTheDatabaseWhenThereAreNoValidationErrors()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
                 var concert = new Concert(1, "Foo", new DateTime(2012, 07, 29, 20, 00, 00), "Bar");
 
                 controller.Create(new ConcertViewModel
@@ -241,7 +240,7 @@ namespace CGO.Web.Tests.Controllers
             public void SaveChangesToTheDatabaseWhenThereAreNoValidationErrors()
             {
                 var mockRavenSession = Substitute.For<IDocumentSession>();
-                var controller = new ConcertsController(mockRavenSession);
+                var controller = new ConcertsController(mockRavenSession, Substitute.For<IConcertDetailsService>());
                 var concert = new Concert(1, "Foo", new DateTime(2012, 07, 31, 14, 24, 00), "Bar");
 
                 controller.Create(new ConcertViewModel
@@ -264,7 +263,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ShowTheListView()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
 
                 var result = controller.List();
 
@@ -293,7 +292,7 @@ namespace CGO.Web.Tests.Controllers
             public void ShowTheEditView()
             {
                 var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession);
+                var controller = new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Edit(1);
 
@@ -304,7 +303,7 @@ namespace CGO.Web.Tests.Controllers
             public void ShowTheEditViewWithAConcertViewModel()
             {
                 var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession);
+                var controller = new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Edit(1);
 
@@ -315,7 +314,7 @@ namespace CGO.Web.Tests.Controllers
             public void ShowTheEditViewForTheConcertSpecified()
             {
                 var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession);
+                var controller = new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>());
                 var viewModel = new ConcertViewModel
                 {
                     Id = 1,
@@ -335,7 +334,7 @@ namespace CGO.Web.Tests.Controllers
             public void CallLoadOnTheRavenSessionWithTheSpecifiedId()
             {
                 var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession);
+                var controller = new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>());
 
                 const int concertDocumentToLoad = 1;
                 controller.Edit(concertDocumentToLoad);
@@ -346,7 +345,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void RetrieveTheConcertFromTheDatabase()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
                 var viewModel = new ConcertViewModel
                 {
                     Id = concertToEdit.Id,
@@ -364,7 +363,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ThrowA404NotFoundIfTheRequestedConcertIdIsUnknown()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Edit(23);
 
@@ -400,7 +399,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void RedirectToTheListViewIfNoErrorsOccurred()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Edit(1, new ConcertViewModel());
 
@@ -410,7 +409,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void RedisplayTheEditViewWhenValidationErrorsArePresent()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
                 controller.ModelState.AddModelError("Date", "Not a date");
 
                 var result = controller.Edit(1, new ConcertViewModel());
@@ -421,7 +420,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void RedisplayTheEditViewWithTheProvidedViewModelWhenValidationErrorsArePresent()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>()
+                    );
                 controller.ModelState.AddModelError("Date", "Not a date");
 
                 var concertToSave1 = new ConcertViewModel();
@@ -433,7 +433,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void SaveTheChangesToTheDatabaseIfNoErrorsOccurred()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
                 var viewModel = existingConcert.ToViewModel<Concert, ConcertViewModel>();
                 const string editedTitle = "New Title";
                 viewModel.Title = editedTitle;
@@ -448,7 +448,7 @@ namespace CGO.Web.Tests.Controllers
             public void CallSaveChangesOnTheRavenSession()
             {
                 var documentSession = Substitute.For<IDocumentSession>();
-                var controller = new ConcertsController(documentSession);
+                var controller = new ConcertsController(documentSession, Substitute.For<IConcertDetailsService>());
 
                 controller.Edit(1, new ConcertViewModel());
 
@@ -476,7 +476,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnArchiveView()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Archive(2009);
 
@@ -486,7 +486,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnArchiveViewWithConcerts()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Archive(2009);
 
@@ -496,7 +496,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnArchiveWithTheConcertsFromTheRequestedSeason()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
                 IReadOnlyCollection<Concert> expectedData = concerts2009.ToArray();
 
                 var result = controller.Archive(2009) as ViewResult;
@@ -508,7 +508,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnOnlyPublishedConcertsFromTheRequestedSeason()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
                 var unpublishedConcert = new Concert(1, "Unpublished 2009 Concert", new DateTime(2009, 11, 14), "West Road Concert Hall");
                 Session.Store(unpublishedConcert);
                 Session.SaveChanges();
@@ -522,7 +522,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void SetTheConcertSeasonPropertyInTheViewBag()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Archive(2009) as ViewResult;
 
@@ -557,7 +557,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnTheArchiveIndexView()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Archived();
 
