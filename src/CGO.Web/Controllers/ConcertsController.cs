@@ -78,11 +78,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Archive(int year)
         {
-            var concerts = session.Query<Concert>()
-                                  .Where(c => c.DateAndStartTime >= DateTime.Parse(year + "-08-01") && 
-                                              c.DateAndStartTime <= DateTime.Parse(year + 1 + "-07-31"))
-                                  .Where(c => c.IsPublished)
-                                  .ToList();
+            var concerts = concertsSeasonService.GetConcertsInSeason(year);
 
             ViewBag.ConcertSeason = string.Format("{0}-{1}", year, year + 1);
 
