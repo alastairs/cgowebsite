@@ -282,8 +282,6 @@
     <Compile Include="Controllers\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsSideBar.cs" />
     <Compile Include="Controllers\EmptySideBar.cs" />
-    <Compile Include="Infrastructure\DateTimeProvider.cs" />
-    <Compile Include="Infrastructure\IDateTimeProvider.cs" />
     <Compile Include="Infrastructure\IUrlHelper.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
