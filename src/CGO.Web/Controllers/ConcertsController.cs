@@ -3,26 +3,17 @@ using System.Linq;
 using System.Web.Mvc;
 using CGO.Domain;
 using CGO.Web.Mappers;
-using CGO.Web.Models;
 using CGO.Web.ViewModels;
-
-using Raven.Client;
 
 namespace CGO.Web.Controllers
 {
     public class ConcertsController : Controller
     {
-        private readonly IDocumentSession session;
         private readonly IConcertDetailsService concertDetailsService;
         private readonly IConcertsSeasonService concertsSeasonService;
 
-        public ConcertsController(IDocumentSession session, IConcertDetailsService concertDetailsService, IConcertsSeasonService concertsSeasonService)
+        public ConcertsController(IConcertDetailsService concertDetailsService, IConcertsSeasonService concertsSeasonService)
         {
-            if (session == null)
-            {
-                throw new ArgumentNullException("session");
-            }
-
             if (concertDetailsService == null)
             {
                 throw new ArgumentNullException("concertDetailsService");
@@ -33,7 +24,6 @@ namespace CGO.Web.Controllers
                 throw new ArgumentNullException("concertsSeasonService");
             }
 
-            this.session = session;
             this.concertDetailsService = concertDetailsService;
             this.concertsSeasonService = concertsSeasonService;
         }
