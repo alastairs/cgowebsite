@@ -73,6 +73,8 @@ namespace CGO.Web.Controllers
                                   .Where(c => c.IsPublished)
                                   .ToList();
 
+            ViewBag.ConcertSeason = string.Format("{0}-{1}", year, year + 1);
+
             return View("Archive", concerts);
         }
 
