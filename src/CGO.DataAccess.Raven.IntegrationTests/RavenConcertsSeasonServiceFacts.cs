@@ -14,30 +14,41 @@ namespace CGO.DataAccess.Raven.IntegrationTests
             [Test]
             public void ReturnTheConcertsAfter31JulyInTheSpecifiedYear()
             {
-                var expected2009Concerts = Create2009Concerts();
+                var expectedConcerts = CreateConcerts();
                 var concertsSeasonService = new RavenConcertsSeasonService(Session);
                 
-                var actual2009Concerts = concertsSeasonService.GetConcertsInSeason(2009);
+                var actualConcerts = concertsSeasonService.GetConcertsInSeason(2009);
 
-                Assert.That(actual2009Concerts.Select(c => c.Id), Is.EqualTo(expected2009Concerts.Skip(1).Select(c => c.Id)));
+                Assert.That(actualConcerts.Select(c => c.Id), Is.EqualTo(expectedConcerts.Skip(1).Select(c => c.Id)));
             }
 
-            private IEnumerable<Concert> Create2009Concerts()
+            [Test]
+            public void ReturnTheConcertsBefore1AugustInTheFollowingYear()
             {
-                var concerts2009 = new List<Concert>
+                var expectedConcerts = CreateConcerts();
+                var concertsSeasonService = new RavenConcertsSeasonService(Session);
+
+                var actualConcerts = concertsSeasonService.GetConcertsInSeason(2008);
+
+                Assert.That(actualConcerts.Select(c => c.Id), Is.EqualTo(expectedConcerts.Take(1).Select(c => c.Id)));
+            }
+
+            private IEnumerable<Concert> CreateConcerts()
+            {
+                var concerts = new List<Concert>
                 {
                     new Concert(1, "Pre-2009 Season Concert", new DateTime(2009, 06, 29), "West Road Concert Hall"), 
                     new Concert(2, "Michaelmas", new DateTime(2009, 11, 13), "West Road Concert Hall"),
                 };
 
-                concerts2009.ForEach(c => c.Publish());
+                concerts.ForEach(c => c.Publish());
                 using (var session = Store.OpenSession())
                 {
-                    concerts2009.ForEach(session.Store);
+                    concerts.ForEach(session.Store);
                     session.SaveChanges();
                 }
 
-                return concerts2009;
+                return concerts;
             }
         }
     }
