@@ -16,6 +16,24 @@ namespace CGO.Web.Tests.Controllers
     public class ConcertsControllerFacts
     {
         [TestFixture]
+        public class ConstructorShould
+        {
+            [Test]
+            public void ThrowAnArgumentNullExceptionIfTheConcertDetailsServiceIsNull()
+            {
+                Assert.That(() => new ConcertsController(null, Substitute.For<IConcertsSeasonService>()),
+                            Throws.InstanceOf<ArgumentNullException>());
+            } 
+            
+            [Test]
+            public void ThrowAnArgumentNullExceptionIfTheConcertsSeasonServiceIsNull()
+            {
+                Assert.That(() => new ConcertsController(Substitute.For<IConcertDetailsService>(), null),
+                            Throws.InstanceOf<ArgumentNullException>());
+            }
+        }
+
+        [TestFixture]
         public class WhenThereAreConcerts_IndexShould
         {
             [Test]
