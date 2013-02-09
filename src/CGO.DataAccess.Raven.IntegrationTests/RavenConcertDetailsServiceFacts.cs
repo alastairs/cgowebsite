@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using CGO.Domain;
+using NUnit.Framework;
 
 namespace CGO.DataAccess.Raven.IntegrationTests
 {
@@ -10,7 +12,22 @@ namespace CGO.DataAccess.Raven.IntegrationTests
             [Test]
             public void ReturnTheRequestedConcert()
             {
-                
+                var concertDetailService = new RavenConcertDetailsService(Session);
+                const int concertId = 1;
+
+                var returnedConcert = concertDetailService.GetConcert(concertId);
+
+                Assert.That(returnedConcert.Id, Is.EqualTo(concertId));
+            }
+
+            [SetUp]
+            public void CreateTestData()
+            {
+                using (var testDataSession = Store.OpenSession())
+                {
+                    testDataSession.Store(new Concert(1, "Test Concert", DateTime.MinValue, "Venue"));
+                    testDataSession.SaveChanges();
+                }
             }
         }
     }
