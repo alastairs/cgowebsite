@@ -60,7 +60,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            var concert = session.Load<Concert>(id);
+            var concert = concertDetailsService.GetConcert(id);
 
             if (concert == null)
             {

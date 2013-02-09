@@ -141,12 +141,16 @@ namespace CGO.Web.Tests.Controllers
         }
 
         [TestFixture]
-        public class DetailsShould : RavenTest
+        public class DetailsShould
         {
+            private readonly Concert sampleConcert = new Concert(1, "Test Concert", DateTime.MinValue, "Venue");
+
             [Test]
             public void RenderTheDetailsView()
             {
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                concertDetailsService.GetConcert(1).ReturnsForAnyArgs(sampleConcert);
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), concertDetailsService);
 
                 var result = controller.Details(1);
 
@@ -156,32 +160,25 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void DisplayTheConcertRequested()
             {
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
+                const int requestedConcertId = 1;
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                concertDetailsService.GetConcert(requestedConcertId).Returns(sampleConcert);
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), concertDetailsService);
 
-                var result = controller.Details(1) as ViewResult;
+                var result = controller.Details(requestedConcertId) as ViewResult;
                 var concert = result.Model as Concert;
                 
-                Assert.That(concert.Id, Is.EqualTo(1));
+                Assert.That(concert.Id, Is.EqualTo(requestedConcertId));
             }
 
             [Test]
             public void ReturnA404NotFoundWhenTheConcertDoesntExist()
             {
-                var controller = new ConcertsController(Session, Substitute.For<IConcertDetailsService>());
+                var controller = new ConcertsController(Substitute.For<IDocumentSession>(), Substitute.For<IConcertDetailsService>());
 
                 var result = controller.Details(2);
 
                 result.AssertResultIs<HttpNotFoundResult>();
-            }
-
-            [SetUp]
-            public void CreateSampleData()
-            {
-                using(var sampleDataSession = Store.OpenSession())
-                {
-                    sampleDataSession.Store(new Concert(1, "foo", DateTime.Now, "bar"));
-                    sampleDataSession.SaveChanges();
-                }
             }
         }
 
