@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Web.Http;
-
+using CGO.Web.Controllers;
 using CGO.Web.Infrastructure;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(CGO.Web.App_Start.NinjectWebCommon), "Start")]
@@ -67,6 +67,7 @@ namespace CGO.Web.App_Start
 
             kernel.Bind(a => a.FromAssembliesMatching("CGO.*.dll")
                               .SelectAllClasses()
+                              .Excluding<ConcertsSideBarFactory>()
                               .BindAllInterfaces()
                               .Configure(bind => bind.InRequestScope()));
         }

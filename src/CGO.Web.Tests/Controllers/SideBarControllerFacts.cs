@@ -73,7 +73,7 @@ namespace CGO.Web.Tests.Controllers
                 sideBar.GetSideBarSections().Returns(_ => expectedSideBarSections); 
                 
                 var sideBarFactory = Substitute.For<ISideBarFactory>();
-                sideBarFactory.CreateSideBar(null, string.Empty, null).ReturnsForAnyArgs(sideBar);
+                sideBarFactory.CreateSideBar(null, null).ReturnsForAnyArgs(sideBar);
                 
                 return sideBarFactory;
             }
