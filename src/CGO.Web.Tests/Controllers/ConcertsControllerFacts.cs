@@ -253,10 +253,8 @@ namespace CGO.Web.Tests.Controllers
         }
 
         [TestFixture]
-        public class ListShould : RavenTest
+        public class ListShould
         {
-            private Concert sampleConcert;
-
             [Test]
             public void ShowTheListView()
             {
@@ -265,18 +263,6 @@ namespace CGO.Web.Tests.Controllers
                 var result = controller.List();
 
                 result.AssertViewRendered().ForView("List");
-            }
-
-            [SetUp]
-            public void CreateSampleData()
-            {
-                sampleConcert = new Concert(1, "Foo", new DateTime(2012, 07, 31, 13, 40, 00), "Bar");
-
-                using (var sampleDataSession = Store.OpenSession())
-                {
-                    sampleDataSession.Store(sampleConcert);
-                    sampleDataSession.SaveChanges();
-                }
             }
         }
 
