@@ -7,56 +7,83 @@
     <h1>All Concerts</h1>
 </div>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Date and Start Time</th>
-            <th>Venue</th>
-            <th>Is Published?</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody data-bind="foreach: concerts">
-        <tr data-bind="attr: { id: 'concert-' + id() }">
-            <td data-bind="text: title"></td>
-            <td data-bind="text: dateAndStartTime"></td>
-            <td data-bind="text: location"></td>
-            <td data-bind="text: isPublished() ? 'Yes' : 'No'"></td>
-            <td>
-                <a href="#" title="Publish" data-bind="click: $parent.publishConcert, visible: !isPublished()"><i class="icon-bolt icon-large action" style="color: gold"></i></a>
-                <a title="Edit" data-bind="attr: { href: '@Url.Action("Edit", "Concerts")/' + id() }"><i class="icon-pencil icon-large action" style="color:saddlebrown"></i></a>
-                <a href="#" title="Delete" data-bind="click: $parent.deleteConcert"><i class="icon-trash icon-large action" style="color: grey"></i></a>
-            </td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <form id="quickAdd" data-bind="submit: quickAdd">
-                <input type="hidden" name="isPublished" value="false" />
-                <td><input name="title" placeholder="Title" class="quickAddField" data-bind="value: newConcertTitle" /></td>
+<form id="quickAdd" data-bind="submit: quickAdd">
+    <input type="hidden" name="isPublished" value="false" />
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date and Start Time</th>
+                <th>Venue</th>
+                <th>Is Published?</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: concerts">
+            <tr data-bind="attr: { id: 'concert-' + id() }">
+                <td data-bind="text: title"></td>
+                <td data-bind="text: formatDate(dateAndStartTime, 'd MMM yyyy, HH:mm')"></td>
+                <td data-bind="text: location"></td>
+                <td data-bind="text: isPublished() ? 'Yes' : 'No'"></td>
                 <td>
-                    <input type="date" name="date" placeholder="Date: dd/mm/yyyy" class="quickAddField-small" data-bind="value: newConcertDate" />
-                    <input type="time" name="startTime" placeholder="Start Time: hh:mm" class="quickAddField-small" data-bind="value: newConcertStartTime" />
+                    <a href="#" title="Publish" data-bind="click: $parent.publishConcert, visible: !isPublished()"><i class="icon-bolt icon-large action" style="color: gold"></i></a>
+                    <a title="Edit" data-bind="attr: { href: '@Url.Action("Edit", "Concerts")/' + id() }"><i class="icon-pencil icon-large action" style="color:saddlebrown"></i></a>
+                    <a href="#" title="Delete" data-bind="click: $parent.deleteConcert"><i class="icon-trash icon-large action" style="color: grey"></i></a>
                 </td>
-                <td><input name="location" placeholder="Venue" class="quickAddField" data-bind="value: newConcertLocation" /></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><input id="title" placeholder="Title" class="quickAddField" data-bind="value: newConcertTitle" required /></td>
+                <td>
+                    <input type="date" id="date" placeholder="Date: dd/mm/yyyy" class="quickAddField-small" data-bind="value: newConcertDate" min="07/03/2005" required />
+                    <input type="time" id="startTime" placeholder="Start Time: hh:mm" class="quickAddField-small" data-bind="value: newConcertStartTime" required />
+                </td>
+                <td><input id="location" placeholder="Venue" class="quickAddField" data-bind="value: newConcertLocation" required /></td>
                 <td>No</td>
                 <td><button type="submit" class="btn"><i class="icon-plus"></i> Quick Add</button></td>
-            </form>
-        </tr>
-    </tfoot>
-</table>
+            </tr>
+        </tfoot>
+    </table>
+</form>
 
 <a href="@Url.Action("Create", "Concerts")" class="btn btn-primary"><i class="icon-plus"></i> New Concert</a> 
-
+@section Scripts{
+@Scripts.Render("~/bundles/jqueryval")
 <script type="text/javascript" src="~/Scripts/ViewModels/ConcertListViewModel.js"></script>
 <script type="text/javascript" src="~/Scripts/ViewModels/ConcertViewModel.js"></script>
 <script type="text/javascript" src="~/Scripts/jquery.dateFormat-1.0.js"></script>
 <script type="text/javascript" src="~/Scripts/rfc3339date.js"></script>
-<script type="text/javascript">
-    (function($) {
-        $(function() {
-            ko.applyBindings(CGO.makeConcertListViewModel());
-        });
-    })(jQuery);
-</script>
+<script type="text/javascript" src="~/Scripts/commonFunctions.js"></script>
+    <script type="text/javascript">
+        (function($) {
+            $(function () {
+                $("#quickAdd").validate({
+                    onfocusout: function (element) {
+                        $(element).valid();
+                    },
+                    showErrors: function (errorMap, errorList) {
+                        $.each(this.successList, function (index, value) {
+                            $(value).popover("hide");
+                        });
+                        
+                        $.each(errorList, function (index, value) {
+                            var popover = $(value.element).popover({
+                                trigger: "manual",
+                                placement: "bottom",
+                                content: value.message,
+                                template: '<div class="popover fade bottom in" style="display: block"><div class="arrow"></div><h3 class="popover-title">Validation Error</h3><div class="popover-content"></div></div>'
+                            });
+
+                            popover.data("popover").options.content = value.message;
+                            $(value.element).popover("show");
+                        });
+
+                    }
+                });
+            
+                ko.applyBindings(CGO.makeConcertListViewModel());
+            });
+        })(jQuery);
+    </script>
+}
