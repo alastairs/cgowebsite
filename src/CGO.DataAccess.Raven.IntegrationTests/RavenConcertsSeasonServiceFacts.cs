@@ -70,27 +70,54 @@ namespace CGO.DataAccess.Raven.IntegrationTests
         [TestFixture]
         public class Before1AugustGetConcertsInCurrentSeasonShould : RavenTest
         {
-            private readonly Concert concert2009Season = new Concert(1, "2009-10 Season Concert", new DateTime(2009, 11, 26), "Venue");
-            private readonly Concert concert2010Season = new Concert(2, "2010-11 Season Concert", new DateTime(2011, 03, 09), "Venue");
-            
             [Test]
             public void ReturnConcertsInThePreviousYear()
             {
+                var concert2009Season = new Concert(1, "2009-10 Season Concert", new DateTime(2009, 11, 26), "Venue");
+                concert2009Season.Publish();
+                CreateSampleData(concert2009Season);
                 var dateTimeProvider = GetMockDateTimeProvider();
                 var concertsSeasonService = new RavenConcertsSeasonService(Session, dateTimeProvider);
 
                 var currentSeasonConcerts = concertsSeasonService.GetConcertsInCurrentSeason();
 
-                Assert.That(currentSeasonConcerts.Select(c => c.Id), Is.EqualTo(new[] { concert2009Season.Id }));
+                var expectedConcerts = new[] { concert2009Season.Id };
+                Assert.That(currentSeasonConcerts.Select(c => c.Id), Is.EqualTo(expectedConcerts));
             }
 
-            [SetUp]
-            public void CreateSampleData()
+            [Test]
+            public void ReturnConcertsInTheCurrentYear()
+            {
+                var concert2009Season = new Concert(2, "2009-10 Season Concert", new DateTime(2010, 03, 09), "Venue");
+                concert2009Season.Publish();
+                CreateSampleData(concert2009Season);
+                var dateTimeProvider = GetMockDateTimeProvider();
+                var concertsSeasonService = new RavenConcertsSeasonService(Session, dateTimeProvider);
+
+                var currentSeasonConcerts = concertsSeasonService.GetConcertsInCurrentSeason();
+
+                var expectedConcerts = new[] { concert2009Season.Id };
+                Assert.That(currentSeasonConcerts.Select(c => c.Id), Is.EqualTo(expectedConcerts));
+            }
+
+            [Test]
+            public void NotReturnConcertsInThePreviousSeason()
+            {
+                var concert2008Season = new Concert(2, "2008-09 Season Concert", new DateTime(2009, 03, 09), "Venue");
+                concert2008Season.Publish();
+                CreateSampleData(concert2008Season);
+                var dateTimeProvider = GetMockDateTimeProvider();
+                var concertsSeasonService = new RavenConcertsSeasonService(Session, dateTimeProvider);
+
+                var currentSeasonConcerts = concertsSeasonService.GetConcertsInCurrentSeason();
+
+                Assert.That(currentSeasonConcerts.Select(c => c.Id), Is.Not.Contains(concert2008Season.Id));
+            }
+            private void CreateSampleData(params Concert[] concerts)
             {
                 using (var sampleDataSession = Store.OpenSession())
                 {
-                    sampleDataSession.Store(concert2009Season);
-                    sampleDataSession.Store(concert2010Season);
+                    Array.ForEach(concerts, sampleDataSession.Store);
                     
                     sampleDataSession.SaveChanges();
                 }
