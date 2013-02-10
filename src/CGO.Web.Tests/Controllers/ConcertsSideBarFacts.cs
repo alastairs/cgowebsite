@@ -21,19 +21,22 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheUrlHelperIsNull()
             {
-                Assert.That(() => new ConcertsSideBar(null, Substitute.For<IDocumentSessionFactory>(), Substitute.For<IDateTimeProvider>()), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new ConcertsSideBar(null, Substitute.For<IDocumentSessionFactory>(),
+                                                      Substitute.For<IConcertsSeasonService>(), Substitute.For<IDateTimeProvider>()), Throws.InstanceOf<ArgumentNullException>());
             }
 
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheDocumentSessionFactoryIsNull()
             {
-                Assert.That(() => new ConcertsSideBar(Substitute.For<IUrlHelper>(), null, Substitute.For<IDateTimeProvider>()), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new ConcertsSideBar(Substitute.For<IUrlHelper>(), null,
+                                                      Substitute.For<IConcertsSeasonService>(), Substitute.For<IDateTimeProvider>()), Throws.InstanceOf<ArgumentNullException>());
             }
 
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheDateTimeProviderIsNull()
             {
-                Assert.That(() => new ConcertsSideBar(Substitute.For<IUrlHelper>(), Substitute.For<IDocumentSessionFactory>(), null), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new ConcertsSideBar(Substitute.For<IUrlHelper>(), Substitute.For<IDocumentSessionFactory>(),
+                                                      Substitute.For<IConcertsSeasonService>(), null), Throws.InstanceOf<ArgumentNullException>());
             }
         }
 
@@ -47,7 +50,8 @@ namespace CGO.Web.Tests.Controllers
             {
                 var concerts = new[] { new Concert(1, "Concert", new DateTime(2012, 06, 29, 20, 00, 00), "Venue") };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -64,7 +68,8 @@ namespace CGO.Web.Tests.Controllers
                     futureConcert
                 };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -85,7 +90,8 @@ namespace CGO.Web.Tests.Controllers
                     futureConcert
                 };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -106,7 +112,8 @@ namespace CGO.Web.Tests.Controllers
                     new Concert(2, "Last Season concert", new DateTime(2011, 06, 27, 20, 00, 00), "Venue")
                 };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -126,7 +133,8 @@ namespace CGO.Web.Tests.Controllers
                     new Concert(1, "Current Season concert 1", new DateTime(2012, 04, 11, 20, 00, 00), "Venue")
                 };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -149,7 +157,8 @@ namespace CGO.Web.Tests.Controllers
                     new Concert(2, "Lent Concert", new DateTime(2012, 03, 09, 20, 00, 00), "Venue")
                 };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -173,7 +182,8 @@ namespace CGO.Web.Tests.Controllers
                                        new Concert(2, "Concert", new DateTime(2011, 06, 01, 20, 00, 00), "Venue")
                                    };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -189,7 +199,8 @@ namespace CGO.Web.Tests.Controllers
                     michaelmasConcert
                 };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -209,7 +220,8 @@ namespace CGO.Web.Tests.Controllers
                     summerConcert
                 };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -230,7 +242,8 @@ namespace CGO.Web.Tests.Controllers
                 };
                 CreateSampleData(concerts);
                 dateTimeProvider.Now.Returns(new DateTime(2011, 12, 01));
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -250,7 +263,8 @@ namespace CGO.Web.Tests.Controllers
                     new Concert(1, "Last Season concert 1", new DateTime(2011, 04, 15, 20, 00, 00), "Venue")
                 };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -280,7 +294,8 @@ namespace CGO.Web.Tests.Controllers
                     new Concert(6, "Lent Concert", new DateTime(2011, 03, 11, 20, 00, 00), "Venue")
                 };
                 CreateSampleData(currentSeasonConcerts.Concat(lastSeasonConcerts));
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -304,7 +319,8 @@ namespace CGO.Web.Tests.Controllers
                                        new Concert(1, "Concert", new DateTime(2010, 06, 25, 20, 00, 00), "Venue")
                                    };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -316,7 +332,8 @@ namespace CGO.Web.Tests.Controllers
             {
                 var concerts = new[] { new Concert(1, "Concert", new DateTime(2010, 06, 25, 20, 00, 00), "Venue") };
                 CreateSampleData(concerts);
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -352,7 +369,8 @@ namespace CGO.Web.Tests.Controllers
                     new Concert(12, "Summer Concert 2007", new DateTime(2007, 06, 14, 20, 00, 00), "Venue")
                 };
                 CreateSampleData(currentSeasonConcerts.Concat(lastSeasonConcerts).Concat(archivedConcerts));
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -369,7 +387,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void NotPresentTheCurrentSeasonIfThereAreNoConcerts()
             {
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -379,7 +398,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void NotPresentTheLastSeasonIfThereAreNoConcerts()
             {
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
@@ -389,7 +409,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void NotPresentTheArchiveSectionIfThereAreNoConcerts()
             {
-                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store), dateTimeProvider);
+                var sideBar = new ConcertsSideBar(GetMockUrlHelper(), new DocumentSessionFactory(Store),
+                                                  Substitute.For<IConcertsSeasonService>(), dateTimeProvider);
 
                 var sections = sideBar.GetSideBarSections();
 
