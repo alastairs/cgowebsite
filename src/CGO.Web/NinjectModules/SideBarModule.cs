@@ -10,7 +10,7 @@ namespace CGO.Web.NinjectModules
         {
             Kernel.Bind<ISideBarFactory>()
                   .To<ConcertsSideBarFactory>()
-                  .WhenInjectedInto<ConcertsController>()
+                  .WhenInjectedInto<SideBarController>()
                   .InRequestScope();
 
             Kernel.Bind<ISideBarFactory>().To<DefaultSideBarFactory>().InRequestScope();

@@ -39,7 +39,7 @@ namespace CGO.DataAccess.Raven
 
         public IReadOnlyCollection<Concert> GetConcertsInPreviousSeason()
         {
-            throw new NotImplementedException();
+            return Enumerable.Empty<Concert>().ToList();
         }
 
         public IReadOnlyCollection<Concert> GetConcertsInSeason(int seasonStartYear)
