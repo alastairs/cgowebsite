@@ -29,11 +29,7 @@ namespace CGO.DataAccess.Raven
 
         public IReadOnlyCollection<Concert> GetConcertsInCurrentSeason()
         {
-            return ravenSession.Query<Concert>()
-                               .Where(c => c.DateAndStartTime <= DateTime.Parse(dateTimeProvider.Now.Year + "-07-31"))
-                               .Where(c => c.DateAndStartTime >= DateTime.Parse(dateTimeProvider.Now.Year - 1 + "-07-31"))
-                               .Where(c => c.IsPublished)
-                               .ToList();
+            return GetConcertsInSeason(dateTimeProvider.Now.Year - 1);
         }
 
         public IReadOnlyCollection<Concert> GetConcertsInPreviousSeason()
