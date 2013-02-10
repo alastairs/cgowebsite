@@ -33,6 +33,7 @@ namespace CGO.DataAccess.Raven
             {
                 return ravenSession.Query<Concert>()
                                    .Where(c => c.DateAndStartTime >= DateTime.Parse(dateTimeProvider.Now.Year + "-08-01"))
+                                   .Where(c => c.DateAndStartTime <= DateTime.Parse(dateTimeProvider.Now.Year + 1 + "-07-31"))
                                    .ToList();
             }
 
