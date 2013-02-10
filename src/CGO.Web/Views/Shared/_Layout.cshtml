@@ -65,7 +65,7 @@
         
         <div class="container-fluid">
             <div class="row-fluid">
-                @Html.Action("Display", "SideBar", new { RequestingController = Url.RequestContext.RouteData.Values["controller"] })
+                @Html.Action("Display", "SideBar")
                 <div class="span9">
                     @RenderBody()
                 </div>

@@ -25,9 +25,9 @@ namespace CGO.Web.Controllers
             this.dateTimeProvider = dateTimeProvider;
         }
 
-        public SideBar CreateSideBar(IUrlHelper urlHelper, IDocumentSessionFactory documentSessionFactory)
+        public SideBar CreateSideBar(IUrlHelper urlHelper)
         {
-            return new ConcertsSideBar(urlHelper, documentSessionFactory, concertsSeasonService, dateTimeProvider);
+            return new ConcertsSideBar(urlHelper, concertsSeasonService, dateTimeProvider);
         }
     }
 }

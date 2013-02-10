@@ -13,6 +13,8 @@ namespace CGO.Domain
 
         public string Description { get; set; }
 
+        public static readonly DateTime DateOfFirstConcert = new DateTime(2005, 03, 07);
+
         public Concert(int id, string title, DateTime dateAndStartTime, string location)
         {
             Id = id;

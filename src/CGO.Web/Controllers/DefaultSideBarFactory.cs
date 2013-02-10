@@ -8,7 +8,7 @@ namespace CGO.Web.Controllers
 {
     public class DefaultSideBarFactory : ISideBarFactory
     {
-        public SideBar CreateSideBar(IUrlHelper urlHelper, IDocumentSessionFactory documentSessionFactory)
+        public SideBar CreateSideBar(IUrlHelper urlHelper)
         {
             return new DefaultSideBar(urlHelper);
         }
