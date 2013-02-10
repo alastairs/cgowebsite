@@ -10,13 +10,19 @@ namespace CGO.Web.Controllers
     public class ConcertsSideBar : SideBar
     {
         private readonly IDocumentSessionFactory documentSessionFactory;
+        private readonly IConcertsSeasonService concertsSeasonService;
         private readonly IDateTimeProvider dateTimeProvider;
 
-        public ConcertsSideBar(IUrlHelper urlHelper, IDocumentSessionFactory documentSessionFactory, IDateTimeProvider dateTimeProvider) : base(urlHelper)
+        public ConcertsSideBar(IUrlHelper urlHelper, IDocumentSessionFactory documentSessionFactory, IConcertsSeasonService concertsSeasonService, IDateTimeProvider dateTimeProvider) : base(urlHelper)
         {
             if (documentSessionFactory == null)
             {
                 throw new ArgumentNullException("documentSessionFactory");
+            }
+
+            if (concertsSeasonService == null)
+            {
+                throw new ArgumentNullException("concertsSeasonService");
             }
 
             if (dateTimeProvider == null)
@@ -25,6 +31,7 @@ namespace CGO.Web.Controllers
             }
 
             this.documentSessionFactory = documentSessionFactory;
+            this.concertsSeasonService = concertsSeasonService;
             this.dateTimeProvider = dateTimeProvider;
         }
 
