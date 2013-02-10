@@ -31,7 +31,9 @@ namespace CGO.DataAccess.Raven
         {
             if (dateTimeProvider.Now.Month >= 8)
             {
-                return ravenSession.Query<Concert>().ToList();
+                return ravenSession.Query<Concert>()
+                                   .Where(c => c.DateAndStartTime >= DateTime.Parse(dateTimeProvider.Now.Year + "-08-01"))
+                                   .ToList();
             }
 
             return GetConcertsInSeason(dateTimeProvider.Now.Year - 1);

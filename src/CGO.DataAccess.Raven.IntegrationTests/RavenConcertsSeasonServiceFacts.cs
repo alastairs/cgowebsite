@@ -162,6 +162,19 @@ namespace CGO.DataAccess.Raven.IntegrationTests
                 Assert.That(currentSeasonConcerts.Single().Id, Is.EqualTo(concert2010Season.Id));
             }
 
+            [Test]
+            public void NotReturnPastSeasonConcerts()
+            {
+                var concert2009Season = new Concert(1, "2009-10 Season Concert", new DateTime(2010, 02, 26), "Venue");
+                concert2009Season.Publish();
+                CreateSampleData(concert2009Season);
+                var concertsSeasonService = new RavenConcertsSeasonService(Session, GetMockDateTimeProvider());
+
+                var currentSeasonConcerts = concertsSeasonService.GetConcertsInCurrentSeason();
+
+                Assert.That(currentSeasonConcerts.Select(c => c.Id), Is.Not.Contains(concert2009Season.Id));
+            }
+
             private void CreateSampleData(params Concert[] concerts)
             {
                 using (var sampleDataSession = Store.OpenSession())
@@ -172,7 +185,7 @@ namespace CGO.DataAccess.Raven.IntegrationTests
                 }
             }
 
-            private static IDateTimeProvider GetMockDateTimeProvider(int month)
+            private static IDateTimeProvider GetMockDateTimeProvider(int month = 8)
             {
                 var dateTimeProvider = Substitute.For<IDateTimeProvider>();
                 dateTimeProvider.Now.Returns(new DateTime(2010, month, 01));
