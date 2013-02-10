@@ -29,6 +29,11 @@ namespace CGO.DataAccess.Raven
 
         public IReadOnlyCollection<Concert> GetConcertsInCurrentSeason()
         {
+            if (dateTimeProvider.Now.Month >= 8)
+            {
+                return ravenSession.Query<Concert>().ToList();
+            }
+
             return GetConcertsInSeason(dateTimeProvider.Now.Year - 1);
         }
 

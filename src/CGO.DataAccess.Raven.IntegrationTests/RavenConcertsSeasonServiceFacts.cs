@@ -144,5 +144,40 @@ namespace CGO.DataAccess.Raven.IntegrationTests
                 return dateTimeProvider;
             }
         }
+
+        [TestFixture]
+        public class After31JulyGetConcertsInCurrentSeasonShould : RavenTest
+        {
+            [TestCase(08)]
+            [TestCase(09)]
+            public void ReturnFutureConcerts(int month)
+            {
+                var concert2010Season = new Concert(1, "2010-11 Season Concert", new DateTime(2010, 11, 26), "Venue");
+                concert2010Season.Publish();
+                CreateSampleData(concert2010Season);
+                var concertsSeasonService = new RavenConcertsSeasonService(Session, GetMockDateTimeProvider(month));
+
+                var currentSeasonConcerts = concertsSeasonService.GetConcertsInCurrentSeason();
+
+                Assert.That(currentSeasonConcerts.Single().Id, Is.EqualTo(concert2010Season.Id));
+            }
+
+            private void CreateSampleData(params Concert[] concerts)
+            {
+                using (var sampleDataSession = Store.OpenSession())
+                {
+                    Array.ForEach(concerts, sampleDataSession.Store);
+
+                    sampleDataSession.SaveChanges();
+                }
+            }
+
+            private static IDateTimeProvider GetMockDateTimeProvider(int month)
+            {
+                var dateTimeProvider = Substitute.For<IDateTimeProvider>();
+                dateTimeProvider.Now.Returns(new DateTime(2010, month, 01));
+                return dateTimeProvider;
+            }
+        }
     }
 }
