@@ -4,9 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using CGO.Domain;
 using CGO.Web.Mappers;
-using CGO.Web.Models;
 using CGO.Web.ViewModels.Api;
 
 using Raven.Client;
@@ -16,15 +15,22 @@ namespace CGO.Web.Controllers.Api
     public class ConcertsController : ApiController
     {
         private readonly IDocumentSession session;
+        private readonly IConcertDetailsService concertDetailsService;
 
-        public ConcertsController(IDocumentSession session)
+        public ConcertsController(IDocumentSession session, IConcertDetailsService concertDetailsService)
         {
             if (session == null)
             {
                 throw new ArgumentNullException("session");
             }
 
+            if (concertDetailsService == null)
+            {
+                throw new ArgumentNullException("concertDetailsService");
+            }
+
             this.session = session;
+            this.concertDetailsService = concertDetailsService;
         }
 
         // GET api/concerts

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CGO.Domain;
 
 namespace CGO.Web.Models
 {

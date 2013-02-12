@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CGO.Web.Models
+namespace CGO.Domain
 {
     public class Concert
     {
@@ -12,6 +12,8 @@ namespace CGO.Web.Models
         public bool IsPublished { get; private set; }
 
         public string Description { get; set; }
+
+        public static readonly DateTime DateOfFirstConcert = new DateTime(2005, 03, 07);
 
         public Concert(int id, string title, DateTime dateAndStartTime, string location)
         {

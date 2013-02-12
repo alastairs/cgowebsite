@@ -18,13 +18,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ThrowAnArgumentNullExceptionWhenTheSideBarProviderFactoryArgumentIsNull()
             {
-                Assert.That(() => new SideBarController(null, Substitute.For<IDocumentSessionFactory>()), Throws.InstanceOf<ArgumentNullException>());
-            }
-
-            [Test]
-            public void ThrowAnArgumentNullExceptionWhenTheDocumentSessionFactoryArgumentIsNull()
-            {
-                Assert.That(() => new SideBarController(Substitute.For<ISideBarFactory>(), null), Throws.InstanceOf<ArgumentNullException>());
+                Assert.That(() => new SideBarController(null), Throws.InstanceOf<ArgumentNullException>());
             }
         }
 
@@ -35,7 +29,7 @@ namespace CGO.Web.Tests.Controllers
             public void RenderTheSideBarPartialViewIfThereAreLinksToDisplay()
             {
                 var expectedSideBarSections = new List<SideBarSection> {new SideBarSection("foo", Enumerable.Empty<SideBarLink>())};
-                var controller = new SideBarController(GetMockSideBarFactory(expectedSideBarSections), Substitute.For<IDocumentSessionFactory>());
+                var controller = new SideBarController(GetMockSideBarFactory(expectedSideBarSections));
                 new TestControllerBuilder().InitializeController(controller);
                 
                 var result = controller.Display();
@@ -47,7 +41,7 @@ namespace CGO.Web.Tests.Controllers
             public void RenderTheSideBarPartialViewWithTheAppropriateLinks()
             {
                 var expectedSideBarSections = new List<SideBarSection> { new SideBarSection("foo", Enumerable.Empty<SideBarLink>()) };
-                var controller = new SideBarController(GetMockSideBarFactory(expectedSideBarSections), Substitute.For<IDocumentSessionFactory>());
+                var controller = new SideBarController(GetMockSideBarFactory(expectedSideBarSections));
                 new TestControllerBuilder().InitializeController(controller);
 
                 var result = controller.Display();
@@ -59,7 +53,7 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void NotRenderTheSideBarIfThereAreNoLinksToDisplay()
             {
-                var controller = new SideBarController(GetMockSideBarFactory(Enumerable.Empty<SideBarSection>()), Substitute.For<IDocumentSessionFactory>());
+                var controller = new SideBarController(GetMockSideBarFactory(Enumerable.Empty<SideBarSection>()));
                 new TestControllerBuilder().InitializeController(controller);
 
                 var result = controller.Display();
@@ -73,7 +67,7 @@ namespace CGO.Web.Tests.Controllers
                 sideBar.GetSideBarSections().Returns(_ => expectedSideBarSections); 
                 
                 var sideBarFactory = Substitute.For<ISideBarFactory>();
-                sideBarFactory.CreateSideBar(null, string.Empty, null).ReturnsForAnyArgs(sideBar);
+                sideBarFactory.CreateSideBar(null).ReturnsForAnyArgs(sideBar);
                 
                 return sideBarFactory;
             }

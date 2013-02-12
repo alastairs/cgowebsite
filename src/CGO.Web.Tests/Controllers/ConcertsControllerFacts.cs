@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using CGO.Domain;
 using CGO.Web.Controllers;
-using CGO.Web.Mappers;
-using CGO.Web.Models;
 using CGO.Web.Tests.EqualityComparers;
 using CGO.Web.ViewModels;
-
 using MvcContrib.TestHelper;
 using NSubstitute;
 using NUnit.Framework;
-
-using Raven.Client;
 using Rhino.Mocks;
 
 namespace CGO.Web.Tests.Controllers
@@ -20,14 +16,32 @@ namespace CGO.Web.Tests.Controllers
     public class ConcertsControllerFacts
     {
         [TestFixture]
-        public class WhenThereAreConcerts_IndexShould : RavenTest
+        public class ConstructorShould
         {
-            private IEnumerable<Concert> concerts;
+            [Test]
+            public void ThrowAnArgumentNullExceptionIfTheConcertDetailsServiceIsNull()
+            {
+                Assert.That(() => new ConcertsController(null, Substitute.For<IConcertsSeasonService>()),
+                            Throws.InstanceOf<ArgumentNullException>());
+            } 
+            
+            [Test]
+            public void ThrowAnArgumentNullExceptionIfTheConcertsSeasonServiceIsNull()
+            {
+                Assert.That(() => new ConcertsController(Substitute.For<IConcertDetailsService>(), null),
+                            Throws.InstanceOf<ArgumentNullException>());
+            }
+        }
 
+        [TestFixture]
+        public class WhenThereAreConcerts_IndexShould
+        {
             [Test]
             public void DisplayTheIndexView()
             {
-                var controller = new ConcertsController(Session);
+                var concertDetailsService = GetMockConcertDetailsService(new[] { new Concert(1, "Test Concert", DateTime.MinValue, "Venue") });
+                var controller = new ConcertsController(concertDetailsService,
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Index();
 
@@ -35,90 +49,35 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void DisplayTheConcertsInAscendingOrderByDate()
-            {
-                var controller = new ConcertsController(Session);
-
-                var result = controller.Index() as ViewResult;
-                var concertsDisplayed = result.Model as IEnumerable<Concert>;
-
-                Assert.That(concertsDisplayed, Is.EqualTo(concerts.OrderBy(c => c.DateAndStartTime)).Using(new ConcertEqualityComparer()));
-            }
-
-            [Test]
             public void DisplayTheConcertsFromTheDatabase()
             {
-                var controller = new ConcertsController(Session);
+                var expectedConcerts = new[] { new Concert(1, "Test Concert", DateTime.MinValue, "Venue") };
+                var concertDetailsService = GetMockConcertDetailsService(expectedConcerts);
+                var controller = new ConcertsController(concertDetailsService,
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Index() as ViewResult;
 
-                Assert.That(result.Model, Is.EquivalentTo(concerts).Using(new ConcertEqualityComparer()));
+                Assert.That(result.Model, Is.EquivalentTo(expectedConcerts).Using(new ConcertEqualityComparer()));
             }
 
-            [Test]
-            public void DisplayOnlyConcertsInTheFuture()
+            private static IConcertDetailsService GetMockConcertDetailsService(IReadOnlyCollection<Concert> expectedConcerts)
             {
-                var pastConcert = new Concert(5, "Concert in the past", new DateTime(2011, 11, 18, 20, 00, 00), "West Road Concert Hall");
-                Session.Store(pastConcert);
-                Session.SaveChanges();
-                
-                var controller = new ConcertsController(Session);
-                
-                var result = controller.Index() as ViewResult;
-
-                Assert.That(result.Model, Is.Not.Contains(pastConcert).Using(new ConcertEqualityComparer()));
-            }
-
-            [Test]
-            public void DisplayOnlyPublishedConcerts()
-            {
-                var unpublishedConcert = new Concert(5, "Unpublished concert", new DateTime(2101, 01, 18, 20, 00, 00), "West Road Concert Hall");
-                Session.Store(unpublishedConcert);
-                Session.SaveChanges();
-
-                var controller = new ConcertsController(Session);
-
-                var result = controller.Index() as ViewResult;
-
-                Assert.That(result.Model, Is.Not.Contains(unpublishedConcert).Using(new ConcertEqualityComparer()));
-            }
-
-            [SetUp]
-            public void CreateSampleData()
-            {
-                concerts = new List<Concert>
-                {
-                    new Concert(1, "2100 Concert 1", new DateTime(2100, 01, 18, 20, 00, 00), "West Road Concert Hall"),
-                    new Concert(2, "2100 Concert 2", new DateTime(2100, 02, 18, 20, 00, 00), "West Road Concert Hall"),
-                    new Concert(3, "2100 Concert 3", new DateTime(2100, 03, 18, 20, 00, 00), "West Road Concert Hall"),
-                    new Concert(4, "2100 Concert 4", new DateTime(2100, 04, 18, 20, 00, 00), "West Road Concert Hall")
-                };
-
-                foreach (var concert in concerts)
-                {
-                    concert.Publish();
-                }
-
-                using (var sampleDataSession = Store.OpenSession())
-                {
-                    foreach(var concert in concerts)
-                    {
-                        sampleDataSession.Store(concert);
-                    }
-
-                    sampleDataSession.SaveChanges();
-                }
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                concertDetailsService.GetFutureConcerts().Returns(expectedConcerts);
+                return concertDetailsService;
             }
         }
 
         [TestFixture]
-        public class WhenThereAreNoConcerts_IndexShould : RavenTest
+        public class WhenThereAreNoConcerts_IndexShould
         {
             [Test]
             public void DisplayTheSiteHomePageIfTheRequestIsAnonymous()
             {
                 var builder = new TestControllerBuilder();
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(GetMockConcertDetailsService(),
+                                                        Substitute.For<IConcertsSeasonService>());
                 builder.InitializeController(controller);
 
                 var result = controller.Index();
@@ -130,7 +89,8 @@ namespace CGO.Web.Tests.Controllers
             public void DisplayTheCreateViewIfTheRequestIsAuthenticated()
             {
                 var builder = new TestControllerBuilder();
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(GetMockConcertDetailsService(),
+                                                        Substitute.For<IConcertsSeasonService>());
                 builder.InitializeController(controller);
                 controller.Request.Stub(r => r.IsAuthenticated).Return(true); // Have to use RhinoMocks here, as that's what MvcContrib uses
                 
@@ -138,15 +98,27 @@ namespace CGO.Web.Tests.Controllers
 
                 result.AssertViewRendered().ForView("List");
             }
+
+            private static IConcertDetailsService GetMockConcertDetailsService()
+            {
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                concertDetailsService.GetFutureConcerts().Returns(Enumerable.Empty<Concert>().ToList());
+                return concertDetailsService;
+            }
         }
 
         [TestFixture]
-        public class DetailsShould : RavenTest
+        public class DetailsShould
         {
+            private readonly Concert sampleConcert = new Concert(1, "Test Concert", DateTime.MinValue, "Venue");
+
             [Test]
             public void RenderTheDetailsView()
             {
-                var controller = new ConcertsController(Session);
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                concertDetailsService.GetConcert(1).ReturnsForAnyArgs(sampleConcert);
+                var controller = new ConcertsController(concertDetailsService,
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Details(1);
 
@@ -156,42 +128,38 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void DisplayTheConcertRequested()
             {
-                var controller = new ConcertsController(Session);
+                const int requestedConcertId = 1;
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                concertDetailsService.GetConcert(requestedConcertId).Returns(sampleConcert);
+                var controller = new ConcertsController(concertDetailsService,
+                                                        Substitute.For<IConcertsSeasonService>());
 
-                var result = controller.Details(1) as ViewResult;
+                var result = controller.Details(requestedConcertId) as ViewResult;
                 var concert = result.Model as Concert;
                 
-                Assert.That(concert.Id, Is.EqualTo(1));
+                Assert.That(concert.Id, Is.EqualTo(requestedConcertId));
             }
 
             [Test]
             public void ReturnA404NotFoundWhenTheConcertDoesntExist()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Details(2);
 
                 result.AssertResultIs<HttpNotFoundResult>();
             }
-
-            [SetUp]
-            public void CreateSampleData()
-            {
-                using(var sampleDataSession = Store.OpenSession())
-                {
-                    sampleDataSession.Store(new Concert(1, "foo", DateTime.Now, "bar"));
-                    sampleDataSession.SaveChanges();
-                }
-            }
         }
 
         [TestFixture]
-        public class CreateShould : RavenTest
+        public class CreateShould
         {
             [Test]
             public void ShowTheCreateViewWhenCalledViaAGetRequest()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Create(); // The parameterless overload is called on GET.
 
@@ -201,7 +169,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ShowTheCreateViewWithTheSuppliedModelWhenThereAreValidationErrors()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
                 controller.ViewData.ModelState.AddModelError("Title", "Please enter a title");
 
                 var result = controller.Create(new ConcertViewModel()); // The overload with ConcertViewModel parameter is called on POST.
@@ -212,7 +181,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnToTheListOfConcertsWhenThereAreNoValidationErrors()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Create(new ConcertViewModel());
 
@@ -220,79 +190,48 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void StoreTheConcertInTheDatabaseWhenThereAreNoValidationErrors()
+            public void CallSaveOnTheConcertDetailsServiceWhenThereAreNoValidationErrors()
             {
-                var controller = new ConcertsController(Session);
-                var concert = new Concert(1, "Foo", new DateTime(2012, 07, 29, 20, 00, 00), "Bar");
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                var controller = new ConcertsController(concertDetailsService,
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 controller.Create(new ConcertViewModel
                 {
-                    Date = concert.DateAndStartTime,
-                    StartTime = concert.DateAndStartTime,
-                    Location = concert.Location,
-                    Title = concert.Title
+                    Date = new DateTime(2012, 07, 29, 20, 00, 00),
+                    StartTime = new DateTime(2012, 07, 29, 20, 00, 00),
+                    Location = "Bar",
+                    Title = "Foo"
                 });
 
-                Assert.That(Session.Load<Concert>(1), Is.EqualTo(concert).Using(new ConcertEqualityComparer()));
-            }
-
-            [Test]
-            public void SaveChangesToTheDatabaseWhenThereAreNoValidationErrors()
-            {
-                var mockRavenSession = Substitute.For<IDocumentSession>();
-                var controller = new ConcertsController(mockRavenSession);
-                var concert = new Concert(1, "Foo", new DateTime(2012, 07, 31, 14, 24, 00), "Bar");
-
-                controller.Create(new ConcertViewModel
-                {
-                    Date = concert.DateAndStartTime,
-                    StartTime = concert.DateAndStartTime,
-                    Location = concert.Location,
-                    Title = concert.Title
-                });
-
-                mockRavenSession.Received().SaveChanges();
+                concertDetailsService.ReceivedWithAnyArgs(1).SaveConcert(null);
             }
         }
 
         [TestFixture]
-        public class ListShould : RavenTest
+        public class ListShould
         {
-            private Concert sampleConcert;
-
             [Test]
             public void ShowTheListView()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.List();
 
                 result.AssertViewRendered().ForView("List");
             }
-
-            [SetUp]
-            public void CreateSampleData()
-            {
-                sampleConcert = new Concert(1, "Foo", new DateTime(2012, 07, 31, 13, 40, 00), "Bar");
-
-                using (var sampleDataSession = Store.OpenSession())
-                {
-                    sampleDataSession.Store(sampleConcert);
-                    sampleDataSession.SaveChanges();
-                }
-            }
         }
 
         [TestFixture]
-        public class EditShouldOnGet : RavenTest
+        public class EditShouldOnGet
         {
-            private Concert concertToEdit;
-
             [Test]
             public void ShowTheEditView()
             {
-                var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession);
+                var concertDetailsService = GetMockConcertDetailsService();
+                var controller = new ConcertsController(concertDetailsService,
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Edit(1);
 
@@ -302,8 +241,9 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ShowTheEditViewWithAConcertViewModel()
             {
-                var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession);
+                var concertDetailsService = GetMockConcertDetailsService();
+                var controller = new ConcertsController(concertDetailsService,
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Edit(1);
 
@@ -313,15 +253,16 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ShowTheEditViewForTheConcertSpecified()
             {
-                var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession);
+                var concertDetailsService = GetMockConcertDetailsService();
+                var controller = new ConcertsController(concertDetailsService,
+                                                        Substitute.For<IConcertsSeasonService>());
                 var viewModel = new ConcertViewModel
                 {
                     Id = 1,
-                    Title = "Foo",
-                    Date = new DateTime(2012, 08, 04, 20, 00, 00),
-                    StartTime = new DateTime(2012, 08, 04, 20, 00, 00),
-                    Location = "Bar",
+                    Title = "Test Concert",
+                    Date = DateTime.MinValue,
+                    StartTime = DateTime.MinValue,
+                    Location = "Venue",
                     IsPublished = false
                 };
 
@@ -331,75 +272,45 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void CallLoadOnTheRavenSessionWithTheSpecifiedId()
+            public void CallGetConcertOnTheConcertDetailsServiceWithTheSpecifiedId()
             {
-                var documentSession = GetMockDocumentSession();
-                var controller = new ConcertsController(documentSession);
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                var controller = new ConcertsController(concertDetailsService,
+                                                        Substitute.For<IConcertsSeasonService>());
 
-                const int concertDocumentToLoad = 1;
-                controller.Edit(concertDocumentToLoad);
+                const int concertId = 1;
+                controller.Edit(concertId);
 
-                documentSession.Received().Load<Concert>(concertDocumentToLoad);
-            }
-
-            [Test]
-            public void RetrieveTheConcertFromTheDatabase()
-            {
-                var controller = new ConcertsController(Session);
-                var viewModel = new ConcertViewModel
-                {
-                    Id = concertToEdit.Id,
-                    Title = concertToEdit.Title,
-                    Date = concertToEdit.DateAndStartTime,
-                    StartTime = concertToEdit.DateAndStartTime,
-                    Location = concertToEdit.Location
-                };
-
-                var result = controller.Edit(2) as ViewResult;
-
-                Assert.That(result.Model, Is.EqualTo(viewModel).Using(new ConcertViewModelEqualityComparer()));
+                concertDetailsService.Received().GetConcert(concertId);
             }
 
             [Test]
             public void ThrowA404NotFoundIfTheRequestedConcertIdIsUnknown()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Edit(23);
 
                 result.AssertResultIs<HttpNotFoundResult>();
             }
 
-            [SetUp]
-            public void CreateSampleData()
+            private IConcertDetailsService GetMockConcertDetailsService()
             {
-                concertToEdit = new Concert(2, "Bar", new DateTime(2012, 08, 04, 20, 00, 00), "Foo");
-
-                using (var session = Store.OpenSession())
-                {
-                    session.Store(concertToEdit);
-                    session.SaveChanges();
-                }
-            }
-
-            private static IDocumentSession GetMockDocumentSession()
-            {
-                var documentSession = Substitute.For<IDocumentSession>();
-                documentSession.Load<Concert>(1).ReturnsForAnyArgs(new Concert(1, "Foo", new DateTime(2012, 08, 04, 20, 00, 00), "Bar"));
-
-                return documentSession;
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                concertDetailsService.GetConcert(1).ReturnsForAnyArgs(new Concert(1, "Test Concert", DateTime.MinValue, "Venue"));
+                return concertDetailsService;
             }
         }
 
         [TestFixture]
-        public class EditShouldOnPost : RavenTest
+        public class EditShouldOnPost
         {
-            private Concert existingConcert;
-
             [Test]
             public void RedirectToTheListViewIfNoErrorsOccurred()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Edit(1, new ConcertViewModel());
 
@@ -409,7 +320,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void RedisplayTheEditViewWhenValidationErrorsArePresent()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
                 controller.ModelState.AddModelError("Date", "Not a date");
 
                 var result = controller.Edit(1, new ConcertViewModel());
@@ -420,7 +332,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void RedisplayTheEditViewWithTheProvidedViewModelWhenValidationErrorsArePresent()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
                 controller.ModelState.AddModelError("Date", "Not a date");
 
                 var concertToSave1 = new ConcertViewModel();
@@ -430,52 +343,26 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void SaveTheChangesToTheDatabaseIfNoErrorsOccurred()
+            public void CallSaveOnTheConcertDetailsServiceIfNoErrorsOccurred()
             {
-                var controller = new ConcertsController(Session);
-                var viewModel = existingConcert.ToViewModel<Concert, ConcertViewModel>();
-                const string editedTitle = "New Title";
-                viewModel.Title = editedTitle;
-
-                controller.Edit(1, viewModel);
-
-                var editedConcert = new Concert(existingConcert.Id, editedTitle, existingConcert.DateAndStartTime, existingConcert.Location);
-                Assert.That(Session.Load<Concert>(1), Is.EqualTo(editedConcert).Using(new ConcertEqualityComparer()));
-            }
-
-            [Test]
-            public void CallSaveChangesOnTheRavenSession()
-            {
-                var documentSession = Substitute.For<IDocumentSession>();
-                var controller = new ConcertsController(documentSession);
-
+                var concertDetailsService = Substitute.For<IConcertDetailsService>();
+                var controller = new ConcertsController(concertDetailsService,
+                                                        Substitute.For<IConcertsSeasonService>());
+                
                 controller.Edit(1, new ConcertViewModel());
 
-                documentSession.Received().SaveChanges();
-            }
-
-            [SetUp]
-            public void CreateSampleData()
-            {
-                existingConcert = new Concert(1, "Foo", new DateTime(2012, 08, 04, 20, 00, 00), "Bar");
-
-                using (var sampleDataSession = Store.OpenSession())
-                {
-                    sampleDataSession.Store(existingConcert);
-                    sampleDataSession.SaveChanges();
-                }
+                concertDetailsService.ReceivedWithAnyArgs(1).SaveConcert(null);
             }
         }
 
         [TestFixture]
-        public class ArchiveShould : RavenTest
+        public class ArchiveShould
         {
-            private IReadOnlyCollection<Concert> concerts2009;
-
             [Test]
             public void ReturnArchiveView()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Archive(2009);
 
@@ -485,7 +372,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnArchiveViewWithConcerts()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Archive(2009);
 
@@ -493,60 +381,30 @@ namespace CGO.Web.Tests.Controllers
             }
 
             [Test]
-            public void ReturnArchiveWithTheConcertsFromTheRequestedSeason()
+            public void ReturnArchiveWithTheConcertsFromTheRequestedSeasonFromTheService()
             {
-                var controller = new ConcertsController(Session);
-                IReadOnlyCollection<Concert> expectedData = concerts2009.ToArray();
+                var concertsSeasonService = Substitute.For<IConcertsSeasonService>();
+                var concert = new Concert(1, "Test Concert", DateTime.MinValue, "Venue");
+                IReadOnlyCollection<Concert> expectedConcerts = new[] { concert };
+                concertsSeasonService.GetConcertsInSeason(2009).Returns(expectedConcerts);
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        concertsSeasonService);
 
                 var result = controller.Archive(2009) as ViewResult;
                 var viewModel = result.Model as IReadOnlyCollection<Concert>;
 
-                Assert.That(viewModel, Is.EqualTo(expectedData).Using(new ConcertEqualityComparer()));
-            }
-
-            [Test]
-            public void ReturnOnlyPublishedConcertsFromTheRequestedSeason()
-            {
-                var controller = new ConcertsController(Session);
-                var unpublishedConcert = new Concert(1, "Unpublished 2009 Concert", new DateTime(2009, 11, 14), "West Road Concert Hall");
-                Session.Store(unpublishedConcert);
-                Session.SaveChanges();
-
-                var result = controller.Archive(2009) as ViewResult;
-                var viewModel = result.Model as IReadOnlyCollection<Concert>;
-
-                Assert.That(viewModel, Is.Not.Contains(unpublishedConcert).Using(new ConcertEqualityComparer()));
+                Assert.That(viewModel, Is.EqualTo(expectedConcerts).Using(new ConcertEqualityComparer()));
             }
 
             [Test]
             public void SetTheConcertSeasonPropertyInTheViewBag()
             {
-                var controller = new ConcertsController(Session);
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Archive(2009) as ViewResult;
 
                 Assert.That(result.ViewBag.ConcertSeason, Is.EqualTo("2009-2010"));
-            }
-
-            [SetUp]
-            public void CreateTestData()
-            {
-                concerts2009 = new List<Concert>
-                {
-                    new Concert(2, "Michaelmas", new DateTime(2009, 11, 13), "West Road Concert Hall"), 
-                    new Concert(3, "Lent", new DateTime(2010, 02, 26), "West Road Concert Hall"), 
-                    new Concert(4, "Spring", new DateTime(2010, 04, 2), "West Road Concert Hall"), 
-                    new Concert(5, "Summer", new DateTime(2010, 06, 25), "West Road Concert Hall")
-                };
-
-                var concerts2009List = concerts2009.ToList();
-                concerts2009List.ForEach(c => c.Publish());
-
-                using (var sampleDataSession = Store.OpenSession())
-                {
-                    concerts2009List.ForEach(sampleDataSession.Store);          
-                    sampleDataSession.SaveChanges();
-                }
             }
         }
 
@@ -556,7 +414,8 @@ namespace CGO.Web.Tests.Controllers
             [Test]
             public void ReturnTheArchiveIndexView()
             {
-                var controller = new ConcertsController(Substitute.For<IDocumentSession>());
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
 
                 var result = controller.Archived();
 

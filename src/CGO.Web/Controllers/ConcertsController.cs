@@ -1,26 +1,31 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using CGO.Domain;
 using CGO.Web.Mappers;
-using CGO.Web.Models;
 using CGO.Web.ViewModels;
-
-using Raven.Client;
 
 namespace CGO.Web.Controllers
 {
     public class ConcertsController : Controller
     {
-        private readonly IDocumentSession session;
+        private readonly IConcertDetailsService concertDetailsService;
+        private readonly IConcertsSeasonService concertsSeasonService;
 
-        public ConcertsController(IDocumentSession session)
+        public ConcertsController(IConcertDetailsService concertDetailsService, IConcertsSeasonService concertsSeasonService)
         {
-            if (session == null)
+            if (concertDetailsService == null)
             {
-                throw new ArgumentNullException("session");
+                throw new ArgumentNullException("concertDetailsService");
             }
 
-            this.session = session;
+            if (concertsSeasonService == null)
+            {
+                throw new ArgumentNullException("concertsSeasonService");
+            }
+
+            this.concertDetailsService = concertDetailsService;
+            this.concertsSeasonService = concertsSeasonService;
         }
 
         //
@@ -28,11 +33,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Index()
         {
-            var concerts = session.Query<Concert>()
-                                  .Where(c => c.DateAndStartTime > DateTime.Now)
-                                  .Where(c => c.IsPublished)
-                                  .OrderBy(c => c.DateAndStartTime)
-                                  .ToList();
+            var concerts = concertDetailsService.GetFutureConcerts();
 
             if (concerts.Any())
             {
@@ -52,7 +53,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            var concert = session.Load<Concert>(id);
+            var concert = concertDetailsService.GetConcert(id);
 
             if (concert == null)
             {
@@ -67,11 +68,7 @@ namespace CGO.Web.Controllers
 
         public ActionResult Archive(int year)
         {
-            var concerts = session.Query<Concert>()
-                                  .Where(c => c.DateAndStartTime >= DateTime.Parse(year + "-08-01") && 
-                                              c.DateAndStartTime <= DateTime.Parse(year + 1 + "-07-31"))
-                                  .Where(c => c.IsPublished)
-                                  .ToList();
+            var concerts = concertsSeasonService.GetConcertsInSeason(year);
 
             ViewBag.ConcertSeason = string.Format("{0}-{1}", year, year + 1);
 
@@ -106,9 +103,7 @@ namespace CGO.Web.Controllers
                 return View("Create", concertViewModel);
             }
 
-            session.Store(concertViewModel.ToModel<Concert, ConcertViewModel>());
-            session.SaveChanges();
-
+            concertDetailsService.SaveConcert(concertViewModel.ToModel<Concert, ConcertViewModel>());
             return RedirectToAction("List");
         }
 
@@ -117,7 +112,7 @@ namespace CGO.Web.Controllers
         [Authorize]
         public ActionResult Edit(int id)
         {
-            var concert = session.Load<Concert>(id);
+            var concert = concertDetailsService.GetConcert(id);
 
             if (concert == null)
             {
@@ -139,8 +134,7 @@ namespace CGO.Web.Controllers
                 return View("Edit", viewModel);
             }
 
-            session.Store(viewModel.ToModel<Concert, ConcertViewModel>());
-            session.SaveChanges();
+            concertDetailsService.SaveConcert(viewModel.ToModel<Concert, ConcertViewModel>());
 
             return RedirectToAction("List");
         }

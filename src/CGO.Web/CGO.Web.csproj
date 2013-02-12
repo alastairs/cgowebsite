@@ -281,9 +281,8 @@
     <Compile Include="Controllers\Api\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsSideBar.cs" />
+    <Compile Include="Controllers\DefaultSideBarFactory.cs" />
     <Compile Include="Controllers\EmptySideBar.cs" />
-    <Compile Include="Infrastructure\DateTimeProvider.cs" />
-    <Compile Include="Infrastructure\IDateTimeProvider.cs" />
     <Compile Include="Infrastructure\IUrlHelper.cs" />
     <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -291,7 +290,7 @@
     <Compile Include="Controllers\ISideBarFactory.cs" />
     <Compile Include="Controllers\SidebarController.cs" />
     <Compile Include="Controllers\SideBar.cs" />
-    <Compile Include="Controllers\SideBarFactory.cs" />
+    <Compile Include="Controllers\ConcertsSideBarFactory.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Infrastructure\FormsAuthenticationService.cs" />
     <Compile Include="Infrastructure\GoogleOAuthConfiguration.cs" />
@@ -306,12 +305,12 @@
     <Compile Include="Infrastructure\NinjectWebApiDependencyResolver.cs" />
     <Compile Include="Infrastructure\NinjectScope.cs" />
     <Compile Include="Mappers\MapperExtensions.cs" />
-    <Compile Include="Models\Concert.cs" />
     <Compile Include="Models\HomePageViewModel.cs" />
     <Compile Include="Models\Rehearsal.cs" />
     <Compile Include="Models\SideBarLink.cs" />
     <Compile Include="Models\SideBarSection.cs" />
     <Compile Include="NinjectModules\RavenModule.cs" />
+    <Compile Include="NinjectModules\SideBarModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Api\ConcertViewModel.cs" />
     <Compile Include="ViewModels\ConcertViewModel.cs" />
@@ -572,6 +571,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CGO.DataAccess.Raven\CGO.DataAccess.Raven.csproj">
+      <Project>{a0c063a6-483c-4591-8ec2-048eb932200a}</Project>
+      <Name>CGO.DataAccess.Raven</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CGO.Domain\CGO.Domain.csproj">
+      <Project>{2ec137a8-eb60-4efa-aa30-3b5234bf7616}</Project>
+      <Name>CGO.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
