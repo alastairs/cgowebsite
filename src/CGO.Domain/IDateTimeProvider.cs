@@ -1,6 +1,6 @@
 using System;
 
-namespace CGO.Web.Infrastructure
+namespace CGO.Domain
 {
     public interface IDateTimeProvider 
     {
