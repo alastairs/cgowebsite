@@ -67,6 +67,7 @@ namespace CGO.Web.App_Start
 
             kernel.Bind(a => a.FromAssembliesMatching("CGO.*.dll")
                               .SelectAllClasses()
+                              .Excluding<DefaultSideBarFactory>()
                               .Excluding<ConcertsSideBarFactory>()
                               .BindAllInterfaces()
                               .Configure(bind => bind.InRequestScope()));
