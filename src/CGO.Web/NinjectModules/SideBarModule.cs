@@ -16,7 +16,7 @@ namespace CGO.Web.NinjectModules
                   .To<DefaultSideBarFactory>()
                   .InRequestScope();
 
-            Kernel.Rebind<ISideBarFactory>()
+            Kernel.Bind<ISideBarFactory>()
                   .To<ConcertsSideBarFactory>()
                   .When(_ => RequestedControllerIs(concertsControllerName))
                   .InRequestScope();
