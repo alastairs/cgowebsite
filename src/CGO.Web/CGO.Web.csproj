@@ -517,7 +517,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Areas\Admin\Views\Concerts\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Concerts\List.cshtml" />
+    <Content Include="Areas\Admin\Views\Concerts\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Concerts\_ConcertEditForm.cshtml" />
     <Content Include="Views\Shared\_MarkdownEditor.cshtml" />
     <Content Include="Areas\Admin\Views\Concerts\Edit.cshtml" />

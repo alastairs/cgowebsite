@@ -26,11 +26,11 @@ namespace CGO.Web.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            return View("List");
+            return View("Index");
         }
 
         //
-        // GET: /Concerts/Create
+        // GET: /Admin/Concerts/Create
 
         public ActionResult Create()
         {
@@ -38,7 +38,7 @@ namespace CGO.Web.Areas.Admin.Controllers
         }
 
         //
-        // POST: /Concerts/Create
+        // POST: /Admin/Concerts/Create
 
         [HttpPost]
         public ActionResult Create(ConcertViewModel concertViewModel)
@@ -49,11 +49,11 @@ namespace CGO.Web.Areas.Admin.Controllers
             }
 
             concertDetailsService.SaveConcert(concertViewModel.ToModel<Concert, ConcertViewModel>());
-            return RedirectToAction("List");
+            return RedirectToAction("Index");
         }
 
         //
-        // GET: /Concerts/Edit/5
+        // GET: /Admin/Concerts/Edit/5
         public ActionResult Edit(int id)
         {
             var concert = concertDetailsService.GetConcert(id);
@@ -67,7 +67,7 @@ namespace CGO.Web.Areas.Admin.Controllers
         }
 
         //
-        // POST: /Concerts/Edit/5
+        // POST: /Admin/Concerts/Edit/5
 
         [HttpPost]
         public ActionResult Edit(int id, ConcertViewModel viewModel)
@@ -79,15 +79,7 @@ namespace CGO.Web.Areas.Admin.Controllers
 
             concertDetailsService.SaveConcert(viewModel.ToModel<Concert, ConcertViewModel>());
 
-            return RedirectToAction("List");
-        }
-
-        //
-        // GET: /Concerts/List
-
-        public ActionResult List()
-        {
-            return View("List");
+            return RedirectToAction("Index");
         }
     }
 }
