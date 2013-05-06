@@ -84,6 +84,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Admin\ConcertsControllerFacts.cs" />
     <Compile Include="Controllers\Api\ConcertsControllerFacts.cs" />
     <Compile Include="Controllers\ConcertsSideBarFacts.cs" />
     <Compile Include="EqualityComparers\ConcertApiViewModelEqualityComparer.cs" />
