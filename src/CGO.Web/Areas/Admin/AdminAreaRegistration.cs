@@ -17,7 +17,8 @@ namespace CGO.Web.Areas.Admin
             context.MapRoute(
                 "Admin_default",
                 "Admin/{controller}/{action}/{id}",
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                namespaces: new[] { "CGO.Web.Areas.Admin.Controllers" }
             );
         }
     }
