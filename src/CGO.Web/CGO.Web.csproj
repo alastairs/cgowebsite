@@ -226,6 +226,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ConcertsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Controllers\Api\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsController.cs" />
@@ -504,11 +505,11 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Shared\_Sidebar.cshtml" />
-    <Content Include="Views\Concerts\Create.cshtml" />
-    <Content Include="Views\Concerts\List.cshtml" />
-    <Content Include="Views\Concerts\_ConcertEditForm.cshtml" />
+    <Content Include="Areas\Admin\Views\Concerts\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Concerts\List.cshtml" />
+    <Content Include="Areas\Admin\Views\Concerts\_ConcertEditForm.cshtml" />
     <Content Include="Views\Shared\_MarkdownEditor.cshtml" />
-    <Content Include="Views\Concerts\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Concerts\Edit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
     <Content Include="Views\User\Login.cshtml" />

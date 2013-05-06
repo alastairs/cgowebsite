@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Web.Mvc;
 using CGO.Domain;
-using CGO.Web.Mappers;
-using CGO.Web.ViewModels;
 
 namespace CGO.Web.Controllers
 {
@@ -38,11 +36,6 @@ namespace CGO.Web.Controllers
             if (concerts.Any())
             {
                 return View("Index", concerts);
-            }
-
-            if (Request.IsAuthenticated)
-            {
-                return View("List");
             }
 
             return RedirectToAction("Index", "Home");
@@ -81,71 +74,6 @@ namespace CGO.Web.Controllers
         public ActionResult Archived()
         {
             return View("ArchiveIndex");
-        }
-
-        //
-        // GET: /Concerts/Create
-        [Authorize]
-        public ActionResult Create()
-        {
-            return View("Create");
-        }
-
-        //
-        // POST: /Concerts/Create
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult Create(ConcertViewModel concertViewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("Create", concertViewModel);
-            }
-
-            concertDetailsService.SaveConcert(concertViewModel.ToModel<Concert, ConcertViewModel>());
-            return RedirectToAction("List");
-        }
-
-        //
-        // GET: /Concerts/Edit/5
-        [Authorize]
-        public ActionResult Edit(int id)
-        {
-            var concert = concertDetailsService.GetConcert(id);
-
-            if (concert == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View("Edit", concert.ToViewModel<Concert, ConcertViewModel>());
-        }
-
-        //
-        // POST: /Concerts/Edit/5
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult Edit(int id, ConcertViewModel viewModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View("Edit", viewModel);
-            }
-
-            concertDetailsService.SaveConcert(viewModel.ToModel<Concert, ConcertViewModel>());
-
-            return RedirectToAction("List");
-        }
-
-        //
-        // GET: /Concerts/List
-
-        [Authorize]
-        public ActionResult List()
-        {
-            return View("List");
         }
     }
 }
