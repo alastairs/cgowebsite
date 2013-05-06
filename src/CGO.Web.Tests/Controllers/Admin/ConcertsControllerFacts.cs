@@ -54,7 +54,7 @@ namespace CGO.Web.Tests.Controllers.Admin
 
                 var result = controller.Create(new ConcertViewModel());
 
-                result.AssertActionRedirect().ToAction("List");
+                result.AssertActionRedirect().ToAction("Index");
             }
 
             [Test]
@@ -74,20 +74,21 @@ namespace CGO.Web.Tests.Controllers.Admin
                 concertDetailsService.ReceivedWithAnyArgs(1).SaveConcert(null);
             }
         }
-
+ 
         [TestFixture]
-        public class ListShould
+        public class IndexShould
         {
             [Test]
-            public void ShowTheListView()
+            public void ShowTheIndexView()
             {
                 var controller = new ConcertsController(Substitute.For<IConcertDetailsService>());
 
-                var result = controller.List();
+                var result = controller.Index();
 
-                result.AssertViewRendered().ForView("List");
+                result.AssertViewRendered().ForView("Index");
             }
         }
+
 
         [TestFixture]
         public class EditShouldOnGet
@@ -174,7 +175,7 @@ namespace CGO.Web.Tests.Controllers.Admin
 
                 var result = controller.Edit(1, new ConcertViewModel());
 
-                result.AssertActionRedirect().ToAction("List");
+                result.AssertActionRedirect().ToAction("Index");
             }
 
             [Test]
