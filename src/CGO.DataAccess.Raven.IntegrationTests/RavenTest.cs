@@ -14,23 +14,13 @@ namespace CGO.DataAccess.Raven.IntegrationTests
         {
             Store = new EmbeddableDocumentStore { RunInMemory = true };
             Store.Initialize();
-        }
-
-        [SetUp]
-        public void OpenSession()
-        {
             Session = Store.OpenSession();
-        }
-
-        [TearDown]
-        public void CloseSession()
-        {
-            Session.Dispose();
         }
 
         [TearDown]
         public void DestroyRavenDbStore()
         {
+            Session.Dispose();
             Store.Dispose();
         }
     }
