@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>@ViewBag.Title</title>
+        @Styles.Render("~/Content/bootstrap.min.css")
+        @Styles.Render("~/Content/bootstrap-responsive.min.css")
+        @Styles.Render("~/bundles/font-awesome")
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        @Scripts.Render("~/bundles/jquery")
+
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/knockout")
+
+        <script type="text/javascript">
+            Modernizr.load({
+                test: Modernizr.input.placeholder,
+                nope: '/scripts/placeholder.js'
+            });
+
+            Modernizr.load({
+                test: Modernizr.inputtypes.date,
+                nope: '/scripts/datepicker.js'
+            });
+        </script>
+    </head>
+    <body>
+        <div>
+            @RenderBody()
+        </div>
+        @RenderSection("Scripts", false)
+    </body>
+</html>
