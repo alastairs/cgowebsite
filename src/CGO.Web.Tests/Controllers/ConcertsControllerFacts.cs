@@ -72,20 +72,7 @@ namespace CGO.Web.Tests.Controllers
         public class WhenThereAreNoConcerts_IndexShould
         {
             [Test]
-            public void DisplayTheSiteHomePageIfTheRequestIsAnonymous()
-            {
-                var builder = new TestControllerBuilder();
-                var controller = new ConcertsController(GetMockConcertDetailsService(),
-                                                        Substitute.For<IConcertsSeasonService>());
-                builder.InitializeController(controller);
-
-                var result = controller.Index();
-
-                result.AssertActionRedirect().ToAction("Index").ToController("Home");
-            }
-
-            [Test]
-            public void DisplayTheCreateViewIfTheRequestIsAuthenticated()
+            public void RedirectToTheAdminHomePage()
             {
                 var builder = new TestControllerBuilder();
                 var controller = new ConcertsController(GetMockConcertDetailsService(),
@@ -95,7 +82,7 @@ namespace CGO.Web.Tests.Controllers
                 
                 var result = controller.Index();
 
-                result.AssertViewRendered().ForView("List");
+                result.AssertActionRedirect().ToAction("Index").ToController("Home");
             }
 
             private static IConcertDetailsService GetMockConcertDetailsService()
