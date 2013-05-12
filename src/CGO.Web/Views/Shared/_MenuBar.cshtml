@@ -37,7 +37,7 @@
             </a>
             
             <ul class="dropdown-menu">
-                <li>@Html.ActionLink("Administer Concerts", "List", "Concerts")</li>
+                <li>@Html.ActionLink("Administer Concerts", "Index", new { controller = "Concerts", area = "Admin" })</li>
             </ul>
         }
         else
