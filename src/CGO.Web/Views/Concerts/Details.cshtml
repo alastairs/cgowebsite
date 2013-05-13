@@ -5,15 +5,21 @@
     ViewBag.Title = Model.Title;
 }
 
-<div class="hero-unit">
-    <header>
-        <h1>@Model.Title</h1>
-    </header>
-    <section>
-        <p><time datetime="@Model.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@Model.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @Model.Location</p>
-        <img src="~/Images/facebook.png" style="width: 50%" />
-    </section>
+<div class="row-fluid">
+    @Html.Action("Display", "SideBar")
+
+    <div class="span9">
+        <div class="hero-unit">
+            <header>
+                <h1>@Model.Title</h1>
+            </header>
+            <section>
+                <p><time datetime="@Model.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@Model.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @Model.Location</p>
+                <img src="~/Images/facebook.png" style="width: 50%" />
+            </section>
+        </div>
+        <section>
+            <p>@Html.Markdown(Model.Description)</p>
+        </section>
+    </div>
 </div>
-<section>
-    <p>@Html.Markdown(Model.Description)</p>
-</section>
