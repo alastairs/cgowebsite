@@ -1,4 +1,8 @@
-﻿/* styles for validation helpers */
+﻿h1 {
+    font-family: Boilerplate;
+}
+
+/* styles for validation helpers */
 .field-validation-error {
     color: #e80c4d;
     font-weight: bold;
