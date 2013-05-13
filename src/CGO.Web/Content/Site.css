@@ -2,6 +2,10 @@
     font-family: Boilerplate;
 }
 
+.cgoslider {
+    width: 100%;
+}
+
 /* styles for validation helpers */
 .field-validation-error {
     color: #e80c4d;
