@@ -2,8 +2,9 @@
     font-family: Boilerplate;
 }
 
-.cgoslider {
+.cgocarousel {
     width: 100%;
+    height: 300px;
 }
 
 /* styles for validation helpers */

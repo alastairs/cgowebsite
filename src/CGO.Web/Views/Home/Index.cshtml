@@ -1,33 +1,41 @@
 ﻿@using CGO.Web.Views
 @model CGO.Web.Models.HomePageViewModel
-<div class="cgoslider">
-    <header>
-        <h1>@Model.NextConcert.Title</h1>
-    </header>
-    <section>
-        <p><time datetime="@Model.NextConcert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@Model.NextConcert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @Model.NextConcert.Location</p>
-        <img src="~/Images/facebook.png" style="width: 50%" />
-        <p>
-            <a href="http://cgorussianheritage-www.eventbrite.co.uk/" title="Buy tickets on EventBrite" class= "btn btn-primary btn-large">Buy tickets »</a>
-            @Html.ActionLink("View programme »", "Details", "Concerts", new { Model.NextConcert.Id }, htmlAttributes: new { @class ="btn btn-large" })
-        </p>
-    </section>
-</div>
-<div class="row-fluid">
-    <header class="span9">
-        <h1>Upcoming Rehearsals</h1>
-    </header>
-
-    @foreach(var rehearsal in Model.UpcomingRehearsals)
-    {
-        <section class="span4">
-            <h2><time datetime="@rehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.DateAndStartTime.ToString(FormatStrings.FullDate)</time></h2>
+<div id="carousel" class="carousel slide cgocarousel">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <section class="carousel-inner">
+        <section class="active item">
+            <header>
+                <h1>@Model.NextConcert.Title</h1>
+            </header>
+            <p><time datetime="@Model.NextConcert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@Model.NextConcert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @Model.NextConcert.Location</p>
+            <img src="~/Images/facebook.png" />
             <p>
-                <time datetime="@rehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.DateAndStartTime.ToString(FormatStrings.Time)</time> - 
-                <time datetime="@rehearsal.FinishTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.FinishTime.ToString(FormatStrings.Time)</time>,
-                @rehearsal.Location
+                <a href="http://cgorussianheritage-www.eventbrite.co.uk/" title="Buy tickets on EventBrite" class= "btn btn-primary btn-large">Buy tickets »</a>
+                @Html.ActionLink("View programme »", "Details", "Concerts", new { Model.NextConcert.Id }, htmlAttributes: new { @class ="btn btn-large" })
             </p>
-            <p>@Html.ActionLink("View Schedule »", "Details", "Rehearsals", new {rehearsal.Id}, htmlAttributes: new {@class = "btn"})</p>
         </section>
-    }
+    </section>
+    <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+    <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
 </div>
+
+<header>
+    <h1>Upcoming Rehearsals</h1>
+</header>
+
+@foreach (var rehearsal in Model.UpcomingRehearsals)
+{
+    <section class="span4">
+        <h2><time datetime="@rehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.DateAndStartTime.ToString(FormatStrings.FullDate)</time></h2>
+        <p>
+            <time datetime="@rehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.DateAndStartTime.ToString(FormatStrings.Time)</time> - 
+            <time datetime="@rehearsal.FinishTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.FinishTime.ToString(FormatStrings.Time)</time>,
+            @rehearsal.Location
+        </p>
+        <p>@Html.ActionLink("View Schedule »", "Details", "Rehearsals", new { rehearsal.Id }, htmlAttributes: new { @class = "btn" })</p>
+    </section>
+}
