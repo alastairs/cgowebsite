@@ -43,6 +43,9 @@ namespace CGO.Web
                                                                           "~/Content/font-awesome-ie7.css"));
         
             bundles.Add(new StyleBundle("~/bundles/openid-css").Include("~/Content/openid.css", "~/Content/openid-shadow.css"));
+
+            bundles.Add(new StyleBundle("~/bundles/markdownEditor.css").Include("~/Content/wmd.css"));
+            bundles.Add(new StyleBundle("~/bundles/admin.css").Include("~/Areas/Admin/Content/admin.css"));
         }
     }
 }
