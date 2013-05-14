@@ -7,6 +7,15 @@
     height: 300px;
 }
 
+.navbar.cgo, .navbar.cgo .navbar-inner {
+    background-color: #e80c4d;
+    background-image: linear-gradient(#e80c4d, #a40809)
+}
+
+.brand.cgo {
+    color: #a40809;
+}
+
 /* styles for validation helpers */
 .field-validation-error {
     color: #e80c4d;
