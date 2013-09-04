@@ -25,14 +25,16 @@
     </div>
 }
 
-@Styles.Render("~/bundles/openid-css")
-@Scripts.Render("~/bundles/openid")
-<script>
-    (function () {
-        openid.init('openid_identifier');
-        $('#openid_submit').addClass("btn btn-primary");
-        $('#openid_submit').css('margin-top', '-8px');
-        $('#openid_submit').css('margin-left', '5px');
-        $('#openid_submit').val('Log In');
-    })();
-</script>
+@section scripts {
+    @Styles.Render("~/bundles/openid-css")
+    @Scripts.Render("~/bundles/openid")
+    <script>
+        (function() {
+            openid.init('openid_identifier');
+            $('#openid_submit').addClass("btn btn-primary");
+            $('#openid_submit').css('margin-top', '-8px');
+            $('#openid_submit').css('margin-left', '5px');
+            $('#openid_submit').val('Log In');
+        })();
+    </script>
+}

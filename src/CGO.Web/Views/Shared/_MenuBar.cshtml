@@ -31,10 +31,7 @@
     <li class="dropdown @GetCssClass(actionName, controllerName)">
         @if (controllerName == "Concerts" && Request.IsAuthenticated)
         {
-            <a href="@Url.Action(actionName, controllerName)" class="dropdown-toggle" data-toggle="dropdown">
-                @linkText
-                <b class="caret"></b>
-            </a>
+            <a href="@Url.Action(actionName, controllerName)" class="dropdown-toggle" data-toggle="dropdown">@linkText <b class="caret"></b></a>
             
             <ul class="dropdown-menu">
                 <li>@Html.ActionLink("Administer Concerts", "Index", new { controller = "Concerts", area = "Admin" })</li>
@@ -47,10 +44,15 @@
     </li>
 }
 
-<ul class="nav">
+<ul class="nav navbar-nav">
     @GetMenuBarLink("Home", "Index", "Home")
     @GetMenuBarLink("Concerts", "Index", "Concerts")
     @GetMenuBarLink("Rehearsals", "Index", "Rehearsals")
     @GetMenuBarLink("About", "About", "Home")
     @GetMenuBarLink("Contact", "Contact", "Home")
+</ul>
+<ul class="nav navbar-nav pull-right">
+    <li class="dropdown">
+        @Html.Partial("_LoginPartial")
+    </li>
 </ul>
