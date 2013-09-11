@@ -1,11 +1,7 @@
 ﻿@model CGO.Web.ViewModels.ConcertViewModel
 
 @{
-    ViewBag.Title = "Edit " + Model.Title;
+    ViewBag.Title = string.Format("Edit '{0}'", Model.Title);
 }
-
-<div class="page-header">
-    <h1>@ViewBag.Title</h1>
-</div>
 
 @Html.Partial("_ConcertEditForm")
