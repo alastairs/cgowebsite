@@ -3,6 +3,16 @@
     /* The html and body elements cannot have any padding or margin. */
 }
 
+body {
+    background: url('/Images/background.jpg') no-repeat fixed;
+    max-width: 1440px;
+    max-height: 900px;
+}
+
+.content {
+    background: rgba(255, 255, 255, 0.3);
+}
+
 /* Wrapper for page content to push down footer */
 #wrap {
     min-height: 100%;
