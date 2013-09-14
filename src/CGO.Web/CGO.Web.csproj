@@ -374,6 +374,7 @@
     <Content Include="Images\aol.ico" />
     <Content Include="Images\aol.ico.gif" />
     <Content Include="Images\aol.ico.png" />
+    <Content Include="Images\background.jpg" />
     <Content Include="Images\blogger.ico" />
     <Content Include="Images\blogger.ico.gif" />
     <Content Include="Images\blogger.ico.png" />
