@@ -13,12 +13,18 @@ body {
 
 .content {
     background: rgba(255, 255, 255, 0.75);
+    padding: 12px;
 }
 
 .page-header {
     background: rgba(255, 255, 255, 0.75);
     border-bottom-color: #e80c4d;
+    padding: 12px;
 }
+
+    .page-header h1 {
+        margin: 0;
+    }
 
 /* Wrapper for page content to push down footer */
 #wrap {
