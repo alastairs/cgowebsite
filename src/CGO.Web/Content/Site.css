@@ -5,8 +5,10 @@
 
 body {
     background: url('/Images/background.jpg') no-repeat fixed;
-    max-width: 1440px;
-    max-height: 900px;
+    -moz-background-size: 100% auto, contain;
+    -o-background-size: 100% auto, contain;
+    -webkit-background-size: 100% auto, contain;
+    background-size: 100% auto, contain;
 }
 
 .content {
