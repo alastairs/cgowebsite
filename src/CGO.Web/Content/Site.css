@@ -11,8 +11,13 @@ body {
     background-size: 100% auto, contain;
 }
 
-.page-header, .content {
+.content {
     background: rgba(255, 255, 255, 0.75);
+}
+
+.page-header {
+    background: rgba(255, 255, 255, 0.75);
+    border-bottom-color: #e80c4d;
 }
 
 /* Wrapper for page content to push down footer */
