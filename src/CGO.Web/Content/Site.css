@@ -11,7 +11,7 @@ body {
     background-size: 100% auto, contain;
 }
 
-.content {
+.page-header, .content {
     background: rgba(255, 255, 255, 0.5);
 }
 
