@@ -65,6 +65,15 @@ h1 {
     font-size: 44px;
 }
 
+.navbar-default .navbar-brand {
+    color: rgb(255, 0, 144);
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    color: rgb(158, 0, 89);
+}
+
 /* styles for validation helpers */
 .field-validation-error {
     color: #e80c4d;
