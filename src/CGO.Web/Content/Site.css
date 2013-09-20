@@ -18,7 +18,7 @@ body {
 
 .page-header {
     background: rgba(255, 255, 255, 0.75);
-    border-bottom-color: #e80c4d;
+    border-bottom-color: rgb(255, 0, 144);
     padding: 12px;
 }
 
@@ -61,6 +61,7 @@ footer {
 
 h1 {
     font-family: Boilerplate;
+    color: rgb(255, 0, 144);
 }
 
 /* styles for validation helpers */
