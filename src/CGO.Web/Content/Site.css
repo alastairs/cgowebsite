@@ -62,6 +62,7 @@ footer {
 h1 {
     font-family: Boilerplate;
     color: rgb(255, 0, 144);
+    font-size: 44px;
 }
 
 /* styles for validation helpers */
