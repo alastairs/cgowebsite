@@ -67,7 +67,14 @@ h1 {
 
 .navbar-default .navbar-brand {
     color: rgb(255, 0, 144);
+    padding: 6px 0 3px;
+    margin: 0;
 }
+
+    .navbar-default .navbar-brand img {
+        margin-top: -3px;
+        margin-left: 15px;
+    }
 
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {

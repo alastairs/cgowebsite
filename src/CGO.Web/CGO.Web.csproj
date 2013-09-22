@@ -415,6 +415,7 @@
     <Content Include="Images\myopenid.ico" />
     <Content Include="Images\myopenid.ico.gif" />
     <Content Include="Images\myopenid.ico.png" />
+    <Content Include="Images\navbar-logo.png" />
     <Content Include="Images\openid-inputicon.gif" />
     <Content Include="Images\openid-providers-en.png" />
     <Content Include="Images\openid.gif" />

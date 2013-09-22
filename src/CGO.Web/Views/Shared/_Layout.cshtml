@@ -24,7 +24,10 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        @Html.ActionLink("Cambridge Graduate Orchestra", "Index", "Home", htmlAttributes: new { @class = "navbar-brand" }, routeValues: null)
+                        <a href="@Url.Action("Index", "Home")" title="Cambridge Graduate Orchestra Home Page" class="navbar-brand">
+                            <img src="~/Images/navbar-logo.png" title="Cambridge Graduate Orchestra logo" alt="" />
+                            CGO
+                        </a>
                     </div>
                     <div class="collapse navbar-collapse">
                         @Html.Partial("_MenuBar")
