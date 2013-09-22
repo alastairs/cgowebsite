@@ -374,6 +374,10 @@
     <Content Include="Images\aol.ico" />
     <Content Include="Images\aol.ico.gif" />
     <Content Include="Images\aol.ico.png" />
+    <Content Include="Images\background-screen-lg.jpg" />
+    <Content Include="Images\background-screen-md.jpg" />
+    <Content Include="Images\background-screen-sm.jpg" />
+    <Content Include="Images\background-screen-xs.jpg" />
     <Content Include="Images\background.jpg" />
     <Content Include="Images\blogger.ico" />
     <Content Include="Images\blogger.ico.gif" />

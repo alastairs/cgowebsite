@@ -3,8 +3,31 @@
     /* The html and body elements cannot have any padding or margin. */
 }
 
+@media (min-width: 1200px) {
+    body {
+        background: url('/Images/background-screen-lg.jpg') no-repeat fixed;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    body {
+        background: url('/Images/background-screen-md.jpg') no-repeat fixed;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    body {
+        background: url('/Images/background-screen-sm.jpg') no-repeat fixed;
+    }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+    body {
+        background: url('/Images/background-screen-xs.jpg') no-repeat fixed;
+    }
+}
+
 body {
-    background: url('/Images/background.jpg') no-repeat fixed;
     -moz-background-size: 100% auto, contain;
     -o-background-size: 100% auto, contain;
     -webkit-background-size: 100% auto, contain;
