@@ -35,7 +35,6 @@ namespace CGO.Web
                         "~/Scripts/Markdown.Editor.js"));
 
             bundles.Add(new StyleBundle("~/styles/site").Include("~/Content/bootstrap/bootstrap.css",
-                                                                 "~/Content/bootstrap/bootstrap-theme.css",
                                                                  "~/Content/font-awesome.css",
                                                                  "~/Content/font-awesome-ie7.css",
                                                                  "~/Content/Boilerplate.css",
@@ -45,7 +44,6 @@ namespace CGO.Web
                                                                  "~/Content/Site.css"));
 
             bundles.Add(new StyleBundle("~/styles/admin").Include("~/Content/bootstrap/bootstrap.css",
-                                                                  "~/Content/bootstrap/bootstrap-theme.css",
                                                                   "~/Content/font-awesome.css",
                                                                   "~/Content/font-awesome-ie7.css",
                                                                   "~/Content/Boilerplate.css",

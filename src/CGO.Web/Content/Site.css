@@ -27,6 +27,7 @@ body {
     -o-background-size: 100% auto, contain;
     -webkit-background-size: 100% auto, contain;
     background-size: 100% auto, contain;
+    background-color: black;
 }
 
 .content {
