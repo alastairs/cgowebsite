@@ -45,13 +45,14 @@
 }
 
 <ul class="nav navbar-nav">
-    @GetMenuBarLink("Home", "Index", "Home")
-    @GetMenuBarLink("Concerts", "Index", "Concerts")
-    @GetMenuBarLink("Rehearsals", "Index", "Rehearsals")
-    @GetMenuBarLink("About", "About", "Home")
-    @GetMenuBarLink("Contact", "Contact", "Home")
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Concerts", "Index", "Concerts")</li>
+    <li>@Html.ActionLink("Rehearsals", "Index", "Rehearsals")</li>
+    <li>@Html.ActionLink("About", "About", "Home")</li>
+    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 </ul>
 <ul class="nav navbar-nav pull-right">
+    <li><a href="@Url.Action("Index", "Home", new { Area = "Admin" })"><i class="icon-cogs"></i> Admin</a></li>
     <li class="dropdown">
         @Html.Partial("_LoginPartial")
     </li>
