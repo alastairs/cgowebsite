@@ -36,6 +36,21 @@ body {
     padding: 12px;
 }
 
+.featured {
+    background: #f2105c;
+    color: white;
+    -ms-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.homepage-content {
+    padding: 12px;
+}
+
+.homepage-content h2 {
+    margin-top: 0;
+}
+
 .navbar-default .navbar-brand {
     color:  #f2105c;
     padding: 6px 15px 3px;

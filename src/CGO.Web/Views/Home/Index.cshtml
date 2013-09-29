@@ -1,43 +1,35 @@
-﻿@using CGO.Web.Views
-@model CGO.Web.Models.HomePageViewModel
-<div class="span12">
-    @*<div id="carousel" class="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-        </ol>
-        <section class="carousel-inner">
-            <section class="active item">
-                <header>
-                    <h1>@Model.NextConcert.Title</h1>
-                </header>
-                <p><time datetime="@Model.NextConcert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@Model.NextConcert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @Model.NextConcert.Location</p>
-                <img src="~/Images/facebook.png" />
-                <p>
-                    <a href="http://cgorussianheritage-www.eventbrite.co.uk/" title="Buy tickets on EventBrite" class= "btn btn-primary btn-large">Buy tickets »</a>
-                    @Html.ActionLink("View programme »", "Details", "Concerts", new { Model.NextConcert.Id }, htmlAttributes: new { @class ="btn btn-large" })
-                </p>
-            </section>
-        </section>
-        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-    </div>*@
-
-    <header>
+﻿@using CGO.Web.Models
+@using CGO.Web.Views
+@model HomePageViewModel
+<div class="row">
+    <header class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <h1>Upcoming Rehearsals</h1>
     </header>
-
+</div>
+<div class="row">
+    <section class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="featured homepage-content">
+            <h2>Next Rehearsal: <time datetime="@Model.NextRehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@Model.NextRehearsal.DateAndStartTime.ToString(FormatStrings.FullDate)</time></h2>
+            <p>
+                <time datetime="@Model.NextRehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@Model.NextRehearsal.DateAndStartTime.ToString(FormatStrings.Time)</time> -
+                <time datetime="@Model.NextRehearsal.FinishTime.ToString(FormatStrings.RFC3339DateTime)">@Model.NextRehearsal.FinishTime.ToString(FormatStrings.Time)</time>,
+                @Model.NextRehearsal.Location
+            </p>
+            <p>@Html.ActionLink("View Schedule »", "Details", "Rehearsals", new { Model.NextRehearsal.Id }, htmlAttributes: new { @class = "btn btn-default" })</p>
+        </div>
+    </section>
     @foreach (var rehearsal in Model.UpcomingRehearsals)
     {
-        <section class="span4">
-            <h2><time datetime="@rehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.DateAndStartTime.ToString(FormatStrings.FullDate)</time></h2>
-            <p>
-                <time datetime="@rehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.DateAndStartTime.ToString(FormatStrings.Time)</time> - 
-                <time datetime="@rehearsal.FinishTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.FinishTime.ToString(FormatStrings.Time)</time>,
-                @rehearsal.Location
-            </p>
-            <p>@Html.ActionLink("View Schedule »", "Details", "Rehearsals", new { rehearsal.Id }, htmlAttributes: new { @class = "btn" })</p>
+        <section class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div class="homepage-content">
+                <h2><time datetime="@rehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.DateAndStartTime.ToString(FormatStrings.FullDate)</time></h2>
+                <p>
+                    <time datetime="@rehearsal.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.DateAndStartTime.ToString(FormatStrings.Time)</time> -
+                    <time datetime="@rehearsal.FinishTime.ToString(FormatStrings.RFC3339DateTime)">@rehearsal.FinishTime.ToString(FormatStrings.Time)</time>,
+                    @rehearsal.Location
+                </p>
+                <p>@Html.ActionLink("View Schedule »", "Details", "Rehearsals", new { rehearsal.Id }, htmlAttributes: new { @class = "btn btn-default" })</p>
+            </div>
         </section>
     }
 </div>
