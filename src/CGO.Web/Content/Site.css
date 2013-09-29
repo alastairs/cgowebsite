@@ -31,6 +31,7 @@ body {
 }
 
 .content {
+    background: #f9f9f9;
     background: rgba(255, 255, 255, 0.75);
     padding: 12px;
 }
