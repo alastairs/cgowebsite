@@ -6,6 +6,7 @@
         <title>@ViewBag.Title</title>
         @Styles.Render("~/styles/bootstrap")
         @Styles.Render("~/Content/Site.css")
+        @Styles.Render("~/Areas/Admin/Content/admin.css")
 
         @Styles.Render("~/bundles/font-awesome")
         @Styles.Render("~/bundles/boilerplate")
@@ -24,7 +25,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a href="@Url.Action("Index", "Home")" title="Cambridge Graduate Orchestra Home Page" class="navbar-brand">
+                        <a href="@Url.Action("Index", "Home", new { Area = string.Empty })" title="Cambridge Graduate Orchestra Home Page" class="navbar-brand">
                             <img src="~/Images/navbar-logo.png" title="Cambridge Graduate Orchestra logo" alt="" />
                             CGO
                         </a>

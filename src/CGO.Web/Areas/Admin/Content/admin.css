@@ -1,4 +1,16 @@
-﻿/* styles for validation helpers */
+﻿body {
+    background-image: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.content {
+    background: transparent;
+}
+
+/* styles for validation helpers */
 .field-validation-error {
     color: #e80c4d;
     font-weight: bold;
