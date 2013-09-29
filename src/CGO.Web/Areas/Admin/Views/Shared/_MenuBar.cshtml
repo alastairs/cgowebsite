@@ -1,0 +1,13 @@
+﻿<ul class="nav navbar-nav">
+    <li>
+        @Html.ActionLink("Home", "Index", "Home", new { Area = string.Empty }, htmlAttributes: null)
+    </li>
+    <li>
+        @Html.ActionLink("Concerts", "Index", "Concerts", new { Area = "Admin" }, htmlAttributes: null)
+    </li>
+</ul>
+<ul class="nav navbar-nav pull-right">
+    <li class="dropdown">
+        @Html.Partial("_LoginPartial")
+    </li>
+</ul>
