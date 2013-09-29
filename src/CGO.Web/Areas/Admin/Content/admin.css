@@ -6,6 +6,22 @@
     padding-left: 0;
 }
 
+.dashboard {
+    background-color: #f4f4f4;
+    background-color: rgba(153, 153, 153, 0.1);
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.dashboard-row {
+    margin-bottom: 15px;
+}
+
+.dashboard h2 {
+    margin: 0;
+}
+
 /* styles for validation helpers */
 .field-validation-error {
     color: #e80c4d;
