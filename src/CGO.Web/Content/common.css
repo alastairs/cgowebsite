@@ -5,8 +5,10 @@
 
 .page-header {
     background: rgba(255, 255, 255, 0.75);
-    border-bottom-color: rgb(255, 0, 144);
+    border-bottom-color: #f2105c;
+    color:  #f2105c;
     padding: 12px;
+    font-size: 44px;
 }
 
     .page-header h1 {
