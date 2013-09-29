@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CGO.Domain;
 
 namespace CGO.Web.Models
@@ -8,9 +9,13 @@ namespace CGO.Web.Models
         public HomePageViewModel(Concert nextConcert, IEnumerable<Rehearsal> upcomingRehearsals)
         {
             NextConcert = nextConcert;
-            UpcomingRehearsals = upcomingRehearsals;
+
+            var rehearsals = upcomingRehearsals.ToList();
+            NextRehearsal = rehearsals.First();
+            UpcomingRehearsals = rehearsals.Skip(1);
         }
 
+        public Rehearsal NextRehearsal { get; set; }
         public Concert NextConcert { get; private set; }
         public IEnumerable<Rehearsal> UpcomingRehearsals { get; private set; }
     }
