@@ -34,9 +34,15 @@ namespace CGO.Web
                         "~/Scripts/Markdown.Sanitizer.js",
                         "~/Scripts/Markdown.Editor.js"));
 
-            bundles.Add(new StyleBundle("~/styles/bootstrap").Include("~/Content/bootstrap/bootstrap.css",
-                                                                      "~/Content/bootstrap/bootstrap-theme.css"));
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/styles/site").Include("~/Content/bootstrap/bootstrap.css",
+                                                                 "~/Content/bootstrap/bootstrap-theme.css",
+                                                                 "~/Content/common.css",
+                                                                 "~/Content/Site.css"));
+
+            bundles.Add(new StyleBundle("~/styles/admin").Include("~/Content/bootstrap/bootstrap.css",
+                                                                  "~/Content/bootstrap/bootstrap-theme.css",
+                                                                  "~/Content/common.css",
+                                                                  "~/Areas/Admin/Content/admin.css"));
             
             bundles.Add(new StyleBundle("~/bundles/jquery-ui").Include("~/Content/jquery-ui-1.8.16.custom.css",
                                                                        "~/Content/jquery.ui.1.8.16.ie.css"));
