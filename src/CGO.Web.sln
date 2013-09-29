@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.20827.3
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CGO.Web", "CGO.Web\CGO.Web.csproj", "{97614706-B50C-4ACE-9331-4B5F1B52EF28}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5A942EF7-7D5E-4C1B-B389-54A0B721416E}"
@@ -20,6 +22,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CGO.DataAccess.Raven.IntegrationTests", "CGO.DataAccess.Raven.IntegrationTests\CGO.DataAccess.Raven.IntegrationTests.csproj", "{443DDC8F-72CB-4576-8921-7AB5CF647457}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CGO.DataAccess.Raven.Tests", "CGO.DataAccess.Raven.Tests\CGO.DataAccess.Raven.Tests.csproj", "{78BDA3B1-C7AE-41C4-A032-51A4CC93323B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{38F52305-C885-496A-8E1D-C16796C49796}"
+	ProjectSection(SolutionItems) = preProject
+		WE-browsers.xml = WE-browsers.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
