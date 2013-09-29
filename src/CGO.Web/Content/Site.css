@@ -1,345 +1,67 @@
-﻿header, footer, hgroup,
-nav, section {
-    display: block;
-}
-
-.float-left {
-    float: left;
-}
-
-.float-right {
-    float: right;
-}
-
-.clear-fix:after {
-    content: ".";
-    clear: both;
-    display: block;
-    height: 0;
-    visibility: hidden;
-}
-
-/* forms */
-fieldset {
-    border: none;
-    margin: 0;
-    padding: 0;
-}
-
-fieldset legend {
-    display: none;
-}
-
-input {
-    width: 327px;
-}
-
-input.datetime {
-    width: 95px;
-}
-
-input[type='file'] {
-    width: 200px;
-    margin-left: 5px;
-}
-
-/* ajax login/registration dialog */
-.ui-dialog {
-    font-family: inherit;
-    font-size: 1.0em;
-    -moz-border-radius: 0;
-    -webkit-border-radius: 0;
-    border-radius: 0;
-    border: 0 none;
-}
-
-.ui-dialog input {
-    font-family: inherit;
-    font-size: 1.25em;
-}
-
-.ui-dialog-titlebar {
-    color: inherit;
-    font-weight: inherit;
-    border: 0 none;
-    background: none;
-    float: right;    
-}
-
-.ui-dialog-titlebar-close {
-    -moz-border-radius: 0;
-    -webkit-border-radius: 0;
-    border-radius: 0;
-}
-
-.ui-widget-header {   
-    border: 0 none;
-    background: none;  
-}
-
-.modal-popup {
-    
-}
-
-    .modal-popup input[type="text"],
-    .modal-popup input[type="password"] {
-        width: 90%;
+﻿@media (min-width: 1200px) {
+    body {
+        background: url('/Images/background-screen-lg.jpg') no-repeat fixed;
     }
-
-/* info and errors */
-.message-info {
-    border: 1px solid;
-    clear: both;
-    padding: 10px 20px;
 }
 
-.message-error {
-    clear: both;
-    color: #e80c4d;
-    font-size: 1.1em;
-    font-weight: bold;
-    margin: 20px 0 10px 0;
+@media (min-width: 992px) and (max-width: 1199px) {
+    body {
+        background: url('/Images/background-screen-md.jpg') no-repeat fixed;
+    }
 }
 
-.message-success {
-    color: #7ac0da;
-    font-size: 1.3em;
-    font-weight: bold;
-    margin: 20px 0 10px 0;
+@media (min-width: 768px) and (max-width: 991px) {
+    body {
+        background: url('/Images/background-screen-sm.jpg') no-repeat fixed;
+    }
 }
 
-.error {
-    color: #e80c4d;
+@media (min-width: 480px) and (max-width: 767px) {
+    body {
+        background: url('/Images/background-screen-xs.jpg') no-repeat fixed;
+    }
 }
 
-/* styles for validation helpers */
-.field-validation-error {
-    color: #e80c4d;
-    font-weight: bold;
+body {
+    -moz-background-size: 100% auto, contain;
+    -o-background-size: 100% auto, contain;
+    -webkit-background-size: 100% auto, contain;
+    background-size: 100% auto, contain;
+    background-color: black;
 }
 
-.field-validation-valid {
-    display: none;
+.content {
+    background: #f9f9f9;
+    background: rgba(255, 255, 255, 0.75);
+    padding: 12px;
 }
 
-input[type="text"].input-validation-error,
-input[type="password"].input-validation-error,
-input[type="date"].input-validation-error,
-input[type="time"].input-validation-error {
-    border: 1px solid #e80c4d;
+.featured {
+    background: #f2105c;
+    color: white;
+    -ms-border-radius: 10px;
+    border-radius: 10px;
 }
 
-.validation-summary-errors {
-    color: #e80c4d;
-    font-weight: bold;
-    font-size: 1.1em;
+.homepage-content {
+    padding: 12px;
 }
 
-.validation-summary-valid {
-    display: none;
-}
-
-ul#social, ul#poweredBy {
-    float: left;
-}
-
-ul#social li, ul#poweredBy li {
-    display: inline;
-    list-style: none;
-}
-
-ul#social li a, ul#poweredBy li a {
-    color: #999;
-    text-decoration: none;
-}
-
-a.facebook, a.twitter, a.raven {
-    display: block;
-    float: left;
-    height: 24px;
-    padding-left: 17px;
-    margin-top: 4px;
-    text-indent: -9999px;
-    width: 16px;
-}
-
-a.facebook {
-    background: url("../Images/facebook.png") no-repeat;
-}
-
-a.twitter {
-    background: url("../Images/twitter.png") no-repeat;
-}
-
-a.raven {
-    background: url("http://static.ravendb.net/badges/small/badge6.png") no-repeat;
-    height: 29px;
-    width: 113px;
+.homepage-content h2 {
     margin-top: 0;
 }
 
-.action {
-    margin: 0 5px;
-}
-
-[class^="icon-"]:hover, [class*=" icon-"]:hover {
-    text-decoration: none;
-}
-
-input.quickAddField {
-    width: 95%;
-}
-
-input.quickAddField-small {
-    width: 120px;
-}
-
-/*****************************
-*   Markdown Editor Styles   *
-*****************************/
-
-.wmd-panel
-{
+.navbar-default .navbar-brand {
+    color:  #f2105c;
+    padding: 6px 15px 3px;
     margin: 0;
-	width: 50%;
-	min-width: 500px;
 }
 
-.wmd-button-bar 
-{
-	width: 100%;
-	background-color: Silver; 
-}
-
-.wmd-input 
-{ 
-	height: 300px;
-	width: 100%;
-	border: 1px solid DarkGray;
-}
-
-.wmd-preview 
-{ 
-	background-color: #c0e0ff; 
-}
-
-.wmd-button-row 
-{
-	position: relative; 
-	margin-left: 5px;
-	margin-right: 5px;
-	margin-bottom: 5px;
-	margin-top: 10px;
-	padding: 0px;  
-	height: 20px;
-}
-
-.wmd-spacer
-{
-	width: 1px; 
-	height: 20px; 
-	margin-left: 14px;
-	
-	position: absolute;
-	background-color: Silver;
-	display: inline-block; 
-	list-style: none;
-}
-
-.wmd-button {
-    width: 20px;
-    height: 20px;
-    padding-left: 2px;
-    padding-right: 3px;
-    position: absolute;
-    display: inline-block;
-    list-style: none;
-    cursor: pointer;
-}
-
-.wmd-button > span {
-    background-image: url(../Images/wmd-buttons.png);
-    background-repeat: no-repeat;
-    background-position: 0px 0px;
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-}
-
-.wmd-spacer1
-{
-    left: 50px;
-}
-.wmd-spacer2
-{
-    left: 175px;
-}
-.wmd-spacer3
-{
-    left: 300px;
-}
-
-.wmd-prompt-background
-{
-	background-color: Black;
-}
-
-.wmd-prompt-dialog
-{
-	border: 1px solid #999999;
-	background-color: #F5F5F5;
-}
-
-.wmd-prompt-dialog > div {
-	font-size: 0.8em;
-	font-family: arial, helvetica, sans-serif;
-}
-
-
-.wmd-prompt-dialog > form > input[type="text"] {
-	border: 1px solid #999999;
-	color: black;
-}
-
-.wmd-prompt-dialog > form > input[type="button"]{
-	border: 1px solid #888888;
-	font-family: trebuchet MS, helvetica, sans-serif;
-	font-size: 0.8em;
-	font-weight: bold;
-}
-
-/********************
-*   Mobile Styles   *
-********************/
-@media only screen and (max-width: 850px) {
-
-    /* footer
-    ----------------------------------------------------------*/
-    footer .float-left,
-    footer .float-right {
-        float: none;
+    .navbar-default .navbar-brand img {
+        margin-top: -3px;
     }
 
-    footer {
-        text-align: center;
-        height: auto;
-        padding: 10px 0;
-    }
-
-        footer p {
-            margin: 0;
-        }
-
-        ul#social {
-            padding: 0;
-            margin: 0;
-        }
-
-        a.facebook, a.twitter {
-            background: none;
-            display: inline;
-            float: none;
-            padding-left: 0;
-            text-indent: 0;
-        }
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    color: rgb(158, 0, 89);
 }

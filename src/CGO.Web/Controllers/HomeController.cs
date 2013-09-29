@@ -20,7 +20,8 @@ namespace CGO.Web.Controllers
                         {
                             new Rehearsal(1, new DateTime(2012, 10, 7, 19, 30, 00), new DateTime(2012, 10, 7, 22, 00, 00), "Hughes Hall"),
                             new Rehearsal(2, new DateTime(2012, 10, 14, 19, 30, 00), new DateTime(2012, 10, 14, 22, 00, 00), "Hughes Hall"),
-                            new Rehearsal(3, new DateTime(2012, 10, 21, 19, 30, 00), new DateTime(2012, 10, 21, 22, 00, 00), "Hughes Hall")
+                            new Rehearsal(3, new DateTime(2012, 10, 21, 19, 30, 00), new DateTime(2012, 10, 21, 22, 00, 00), "Hughes Hall"),
+                            new Rehearsal(3, new DateTime(2012, 10, 28, 19, 30, 00), new DateTime(2012, 10, 28, 22, 00, 00), "Hughes Hall")
                         });
 
             Response.AppendHeader("X-XRDS-Location", new Uri(Request.Url, Response.ApplyAppPathModifier("~/Home/xrds")).AbsoluteUri);

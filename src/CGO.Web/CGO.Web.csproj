@@ -278,14 +278,14 @@
     <Compile Include="Views\FormatStrings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-responsive.css" />
-    <Content Include="Content\bootstrap-responsive.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Areas\Admin\Content\admin.css" />
+    <Content Include="Content\Boilerplate.css" />
+    <Content Include="Content\bootstrap\bootstrap.css" />
+    <Content Include="Content\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\common.css" />
     <Content Include="Content\font-awesome-ie7.css" />
     <Content Include="Content\font-awesome.css" />
-    <Content Include="Content\images\glyphicons-halflings-white.png" />
-    <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
     <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
@@ -364,13 +364,20 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
+    <Content Include="Content\wmd.css" />
     <Content Include="favicon.ico" />
+    <Content Include="font\Boilerplate.svg" />
     <Content Include="font\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Images\aol.gif" />
     <Content Include="Images\aol.ico" />
     <Content Include="Images\aol.ico.gif" />
     <Content Include="Images\aol.ico.png" />
+    <Content Include="Images\background-screen-lg.jpg" />
+    <Content Include="Images\background-screen-md.jpg" />
+    <Content Include="Images\background-screen-sm.jpg" />
+    <Content Include="Images\background-screen-xs.jpg" />
+    <Content Include="Images\background.jpg" />
     <Content Include="Images\blogger.ico" />
     <Content Include="Images\blogger.ico.gif" />
     <Content Include="Images\blogger.ico.png" />
@@ -411,6 +418,7 @@
     <Content Include="Images\myopenid.ico" />
     <Content Include="Images\myopenid.ico.gif" />
     <Content Include="Images\myopenid.ico.png" />
+    <Content Include="Images\navbar-logo.png" />
     <Content Include="Images\openid-inputicon.gif" />
     <Content Include="Images\openid-providers-en.png" />
     <Content Include="Images\openid.gif" />
@@ -460,6 +468,13 @@
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="font\Boilerplate.eot" />
+    <Content Include="font\Boilerplate.ttf" />
+    <Content Include="font\Boilerplate.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Areas\Admin\Views\Shared\_MenuBar.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

@@ -1,0 +1,19 @@
+﻿<ul class="nav navbar-nav">
+    <li>
+        <a href="@Url.Action("Index", "Home", new { Area = string.Empty })"><i class="icon-arrow-left"></i> Back to Main Site</a>
+    </li>
+    <li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Concerts <b class="caret"></b></a>
+
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Add New Concert", "Create", "Concerts", new { Area = "Admin"}, htmlAttributes: null)</li>
+            <li>@Html.ActionLink("Edit or Delete Concert", "Index", "Concerts", new { Area = "Admin" }, htmlAttributes: null)</li>
+        </ul>
+    </li>
+</ul>
+<ul class="nav navbar-nav pull-right">
+    <li class="dropdown">
+        @Html.Partial("_LoginPartial")
+    </li>
+</ul>

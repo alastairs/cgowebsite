@@ -8,7 +8,7 @@
         {
             return GetHomeControllerLinksCssClass(actionName, isCurrentController);
         }
-        
+
         return isCurrentController ? "active" : string.Empty;
     }
 
@@ -18,7 +18,7 @@
         {
             return string.Empty;
         }
-        
+
         var isCurrentAction = ViewContext.RouteData.Values["action"].ToString() == actionName;
 
         return isCurrentAction ? "active" : string.Empty;
@@ -31,10 +31,7 @@
     <li class="dropdown @GetCssClass(actionName, controllerName)">
         @if (controllerName == "Concerts" && Request.IsAuthenticated)
         {
-            <a href="@Url.Action(actionName, controllerName)" class="dropdown-toggle" data-toggle="dropdown">
-                @linkText
-                <b class="caret"></b>
-            </a>
+            <a href="@Url.Action(actionName, controllerName)" class="dropdown-toggle" data-toggle="dropdown">@linkText <b class="caret"></b></a>
             
             <ul class="dropdown-menu">
                 <li>@Html.ActionLink("Administer Concerts", "Index", new { controller = "Concerts", area = "Admin" })</li>
@@ -47,10 +44,16 @@
     </li>
 }
 
-<ul class="nav">
-    @GetMenuBarLink("Home", "Index", "Home")
-    @GetMenuBarLink("Concerts", "Index", "Concerts")
-    @GetMenuBarLink("Rehearsals", "Index", "Rehearsals")
-    @GetMenuBarLink("About", "About", "Home")
-    @GetMenuBarLink("Contact", "Contact", "Home")
+<ul class="nav navbar-nav">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Concerts", "Index", "Concerts")</li>
+    <li>@Html.ActionLink("Rehearsals", "Index", "Rehearsals")</li>
+    <li>@Html.ActionLink("About", "About", "Home")</li>
+    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+</ul>
+<ul class="nav navbar-nav pull-right">
+    @if (Request.IsAuthenticated) { <li><a href="@Url.Action("Index", "Home", new { Area = "Admin" })"><i class="icon-cogs" style="color: #f2105c"></i> Admin</a></li> }
+    <li class="dropdown">
+        @Html.Partial("_LoginPartial")
+    </li>
 </ul>

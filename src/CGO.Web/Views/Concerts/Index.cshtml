@@ -5,32 +5,38 @@
     ViewBag.Title = "Upcoming Concerts";
 }
 
-<div class="hero-unit">
-    @{ var nextConcert = Model.First(); }
-    <header>
-        <h1>@nextConcert.Title</h1>
-    </header>
-    <section>
-        <p><time datetime="@nextConcert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@nextConcert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @nextConcert.Location</p>
-        <p>@Html.ActionLink("Learn more »", "Details", new { nextConcert.Id }, htmlAttributes: new { @class ="btn btn-primary btn-large" })</p>
-    </section>
-</div>
+<div class="row-fluid">
+    @Html.Action("Display", "SideBar")
 
-<header>
-    <h1>All Upcoming Concerts</h1>
-</header>
-<hr />
-@foreach (var concert in Model.Skip(1))
-{
-    <section>
+    <div class="span9">
+        <div class="hero-unit">
+            @{ var nextConcert = Model.First(); }
+            <header>
+                <h1>@nextConcert.Title</h1>
+            </header>
+            <section>
+                <p><time datetime="@nextConcert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@nextConcert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @nextConcert.Location</p>
+                <p>@Html.ActionLink("Learn more »", "Details", new { nextConcert.Id }, htmlAttributes: new { @class ="btn btn-primary btn-large" })</p>
+            </section>
+        </div>
+
         <header>
-            <h1>@concert.Title</h1>
-            <div class="meta">
-                <p><time datetime="@concert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@concert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @concert.Location</p>
-                <p>@Html.ActionLink("View details »", "Details", new { concert.Id }, htmlAttributes: new { @class ="btn" })</p>
-            </div>
+            <h1>All Upcoming Concerts</h1>
         </header>
-    </section>
-}
-<hr/>
-<p>@Html.ActionLink("View past concerts »", "Archived", routeValues: null, htmlAttributes: new { @class ="btn btn-info" })</p>
+        <hr />
+        @foreach (var concert in Model.Skip(1))
+        {
+            <section>
+                <header>
+                    <h1>@concert.Title</h1>
+                    <div class="meta">
+                        <p><time datetime="@concert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@concert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @concert.Location</p>
+                        <p>@Html.ActionLink("View details »", "Details", new { concert.Id }, htmlAttributes: new { @class ="btn" })</p>
+                    </div>
+                </header>
+            </section>
+        }
+        <hr/>
+        <p>@Html.ActionLink("View past concerts »", "Archived", routeValues: null, htmlAttributes: new { @class ="btn btn-info" })</p>
+    </div>
+</div>

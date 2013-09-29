@@ -1,5 +1,44 @@
 ﻿@{
     ViewBag.Title = "Admin";
+    ViewBag.Description = "Committee Dashboard";
 }
 
-<h2>Admin</h2>
+<div class="row dashboard-row">
+    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-4">
+        <div class="dashboard">
+            <h2>Concerts</h2>
+            <ul class="list-unstyled">
+                <li>@Html.ActionLink("Add new Concert", "Create", "Concerts")</li>
+                <li>@Html.ActionLink("List Concerts", "Index", "Concerts")</li>
+                <li>Email all players in a concert</li>
+                <li>Email all players in a section</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-4">
+        <div class="dashboard">
+            <h2>Rehearsals</h2>
+            <ul class="list-unstyled">
+                <li>Schedule</li>
+                <li>Player lists</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-4">
+        <div class="dashboard">
+            <h2>Players</h2>
+            <ul class="list-unstyled">
+                <li>Subscriptions</li>
+                <li>
+                    Email
+                    <ul>
+                        <li>Concert</li>
+                        <li>Section</li>
+                        <li>Individuals</li>
+                    </ul>
+                </li>
+                <li>Concert lists</li>
+            </ul>
+        </div>
+    </div>
+</div>
