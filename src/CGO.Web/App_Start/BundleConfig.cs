@@ -36,26 +36,26 @@ namespace CGO.Web
 
             bundles.Add(new StyleBundle("~/styles/site").Include("~/Content/bootstrap/bootstrap.css",
                                                                  "~/Content/bootstrap/bootstrap-theme.css",
+                                                                 "~/Content/font-awesome.css",
+                                                                 "~/Content/font-awesome-ie7.css",
+                                                                 "~/Content/Boilerplate.css",
+                                                                 "~/Content/openid.css",
+                                                                 "~/Content/openid-shadow.css",
                                                                  "~/Content/common.css",
                                                                  "~/Content/Site.css"));
 
             bundles.Add(new StyleBundle("~/styles/admin").Include("~/Content/bootstrap/bootstrap.css",
                                                                   "~/Content/bootstrap/bootstrap-theme.css",
+                                                                  "~/Content/font-awesome.css",
+                                                                  "~/Content/font-awesome-ie7.css",
+                                                                  "~/Content/Boilerplate.css",
                                                                   "~/Content/common.css",
                                                                   "~/Areas/Admin/Content/admin.css"));
             
             bundles.Add(new StyleBundle("~/bundles/jquery-ui").Include("~/Content/jquery-ui-1.8.16.custom.css",
                                                                        "~/Content/jquery.ui.1.8.16.ie.css"));
 
-            bundles.Add(new StyleBundle("~/bundles/font-awesome").Include("~/Content/font-awesome.css",
-                                                                          "~/Content/font-awesome-ie7.css"));
-
-            bundles.Add(new StyleBundle("~/bundles/boilerplate").Include("~/Content/Boilerplate.css"));
-        
-            bundles.Add(new StyleBundle("~/bundles/openid-css").Include("~/Content/openid.css", "~/Content/openid-shadow.css"));
-
             bundles.Add(new StyleBundle("~/bundles/markdownEditor.css").Include("~/Content/wmd.css"));
-            bundles.Add(new StyleBundle("~/bundles/admin.css").Include("~/Areas/Admin/Content/admin.css"));
         }
     }
 }
