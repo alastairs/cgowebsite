@@ -387,6 +387,7 @@
     <Content Include="Images\clickpass.ico" />
     <Content Include="Images\clickpass.ico.gif" />
     <Content Include="Images\clickpass.ico.png" />
+    <Content Include="Images\Errors\Lost.svg" />
     <Content Include="Images\facebook.gif" />
     <Content Include="Images\facebook.ico" />
     <Content Include="Images\facebook.ico.gif" />
@@ -504,6 +505,7 @@
     <Content Include="Scripts\rfc3339date.js" />
     <Content Include="Scripts\ViewModels\ConcertListViewModel.js" />
     <Content Include="Scripts\ViewModels\ConcertViewModel.js" />
+    <Content Include="NotFound.htm" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
