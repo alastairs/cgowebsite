@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CGO.Domain;
+using CGO.Domain.Entities;
+using CGO.Domain.Services;
 using CGO.Web.Controllers;
 using CGO.Web.Mappers;
 using CGO.Web.Models;

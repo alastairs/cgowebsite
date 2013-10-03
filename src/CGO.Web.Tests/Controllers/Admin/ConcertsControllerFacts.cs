@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Web.Mvc;
 using CGO.Domain;
+using CGO.Domain.Entities;
+using CGO.Domain.Services;
 using CGO.Web.Areas.Admin.Controllers;
 using CGO.Web.Tests.EqualityComparers;
 using CGO.Web.ViewModels;

@@ -1,5 +1,7 @@
 ﻿using System;
 using CGO.Domain;
+using CGO.Domain.Entities;
+using CGO.Domain.Services.Application;
 using NSubstitute;
 using NUnit.Framework;
 using Raven.Client;

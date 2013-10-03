@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CGO.Domain;
+using CGO.Domain.Entities;
 using CGO.Web.Models;
 
 namespace CGO.Web.Tests.EqualityComparers

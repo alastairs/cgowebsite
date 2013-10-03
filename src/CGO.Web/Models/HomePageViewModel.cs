@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CGO.Domain;
+using CGO.Domain.Entities;
 
 namespace CGO.Web.Models
 {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using CGO.Domain;
+using CGO.Domain.Entities;
+using CGO.Domain.Services;
 
 namespace CGO.DataAccess.SimpleData
 {

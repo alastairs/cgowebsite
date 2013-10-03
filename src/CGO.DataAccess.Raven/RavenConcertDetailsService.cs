@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using CGO.Domain;
+using CGO.Domain.Entities;
+using CGO.Domain.Services;
+using CGO.Domain.Services.Application;
 using Raven.Client;
 
 namespace CGO.DataAccess.Raven

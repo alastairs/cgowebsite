@@ -1,6 +1,6 @@
 using System;
 
-namespace CGO.Domain
+namespace CGO.Domain.Services.Application
 {
     public class DateTimeProvider : IDateTimeProvider
     {

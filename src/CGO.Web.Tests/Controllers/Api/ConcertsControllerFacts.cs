@@ -8,6 +8,8 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Hosting;
 using System.Web.Http.Routing;
 using CGO.Domain;
+using CGO.Domain.Entities;
+using CGO.Domain.Services;
 using CGO.Web.Controllers.Api;
 using CGO.Web.Mappers;
 using CGO.Web.Tests.EqualityComparers;

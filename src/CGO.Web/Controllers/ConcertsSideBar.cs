@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CGO.Domain;
+using CGO.Domain.Entities;
+using CGO.Domain.Services;
+using CGO.Domain.Services.Application;
 using CGO.Web.Infrastructure;
 using CGO.Web.Models;
 

@@ -1,4 +1,5 @@
 ﻿using CGO.Domain;
+using CGO.Domain.Services;
 using NUnit.Framework;
 
 namespace CGO.DataAccess.SimpleData.Tests

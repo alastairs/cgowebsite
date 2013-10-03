@@ -39,11 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Concert.cs" />
-    <Compile Include="DateTimeProvider.cs" />
-    <Compile Include="IConcertDetailsService.cs" />
-    <Compile Include="IConcertsSeasonService.cs" />
-    <Compile Include="IDateTimeProvider.cs" />
+    <Compile Include="Entities\Concert.cs" />
+    <Compile Include="Services\Application\DateTimeProvider.cs" />
+    <Compile Include="Services\IConcertDetailsService.cs" />
+    <Compile Include="Services\IConcertsSeasonService.cs" />
+    <Compile Include="Services\Application\IDateTimeProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

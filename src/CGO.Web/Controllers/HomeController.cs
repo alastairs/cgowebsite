@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using CGO.Domain;
+using CGO.Domain.Entities;
 using CGO.Web.Infrastructure;
 using CGO.Web.Models;
 

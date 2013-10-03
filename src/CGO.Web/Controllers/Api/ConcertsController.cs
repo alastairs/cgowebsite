@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using CGO.Domain;
+using CGO.Domain.Entities;
+using CGO.Domain.Services;
 using CGO.Web.Mappers;
 using CGO.Web.ViewModels.Api;
 

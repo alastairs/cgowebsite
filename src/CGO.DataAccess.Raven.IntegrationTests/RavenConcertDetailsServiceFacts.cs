@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using CGO.Domain;
+using CGO.Domain.Entities;
+using CGO.Domain.Services.Application;
 using NSubstitute;
 using NUnit.Framework;
 
