@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Web.Mvc;
 using CGO.Domain;
+using CGO.Web.Mappers;
+using CGO.Web.Models;
+using CGO.Web.ViewModels;
 
 namespace CGO.Web.Controllers
 {
@@ -33,12 +36,18 @@ namespace CGO.Web.Controllers
         {
             var concerts = concertDetailsService.GetFutureConcerts();
 
-            if (concerts.Any())
+            if (!concerts.Any())
             {
-                return View("Index", concerts);
+                return RedirectToAction("Archived");
             }
 
-            return RedirectToAction("Index", "Home");
+            var viewModel = new ConcertsIndexViewModel
+            {
+                NextConcert = concerts.FirstOrDefault().ToViewModel<Concert, ConcertViewModel>(),
+                UpcomingConcerts = concerts.Skip(1).Select(c => c.ToViewModel<Concert, ConcertViewModel>())
+            };
+
+            return View("Index", viewModel);
         }
 
         //

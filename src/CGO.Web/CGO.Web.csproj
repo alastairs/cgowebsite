@@ -266,6 +266,7 @@
     <Compile Include="Infrastructure\NinjectWebApiDependencyResolver.cs" />
     <Compile Include="Infrastructure\NinjectScope.cs" />
     <Compile Include="Mappers\MapperExtensions.cs" />
+    <Compile Include="Models\ConcertsIndexViewModel.cs" />
     <Compile Include="Models\HomePageViewModel.cs" />
     <Compile Include="Models\Rehearsal.cs" />
     <Compile Include="Models\SideBarLink.cs" />
