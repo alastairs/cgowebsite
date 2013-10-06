@@ -32,13 +32,7 @@ namespace CGO.Web.Controllers
         public ActionResult Index()
         {
             var concerts = concertDetailsService.GetFutureConcerts();
-
-            if (concerts.Any())
-            {
-                return View("Index", concerts);
-            }
-
-            return RedirectToAction("Index", "Home");
+            return View("Index", concerts);
         }
 
         //

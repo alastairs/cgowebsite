@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using CGO.Domain;
 using CGO.Web.Controllers;
@@ -8,7 +7,6 @@ using CGO.Web.Tests.EqualityComparers;
 using MvcContrib.TestHelper;
 using NSubstitute;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace CGO.Web.Tests.Controllers
 {
@@ -64,31 +62,6 @@ namespace CGO.Web.Tests.Controllers
             {
                 var concertDetailsService = Substitute.For<IConcertDetailsService>();
                 concertDetailsService.GetFutureConcerts().Returns(expectedConcerts);
-                return concertDetailsService;
-            }
-        }
-
-        [TestFixture]
-        public class WhenThereAreNoConcerts_IndexShould
-        {
-            [Test]
-            public void RedirectToTheAdminHomePage()
-            {
-                var builder = new TestControllerBuilder();
-                var controller = new ConcertsController(GetMockConcertDetailsService(),
-                                                        Substitute.For<IConcertsSeasonService>());
-                builder.InitializeController(controller);
-                controller.Request.Stub(r => r.IsAuthenticated).Return(true); // Have to use RhinoMocks here, as that's what MvcContrib uses
-                
-                var result = controller.Index();
-
-                result.AssertActionRedirect().ToAction("Index").ToController("Home");
-            }
-
-            private static IConcertDetailsService GetMockConcertDetailsService()
-            {
-                var concertDetailsService = Substitute.For<IConcertDetailsService>();
-                concertDetailsService.GetFutureConcerts().Returns(Enumerable.Empty<Concert>().ToList());
                 return concertDetailsService;
             }
         }
