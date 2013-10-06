@@ -1,12 +1,12 @@
 ﻿@using CGO.Web.Models
 @model IEnumerable<SideBarSection>
 
-<div class="span3">
-    <div class="well sidebar-nav">
-        <ul class="nav nav-list">
+<div class="col-lg-3">
+    <div class="well">
+        <ul class="nav nav-stacked">
             @foreach (var sideBarSection in Model)
             {
-                <li class="nav-header">@sideBarSection.Title</li>
+                <li class="navbar-header">@sideBarSection.Title</li>
                 foreach (var link in sideBarSection.Links)
                 {
                     @SideBarLink(link)
