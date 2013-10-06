@@ -36,6 +36,11 @@ namespace CGO.Web.Controllers
         {
             var concerts = concertDetailsService.GetFutureConcerts();
 
+            if (!concerts.Any())
+            {
+                return RedirectToAction("Archived");
+            }
+
             var viewModel = new ConcertsIndexViewModel
             {
                 NextConcert = concerts.FirstOrDefault().ToViewModel<Concert, ConcertViewModel>(),

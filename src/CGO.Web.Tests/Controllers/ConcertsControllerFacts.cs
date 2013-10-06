@@ -36,6 +36,21 @@ namespace CGO.Web.Tests.Controllers
         }
 
         [TestFixture]
+        public class WhenThereAreNoConcerts_IndexShould
+        {
+            [Test]
+            public void DisplayTheConcertsArchive()
+            {
+                var controller = new ConcertsController(Substitute.For<IConcertDetailsService>(),
+                                                        Substitute.For<IConcertsSeasonService>());
+
+                var result = controller.Index();
+
+                result.AssertActionRedirect().ToAction("Archived");
+            }
+        }
+
+        [TestFixture]
         public class WhenThereAreConcerts_IndexShould
         {
             [Test]
