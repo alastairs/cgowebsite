@@ -387,6 +387,9 @@
     <Content Include="Images\clickpass.ico" />
     <Content Include="Images\clickpass.ico.gif" />
     <Content Include="Images\clickpass.ico.png" />
+    <Content Include="Images\Errors\Headache.jpg" />
+    <Content Include="Images\Errors\hqdefault.jpg" />
+    <Content Include="Images\Errors\Lost.svg" />
     <Content Include="Images\facebook.gif" />
     <Content Include="Images\facebook.ico" />
     <Content Include="Images\facebook.ico.gif" />
@@ -476,6 +479,8 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Areas\Admin\Views\Shared\_MenuBar.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="ErrorPages\Forbidden.htm" />
+    <Content Include="ErrorPages\InternalError.htm" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -504,6 +509,7 @@
     <Content Include="Scripts\rfc3339date.js" />
     <Content Include="Scripts\ViewModels\ConcertListViewModel.js" />
     <Content Include="Scripts\ViewModels\ConcertViewModel.js" />
+    <Content Include="ErrorPages\NotFound.htm" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
