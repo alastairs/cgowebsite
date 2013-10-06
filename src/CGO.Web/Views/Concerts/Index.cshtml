@@ -1,42 +1,48 @@
 ﻿@using CGO.Web.Views
-@model IEnumerable<CGO.Domain.Concert>
+@model CGO.Web.Models.ConcertsIndexViewModel
 
 @{
     ViewBag.Title = "Upcoming Concerts";
 }
 
-<div class="row-fluid">
+<div class="row">
     @Html.Action("Display", "SideBar")
 
-    <div class="span9">
-        <div class="hero-unit">
-            @{ var nextConcert = Model.First(); }
-            <header>
-                <h1>@nextConcert.Title</h1>
-            </header>
-            <section>
-                <p><time datetime="@nextConcert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@nextConcert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @nextConcert.Location</p>
-                <p>@Html.ActionLink("Learn more »", "Details", new { nextConcert.Id }, htmlAttributes: new { @class ="btn btn-primary btn-large" })</p>
-            </section>
-        </div>
-
-        <header>
-            <h1>All Upcoming Concerts</h1>
-        </header>
-        <hr />
-        @foreach (var concert in Model.Skip(1))
+    <div class="col-lg-9">
+        @if (Model.NextConcert != null)
         {
-            <section>
+            <div class="featured">
+                @{ var nextConcert = Model.NextConcert; }
                 <header>
-                    <h1>@concert.Title</h1>
-                    <div class="meta">
-                        <p><time datetime="@concert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@concert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @concert.Location</p>
-                        <p>@Html.ActionLink("View details »", "Details", new { concert.Id }, htmlAttributes: new { @class ="btn" })</p>
-                    </div>
+                    <h1>@nextConcert.Title</h1>
                 </header>
-            </section>
+                <section>
+                    <p><time datetime="@nextConcert.StartTime.ToString(FormatStrings.RFC3339DateTime)">@nextConcert.StartTime.ToString(FormatStrings.FullDateTime)</time>, @nextConcert.Location</p>
+                    <p>@Html.ActionLink("Learn more »", "Details", new {nextConcert.Id}, htmlAttributes: new {@class = "btn btn-primary btn-large"})</p>
+                </section>
+            </div>
         }
-        <hr/>
+        
+        @if (Model.UpcomingConcerts.Any())
+        {
+            <header>
+                <h1>All Upcoming Concerts</h1>
+            </header>
+            <hr />
+            foreach (var concert in Model.UpcomingConcerts)
+            {
+                <section>
+                    <header>
+                        <h1>@concert.Title</h1>
+                        <div class="meta">
+                            <p><time datetime="@concert.StartTime.ToString(FormatStrings.RFC3339DateTime)">@concert.StartTime.ToString(FormatStrings.FullDateTime)</time>, @concert.Location</p>
+                            <p>@Html.ActionLink("View details »", "Details", new {concert.Id}, htmlAttributes: new {@class = "btn"})</p>
+                        </div>
+                    </header>
+                </section>
+            }
+            <hr/>
+        }
         <p>@Html.ActionLink("View past concerts »", "Archived", routeValues: null, htmlAttributes: new { @class ="btn btn-info" })</p>
     </div>
 </div>

@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using CGO.Domain;
 using CGO.Web.Controllers;
+using CGO.Web.Mappers;
+using CGO.Web.Models;
 using CGO.Web.Tests.EqualityComparers;
+using CGO.Web.ViewModels;
 using MvcContrib.TestHelper;
 using NSubstitute;
 using NUnit.Framework;
@@ -42,7 +47,7 @@ namespace CGO.Web.Tests.Controllers
 
                 var result = controller.Index();
 
-                result.AssertViewRendered().ForView("Index").WithViewData<IEnumerable<Concert>>();
+                result.AssertViewRendered().ForView("Index").WithViewData<ConcertsIndexViewModel>();
             }
 
             [Test]
@@ -55,7 +60,12 @@ namespace CGO.Web.Tests.Controllers
 
                 var result = controller.Index() as ViewResult;
 
-                Assert.That(result.Model, Is.EquivalentTo(expectedConcerts).Using(new ConcertEqualityComparer()));
+                var expected = new ConcertsIndexViewModel
+                {
+                    NextConcert = expectedConcerts.First().ToViewModel<Concert, ConcertViewModel>(),
+                    UpcomingConcerts = Enumerable.Empty<ConcertViewModel>()
+                };
+                Assert.That(result.Model, Is.EqualTo(expected).Using(new ConcertsIndexViewModelEqualityComparer()));
             }
 
             private static IConcertDetailsService GetMockConcertDetailsService(IReadOnlyCollection<Concert> expectedConcerts)
