@@ -7,7 +7,7 @@ namespace CGO.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-1.*"));
+                        "~/Scripts/jquery-2.*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui-1.*"));
@@ -50,8 +50,7 @@ namespace CGO.Web
                                                                   "~/Content/common.css",
                                                                   "~/Areas/Admin/Content/admin.css"));
             
-            bundles.Add(new StyleBundle("~/bundles/jquery-ui").Include("~/Content/jquery-ui-1.8.16.custom.css",
-                                                                       "~/Content/jquery.ui.1.8.16.ie.css"));
+            bundles.Add(new StyleBundle("~/bundles/jquery-ui").Include("~/Content/jquery-ui-1.*"));
 
             bundles.Add(new StyleBundle("~/bundles/markdownEditor.css").Include("~/Content/wmd.css"));
         }
