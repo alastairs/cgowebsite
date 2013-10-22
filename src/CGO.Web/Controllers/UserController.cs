@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -36,20 +37,20 @@ namespace CGO.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult Authenticate(string returnUrl)
+        public async Task<ActionResult> Authenticate(string returnUrl)
         {
             var openId = new OpenIdRelyingParty();
 
-            var openIdResponse = openId.GetResponse();
+            var openIdResponse = await openId.GetResponseAsync();
             if (openIdResponse == null)
             {
-                return SendRequestToProvider(openId);
+                return await SendRequestToProvider(openId);
             }
             
             return ProcessResponseFromProvider(returnUrl, openIdResponse);
         }
 
-        private ActionResult SendRequestToProvider(OpenIdRelyingParty openId)
+        private async Task<ActionResult> SendRequestToProvider(OpenIdRelyingParty openId)
         {
             var submittedId = !string.IsNullOrWhiteSpace(Request.Form["openid_manual"]) ? Request.Form["openid_manual"] : Request.Form["openid_identifier"];
 
@@ -58,17 +59,17 @@ namespace CGO.Web.Controllers
             {
                 try
                 {
-                    var authenticationRequest = openId.CreateRequest(id);
-                    
                     var fetchRequest = new FetchRequest();
 
                     fetchRequest.Attributes.AddRequired(WellKnownAttributes.Contact.Email);
                     fetchRequest.Attributes.AddRequired(WellKnownAttributes.Name.FullName);
                     fetchRequest.Attributes.AddOptional(WellKnownAttributes.Name.Alias);
-                    
+
+                    var authenticationRequest = await openId.CreateRequestAsync(id);
                     authenticationRequest.AddExtension(fetchRequest);
 
-                    return authenticationRequest.RedirectingResponse.AsActionResult();
+                    var authenticationResponse = await authenticationRequest.GetRedirectingResponseAsync();
+                    return authenticationResponse.AsActionResult();
                 }
                 catch (ProtocolException ex)
                 {
