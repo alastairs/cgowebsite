@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿#if DEBUG
+using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Common;
 
@@ -7,7 +8,7 @@ using Raven.Client.Embedded;
 
 namespace CGO.Web.NinjectModules
 {
-    public class RavenModule : NinjectModule
+    public class DebugRavenModule : NinjectModule
     {
         public override void Load()
         {
@@ -30,3 +31,4 @@ namespace CGO.Web.NinjectModules
         }
     }
 }
+#endif
