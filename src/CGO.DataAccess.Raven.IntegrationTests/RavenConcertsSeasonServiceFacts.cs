@@ -68,7 +68,7 @@ namespace CGO.DataAccess.Raven.IntegrationTests
         }
 
         [TestFixture]
-        public class Before1AugustGetConcertsInCurrentSeasonShould : RavenTest
+        public class Before1SeptemberGetConcertsInCurrentSeasonShould : RavenTest
         {
             [Test]
             public void ReturnConcertsInThePreviousYear()
@@ -140,16 +140,16 @@ namespace CGO.DataAccess.Raven.IntegrationTests
             private static IDateTimeProvider GetMockDateTimeProvider()
             {
                 var dateTimeProvider = Substitute.For<IDateTimeProvider>();
-                dateTimeProvider.Now.Returns(new DateTime(2010, 07, 31));
+                dateTimeProvider.Now.Returns(new DateTime(2010, 08, 31));
                 return dateTimeProvider;
             }
         }
 
         [TestFixture]
-        public class After31JulyGetConcertsInCurrentSeasonShould : RavenTest
+        public class After31AugustGetConcertsInCurrentSeasonShould : RavenTest
         {
-            [TestCase(08)]
             [TestCase(09)]
+            [TestCase(10)]
             public void ReturnFutureConcerts(int month)
             {
                 var concert2010Season = new Concert(1, "2010-11 Season Concert", new DateTime(2010, 11, 26), "Venue");
@@ -210,7 +210,7 @@ namespace CGO.DataAccess.Raven.IntegrationTests
                 }
             }
 
-            private static IDateTimeProvider GetMockDateTimeProvider(int month = 8)
+            private static IDateTimeProvider GetMockDateTimeProvider(int month = 9)
             {
                 var dateTimeProvider = Substitute.For<IDateTimeProvider>();
                 dateTimeProvider.Now.Returns(new DateTime(2010, month, 01));

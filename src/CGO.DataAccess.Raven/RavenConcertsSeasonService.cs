@@ -29,7 +29,7 @@ namespace CGO.DataAccess.Raven
 
         public IReadOnlyCollection<Concert> GetConcertsInCurrentSeason()
         {
-            if (dateTimeProvider.Now.Month >= 8)
+            if (StartingNewAcademicYear())
             {
                 return GetConcertsInSeason(dateTimeProvider.Now.Year);
             }
@@ -42,11 +42,17 @@ namespace CGO.DataAccess.Raven
             return Enumerable.Empty<Concert>().ToList();
         }
 
+        private bool StartingNewAcademicYear()
+        {
+            const int academicYearStartMonth = 9;
+            return dateTimeProvider.Now.Month >= academicYearStartMonth;
+        }
+
         public IReadOnlyCollection<Concert> GetConcertsInSeason(int seasonStartYear)
         {
             return ravenSession.Query<Concert>()
-                               .Where(c => c.DateAndStartTime >= DateTime.Parse(seasonStartYear + "-08-01"))
-                               .Where(c => c.DateAndStartTime <= DateTime.Parse(seasonStartYear + 1 + "-07-31"))
+                               .Where(c => c.DateAndStartTime >= DateTime.Parse(seasonStartYear + "-09-01"))
+                               .Where(c => c.DateAndStartTime <= DateTime.Parse(seasonStartYear + 1 + "-08-31"))
                                .Where(c => c.IsPublished)
                                .ToList();
         }
