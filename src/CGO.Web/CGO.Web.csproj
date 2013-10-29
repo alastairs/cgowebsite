@@ -296,6 +296,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\ConcertsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DiagnosticsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Controllers\Api\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsController.cs" />
@@ -547,6 +548,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\commonFunctions.js" />
     <Content Include="Scripts\datepicker.js" />
+    <Content Include="Areas\Admin\Views\Diagnostics\Index.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />

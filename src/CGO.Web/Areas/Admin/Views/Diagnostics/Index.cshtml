@@ -1,0 +1,21 @@
+﻿@using System.Configuration
+@model ConnectionStringSettingsCollection
+
+@{
+    ViewBag.Title = "Diagnostic Information";
+}
+
+<div class="row dashboard-row">
+    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-6">
+        <div class="dashboard">
+            <h2>Connection Strings</h2>
+            <dl class="dl-horizontal">
+                @foreach (ConnectionStringSettings connectionString in Model)
+                {
+                    <dt>@connectionString.Name</dt>
+                    <dd>@connectionString.ConnectionString</dd>
+                }
+            </dl>
+        </div>
+    </div>
+</div>
