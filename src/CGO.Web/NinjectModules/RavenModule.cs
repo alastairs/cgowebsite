@@ -1,14 +1,14 @@
-﻿#if DEBUG
-using Ninject;
+﻿using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Common;
 
 using Raven.Client;
+using Raven.Client.Document;
 using Raven.Client.Embedded;
 
 namespace CGO.Web.NinjectModules
 {
-    public class DebugRavenModule : NinjectModule
+    public class RavenModule : NinjectModule
     {
         public override void Load()
         {
@@ -18,17 +18,16 @@ namespace CGO.Web.NinjectModules
 
         private static IDocumentStore InitialiseDocumentStore()
         {
-            var documentStore = new EmbeddableDocumentStore
-            {
-                DataDirectory = "CGO.raven",
-                Configuration = { Port = 28645 }
-            };
+#if DEBUG
+            var documentStore = new EmbeddableDocumentStore();
+#else
+            var documentStore = new DocumentStore();
+#endif
 
+            documentStore.ConnectionStringName = "RavenHQ";
             documentStore.Initialize();
-            documentStore.InitializeProfiling();
 
             return documentStore;
         }
     }
 }
-#endif
