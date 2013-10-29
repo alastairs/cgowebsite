@@ -331,8 +331,7 @@
     <Compile Include="Models\Rehearsal.cs" />
     <Compile Include="Models\SideBarLink.cs" />
     <Compile Include="Models\SideBarSection.cs" />
-    <Compile Include="NinjectModules\DebugRavenModule.cs" />
-    <Compile Include="NinjectModules\ReleaseRavenModule.cs" />
+    <Compile Include="NinjectModules\RavenModule.cs" />
     <Compile Include="NinjectModules\SideBarModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Api\ConcertViewModel.cs" />
