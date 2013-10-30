@@ -18,3 +18,4 @@ packages/
 # RavenDB data directories
 src/CGO.Web/Data/
 src/CGO.Web/*.raven/
+src/CGO.Web/Raven
