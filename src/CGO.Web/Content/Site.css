@@ -51,6 +51,23 @@ body {
     margin-top: 0;
 }
 
+.concert-poster {
+    width: 33%;
+}
+
+.archive-concert {
+    height: 130px;
+}
+
+.archive-concert .concert-poster {
+    height: 100%;
+}
+
+.archive-concert .poster-image-wrapper {
+    height: 130px;
+    width: 130px;
+}
+
 .navbar-default .navbar-brand {
     color:  #f2105c;
     padding: 6px 15px 3px;

@@ -11,14 +11,14 @@
     <div class="col-lg-9">
         @if (Model.NextConcert != null)
         {
-            <div class="featured">
+            <div class="featured homepage-content">
                 @{ var nextConcert = Model.NextConcert; }
                 <header>
-                    <h1>@nextConcert.Title</h1>
+                    <h2>@nextConcert.Title</h2>
                 </header>
                 <section>
                     <p><time datetime="@nextConcert.StartTime.ToString(FormatStrings.RFC3339DateTime)">@nextConcert.StartTime.ToString(FormatStrings.FullDateTime)</time>, @nextConcert.Location</p>
-                    <p>@Html.ActionLink("Learn more »", "Details", new {nextConcert.Id}, htmlAttributes: new {@class = "btn btn-primary btn-large"})</p>
+                    <p>@Html.ActionLink("Learn more »", "Details", new {nextConcert.Id}, htmlAttributes: new {@class = "btn btn-default btn-large"})</p>
                 </section>
             </div>
         }
@@ -43,6 +43,12 @@
             }
             <hr/>
         }
-        <p>@Html.ActionLink("View past concerts »", "Archived", routeValues: null, htmlAttributes: new { @class ="btn btn-info" })</p>
+    </div>
+    <div class="col-lg-9">
+        <!-- Nominally empty div to push the Archive button down from the list of concerts. This is a bit of a hack :-( -->
+        &nbsp;
+    </div>
+    <div class="col-lg-9">
+        <p>@Html.ActionLink("View past concerts »", "Archived", routeValues: null, htmlAttributes: new { @class = "btn btn-info" })</p>
     </div>
 </div>
