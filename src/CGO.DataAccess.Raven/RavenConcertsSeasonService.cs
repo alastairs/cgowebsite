@@ -39,7 +39,7 @@ namespace CGO.DataAccess.Raven
 
         public IReadOnlyCollection<Concert> GetConcertsInPreviousSeason()
         {
-            return Enumerable.Empty<Concert>().ToList();
+            return GetConcertsInSeason(dateTimeProvider.Now.Year - 1);
         }
 
         private bool StartingNewAcademicYear()

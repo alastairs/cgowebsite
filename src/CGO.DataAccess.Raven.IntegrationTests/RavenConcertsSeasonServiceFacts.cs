@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using CGO.Domain;
 using NSubstitute;
 using NUnit.Framework;
@@ -214,6 +215,40 @@ namespace CGO.DataAccess.Raven.IntegrationTests
             {
                 var dateTimeProvider = Substitute.For<IDateTimeProvider>();
                 dateTimeProvider.Now.Returns(new DateTime(2010, month, 01));
+                return dateTimeProvider;
+            }
+        }
+
+        [TestFixture]
+        public class GetConcertsInPreviousSeasonShould : RavenTest
+        {
+            [Test]
+            public void ReturnConcertsThatTookPlaceInThePreviousSeason()
+            {
+                var expectedConcert = new Concert(1, "Russian Heritage", new DateTime(2012, 12, 01), "Venue");
+                expectedConcert.Publish();
+                CreateSampleData(expectedConcert);
+                var concertsSeasonService = new RavenConcertsSeasonService(Session, GetMockDateTimeProvider());
+
+                var previousSeasonConcerts = concertsSeasonService.GetConcertsInPreviousSeason();
+
+                Assert.That(previousSeasonConcerts.Select(c => c.Id).ToArray(), Is.EqualTo(new[] { expectedConcert.Id }));
+            }
+
+            private void CreateSampleData(params Concert[] concerts)
+            {
+                using (var sampleDataSession = Store.OpenSession())
+                {
+                    Array.ForEach(concerts, sampleDataSession.Store);
+
+                    sampleDataSession.SaveChanges();
+                }
+            }
+
+            private static IDateTimeProvider GetMockDateTimeProvider()
+            {
+                var dateTimeProvider = Substitute.For<IDateTimeProvider>();
+                dateTimeProvider.Now.Returns(new DateTime(2013, 10, 30));
                 return dateTimeProvider;
             }
         }
