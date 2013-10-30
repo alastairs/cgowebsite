@@ -5,23 +5,27 @@
     ViewBag.Title = "Archive";
 }
 
-<div class="row-fluid">
+<div class="row">
     @Html.Action("Display", "SideBar")
 
-    <div class="span9">
+    <div class="col-lg-9">
         <h1>@ViewBag.ConcertSeason Season</h1>
         @foreach (var concert in Model)
         {
-            <section>
-                <header>
-                    <h2>@concert.Title</h2>
-                </header>
-                <div>
-                    <p><time datetime="@concert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@concert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @concert.Location</p>
-                    <p>@Html.ActionLink("View details »", "Details", new { concert.Id }, htmlAttributes: new { @class ="btn" })</p>
+            <div class="archive-concert">
+                <div class="poster-image-wrapper pull-left">
+                    <img src="~/Images/facebook.png" class="img-responsive concert-poster" />
                 </div>
-            </section>
+                <section>
+                    <header>
+                        <h2>@concert.Title</h2>
+                    </header>
+                    <div>
+                        <p><time datetime="@concert.DateAndStartTime.ToString(FormatStrings.RFC3339DateTime)">@concert.DateAndStartTime.ToString(FormatStrings.FullDateTime)</time>, @concert.Location</p>
+                        <p>@Html.ActionLink("View details »", "Details", new { concert.Id }, htmlAttributes: new { @class = "btn btn-default" })</p>
+                    </div>
+                </section>
+            </div>
         }
-
     </div>
 </div>
