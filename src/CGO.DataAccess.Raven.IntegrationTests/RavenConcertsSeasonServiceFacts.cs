@@ -235,6 +235,19 @@ namespace CGO.DataAccess.Raven.IntegrationTests
                 Assert.That(previousSeasonConcerts.Select(c => c.Id).ToArray(), Is.EqualTo(new[] { expectedConcert.Id }));
             }
 
+            [Test]
+            public void NotReturnConcertsThatAreTakingPlaceInTheCurrentSeason()
+            {
+                var excludedConcert = new Concert(1, "La Bohème", new DateTime(2013, 11, 30), "Venue");
+                excludedConcert.Publish();
+                CreateSampleData(excludedConcert);
+                var concertsSeasonService = new RavenConcertsSeasonService(Session, GetMockDateTimeProvider());
+
+                var previousSeasonConcerts = concertsSeasonService.GetConcertsInPreviousSeason();
+
+                Assert.That(previousSeasonConcerts.Select(c => c.Id), Is.Not.Contains(excludedConcert));
+            }
+
             private void CreateSampleData(params Concert[] concerts)
             {
                 using (var sampleDataSession = Store.OpenSession())
