@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace CGO.Web.Areas.Admin.Controllers
 {
-    public class DiagnosticsController : Controller
+    public class DiagnosticsController : AdminController
     {
         //
         // GET: /Admin/Diagnostics/

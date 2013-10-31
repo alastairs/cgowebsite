@@ -6,8 +6,7 @@ using CGO.Web.ViewModels;
 
 namespace CGO.Web.Areas.Admin.Controllers
 {
-    [Authorize]
-    public class ConcertsController : Controller
+    public class ConcertsController : AdminController
     {
         private readonly IConcertDetailsService concertDetailsService;
 

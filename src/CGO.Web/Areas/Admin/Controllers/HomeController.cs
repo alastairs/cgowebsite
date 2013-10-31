@@ -2,8 +2,7 @@
 
 namespace CGO.Web.Areas.Admin.Controllers
 {
-    [Authorize]
-    public class HomeController : Controller
+    public class HomeController : AdminController
     {
         //
         // GET: /Admin/Home/
