@@ -299,6 +299,8 @@
     <Compile Include="Areas\Admin\Controllers\ConcertsController.cs" />
     <Compile Include="Areas\Admin\Controllers\DiagnosticsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RehearsalsController.cs" />
+    <Compile Include="Areas\Admin\Models\RehearsalViewModel.cs" />
     <Compile Include="Controllers\Api\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsSideBar.cs" />
@@ -549,6 +551,8 @@
     <Content Include="Scripts\commonFunctions.js" />
     <Content Include="Scripts\datepicker.js" />
     <Content Include="Areas\Admin\Views\Diagnostics\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Rehearsals\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Rehearsals\_RehearsalEditForm.cshtml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
@@ -623,7 +627,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Images\ico\" />
   </ItemGroup>
   <ItemGroup>

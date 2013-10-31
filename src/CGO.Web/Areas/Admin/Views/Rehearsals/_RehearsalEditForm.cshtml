@@ -1,0 +1,63 @@
+﻿@model CGO.Web.Areas.Admin.Models.RehearsalViewModel
+
+@{ Html.EnableClientValidation(); }
+@using (Html.BeginForm("Create", "Rehearsals", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.ValidationSummary(false, "Oh dear, the violas made a boo-boo. Please go back and fix the following mistakes:")
+
+    <fieldset>
+        <legend>Basic Details</legend>
+
+        <div class="form-group">
+            <label for="Venue" class="col-sm-2 control-label">Rehearsal Venue</label>
+            <div class="col-sm-10">
+                @Html.TextBoxFor(r => r.Venue, new { placeholder = "Enter venue", @class = "form-control" }) @Html.ValidationMessageFor(r => r.Venue)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Date" class="col-sm-2 control-label">Date:&nbsp;</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(r => r.Date, "Date")
+                @Html.ValidationMessageFor(r => r.Date)
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Rehearsal Schedule</legend>
+        <div class="form-group">
+            <label for="StartTime" class="col-sm-2 control-label">Timings:&nbsp;</label>
+            <div class="col-sm-10">
+                @Html.EditorFor(r => r.StartTime, "Time")
+                @Html.ValidationMessageFor(r => r.StartTime)
+
+                @Html.EditorFor(r => r.EndTime, "Time")
+                @Html.ValidationMessageFor(r => r.EndTime)
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>People required</legend>
+        <div class="form-group">
+            <label for="RequiredSections" class="col-sm-2 control-label">Which sections are required?</label>
+            <div class="col-sm-10">
+                @Html.ListBoxFor(r => r.RequiredSections, Model.Sections.Select(s => new SelectListItem { Text = s, Value = s }), new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBoxFor(r => r.IsSectionalRehearsal) Is this a sectional rehearsal?
+                    </label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary" onclick="$(this).submit();">Publish Concert</button>
+        </div>
+    </div>
+}
