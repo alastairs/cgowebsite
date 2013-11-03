@@ -300,6 +300,7 @@
     <Compile Include="Areas\Admin\Controllers\DiagnosticsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\RehearsalsController.cs" />
+    <Compile Include="Areas\Admin\Models\Api\RehearsalApiModel.cs" />
     <Compile Include="Areas\Admin\Models\RehearsalViewModel.cs" />
     <Compile Include="Controllers\Api\ConcertsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Api\RehearsalsController.cs" />

@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
+
+using CGO.Web.Areas.Admin.Models.Api;
 
 namespace CGO.Web.Areas.Admin.Controllers.Api
 {
@@ -18,8 +22,9 @@ namespace CGO.Web.Areas.Admin.Controllers.Api
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Post([FromBody]RehearsalApiModel value)
         {
+            return new HttpResponseMessage(HttpStatusCode.Created);
         }
 
         // PUT api/<controller>/5
