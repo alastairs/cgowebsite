@@ -26,6 +26,16 @@ namespace CGO.Web.Tests.Controllers.Api
             }
 
             [Test]
+            public void IndicateABadRequestIfTheRequestHasNoBody()
+            {
+                var controller = new RehearsalsController();
+
+                var result = controller.Post(null);
+
+                Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            }
+
+            [Test]
             public void ProvideTheLocationOfTheNewlyCreatedRehearsal()
             {
                 var controller = new RehearsalsController();

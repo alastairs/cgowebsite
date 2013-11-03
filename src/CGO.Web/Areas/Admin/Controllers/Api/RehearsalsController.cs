@@ -26,6 +26,11 @@ namespace CGO.Web.Areas.Admin.Controllers.Api
         // POST api/<controller>
         public HttpResponseMessage Post([FromBody]RehearsalApiModel value)
         {
+            if (value == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
             var response = new HttpResponseMessage(HttpStatusCode.Created);
             response.Headers.Location = new Uri("/api/rehearsals/0", UriKind.Relative);
             return response;
