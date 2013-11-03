@@ -24,6 +24,19 @@ namespace CGO.Web.Tests.Controllers.Api
 
                 Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Created));
             }
+
+            [Test]
+            public void ProvideTheLocationOfTheNewlyCreatedRehearsal()
+            {
+                var controller = new RehearsalsController();
+
+                var result = controller.Post(new RehearsalApiModel
+                {
+                    Id = 0
+                });
+
+                Assert.That(result.Headers.Location.ToString(), Is.EqualTo("/api/rehearsals/0"));
+            }
         }
     }
 }
