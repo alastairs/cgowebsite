@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Admin\ConcertsControllerFacts.cs" />
     <Compile Include="Controllers\Api\ConcertsControllerFacts.cs" />
+    <Compile Include="Controllers\Api\RehearsalsControllerFacts.cs" />
     <Compile Include="EqualityComparers\ConcertsIndexViewModelEqualityComparer.cs" />
     <Compile Include="Controllers\ConcertsSideBarFacts.cs" />
     <Compile Include="EqualityComparers\ConcertApiViewModelEqualityComparer.cs" />

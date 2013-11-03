@@ -302,6 +302,7 @@
     <Compile Include="Areas\Admin\Controllers\RehearsalsController.cs" />
     <Compile Include="Areas\Admin\Models\RehearsalViewModel.cs" />
     <Compile Include="Controllers\Api\ConcertsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Api\RehearsalsController.cs" />
     <Compile Include="Controllers\ConcertsController.cs" />
     <Compile Include="Controllers\ConcertsSideBar.cs" />
     <Compile Include="Controllers\DefaultSideBarFactory.cs" />
